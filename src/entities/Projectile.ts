@@ -1,7 +1,7 @@
-import { Actor, Color, Vector } from 'excalibur';
+import { Actor, Animation, Color, Vector } from 'excalibur';
 import { Enemy } from '../types/game';
-import { GAME_CONFIG } from '../config/gameConfig';
-import { Resources } from '../resources';
+import GAME_CONFIG from '../constants/config';
+import RESOURCES from '../constants/resources';
 
 export class Projectile extends Actor {
   damage: number;
@@ -15,7 +15,7 @@ export class Projectile extends Actor {
       width: 50,
       height: 50,
       color: Color.Red,
-z: 999999
+      z: 999999,
     });
 
     this.damage = damage;
@@ -28,10 +28,17 @@ z: 999999
   }
 
   async onInitialize(): Promise<void> {
-    const projectile = Resources.weapons[0]
-    const projectileSprite = projectile.toSprite()
-    this.graphics.add('projectile', projectileSprite)
-    this.graphics.use('projectile')
+    const projectiles = Object.values(RESOURCES.projectiles).map(projectile => projectile.toSprite());
+
+    const fire = new Animation({
+      frames: [
+        { graphic: projectiles[0], duration: 150 },
+        { graphic: projectiles[1], duration: 150 },
+        { graphic: projectiles[2], duration: 150 },
+      ],
+    });
+    this.graphics.add('fire', fire);
+    this.graphics.use('fire');
   }
 
   private updateMovement(delta: number): void {
@@ -49,6 +56,7 @@ z: 999999
       this.target.health -= this.damage;
       if (this.target.health <= 0) {
         this.target.kill();
+        RESOURCES.musics.win.play();
       }
       this.kill();
     }

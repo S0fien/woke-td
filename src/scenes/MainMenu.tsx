@@ -1,8 +1,9 @@
-import { Color, Font, Label, Scene } from 'excalibur';
-import { useContext } from 'react';
+import { Actor, Scene, Vector } from 'excalibur';
 import { createRoot } from 'react-dom/client';
-import { ExcaliburContext } from '../root';
-import { Dude } from '../entities/Dude';
+import { GameEngine } from '../services/GameEngine';
+import RESOURCES from '../constants/resources';
+import { Menu } from '#/components/menu';
+import useGameStore from '#/hooks/useGameStore';
 
 export class MainMenu extends Scene {
   private uiRoot: ReturnType<typeof createRoot> | null = null;
@@ -11,35 +12,33 @@ export class MainMenu extends Scene {
     super();
   }
 
-  onInitialize() {
-    // Add Excalibur label
-    this.add(
-      new Label({
-        text: 'Main Menu',
-        color: Color.White,
-        font: new Font({
-          family: 'Arial',
-          size: 32,
-        }),
-      })
-    );
+  override onInitialize(engine: GameEngine) {
+    console.log('MainMenu onInitialize', engine);
+    // Add Excalibur labe
+    if (useGameStore.getState().musicRunning) {
+      RESOURCES.musics.caketown.loop = true;
+      RESOURCES.musics.caketown.play();
+    }
 
-    this.add(new Dude(100));
+    const menu = RESOURCES.backgrounds.forest.toSprite();
+    menu.width = engine.screen.width;
+    menu.height = engine.screen.height;
+    // const menu = RESOURCES.backgrounds.menu.toSprite()
+    const bgImage = new Actor();
+    bgImage.graphics.add(menu);
+    bgImage.pos = new Vector(engine.screen.width / 2, engine.screen.height / 2);
+
+    this.add(bgImage);
+
+    console.log('menu', bgImage, RESOURCES.backgrounds.menu);
+
     // Create a container for React UI
     const uiContainer = document.createElement('div');
-    uiContainer.style.position = 'absolute';
-    uiContainer.style.top = '25%';
-    uiContainer.style.left = '0';
-    uiContainer.style.display = 'flex';
-    uiContainer.style.flexDirection = 'column';
-    uiContainer.style.justifyContent = 'space-around';
+    uiContainer.className = 'mx-auto absolute top-0 left-0 flex flex-col gap-4 w-[100vw]';
 
-    uiContainer.style.width = this.engine.screen.width + 'px';
-    uiContainer.style.height = this.engine.screen.height + 'px';
-    // uiContainer.style.pointerEvents = 'all'; // This allows clicking through to the game
+    uiContainer.style.pointerEvents = 'all'; // This allows clicking through to the game
 
     // Add the container to the document
-    // document.body.appendChild(uiContainer);
     const container = document.getElementById('container');
     if (container) {
       container.appendChild(uiContainer);
@@ -47,17 +46,12 @@ export class MainMenu extends Scene {
 
     // Create React root and render UI
     this.uiRoot = createRoot(uiContainer);
-    this.uiRoot.render(
-      <>
-        <ExcaliburContext.Provider value={this.engine}>
-          <MenuUI />
-        </ExcaliburContext.Provider>
-      </>
-    );
+    this.uiRoot.render(<Menu />);
   }
 
   onDeactivate() {
     console.log('deactivating');
+    RESOURCES.musics.caketown.stop();
     // Clean up React root when scene is deactivated
     if (this.uiRoot) {
       this.uiRoot.unmount();
@@ -69,28 +63,40 @@ export class MainMenu extends Scene {
   }
 }
 
-// React component for the menu UI
-function MenuUI() {
-  const engine = useContext(ExcaliburContext)
-  return (
-    // <ExcaliburRoot>
-    <>
-      <h1>Hello</h1>
-      <div id="menu-buttons">
-        <button
-          onClick={async () => {
-            console.log('Start Game');
-            await engine.goToScene('gameScene');
-            // engine.goToScene('GameMenu')
-          }}
-        >
-          Start Game
-        </button>
-        <button onClick={() => console.log('Options')}>Options</button>
-        <button onClick={() => console.log('Exit')}>Exit</button>
-      </div>
+// React component for the menu U
 
-      {/* </ExcaliburRoot> */}
-    </>
-  );
-}
+// override onInitialize(engine: Engine): void {
+//   // Scene.onInitialize is where we recommend you perform the composition for your game
+//   const player = new Player();
+//   this.add(player); // Actors need to be added to a scene to be drawn
+// }
+
+// override onPreLoad(loader: DefaultLoader): void {
+//   // Add any scene specific resources to load
+// }
+
+// override onActivate(context: SceneActivationContext<unknown>): void {
+//   // Called when Excalibur transitions to this scene
+//   // Only 1 scene is active at a time
+// }
+
+// override onDeactivate(context: SceneActivationContext): void {
+//   // Called when Excalibur transitions away from this scene
+//   // Only 1 scene is active at a time
+// }
+
+// override onPreUpdate(engine: Engine, elapsedMs: number): void {
+//   // Called before anything updates in the scene
+// }
+
+// override onPostUpdate(engine: Engine, elapsedMs: number): void {
+//   // Called after everything updates in the scene
+// }
+
+// override onPreDraw(ctx: ExcaliburGraphicsContext, elapsedMs: number): void {
+//   // Called before Excalibur draws to the screen
+// }
+
+// override onPostDraw(ctx: ExcaliburGraphicsContext, elapsedMs: number): void {
+//   // Called after Excalibur draws to the screen
+// }

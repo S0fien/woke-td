@@ -1,6 +1,5 @@
-import { Actor, Animation, Color, Rectangle, SpriteSheet, Vector } from 'excalibur';
-import { GAME_CONFIG } from '../config/gameConfig';
-import { Resources } from '../resources';
+import { Actor, Color, Rectangle, Vector } from 'excalibur';
+import GAME_CONFIG from '../constants/config';
 
 export class Enemy extends Actor {
   health: number;
@@ -8,8 +7,6 @@ export class Enemy extends Actor {
   value: number;
   currentPathIndex: number;
   speed: number;
-  private spriteSheet: SpriteSheet | undefined;
-  private runAnimation: Animation | undefined;
 
   constructor(hp: number) {
     super({
@@ -26,27 +23,27 @@ export class Enemy extends Actor {
     this.currentPathIndex = 1;
     this.speed = GAME_CONFIG.enemySpeed;
 
-    // Create sprite sheet from the Resources
-    const playerSpriteSheet = SpriteSheet.fromImageSource({
-      image: Resources.Girl[0],
-      grid: {
-          spriteWidth: 416,
-          spriteHeight: 454,
-          rows: 4,
-          columns: 4
-      }
-  });
+    // Create sprite sheet from the RESOURCES
+    // const playerSpriteSheet = SpriteSheet.fromImageSource({
+    //   image: RESOURCES.Girl,
+    //   grid: {
+    //     spriteWidth: 416,
+    //     spriteHeight: 454,
+    //     rows: 4,
+    //     columns: 4,
+    //   },
+    // });
 
-  const leftIdle = new Animation({
-      frames: [
-          {graphic: playerSpriteSheet.getSprite(0, 1), duration: 300},
-          {graphic: playerSpriteSheet.getSprite(1, 1), duration: 300},
-          {graphic: playerSpriteSheet.getSprite(2, 1), duration: 300},
-          {graphic: playerSpriteSheet.getSprite(3, 1), duration: 300},
-      ]
-  })
-  this.graphics.add('left-idle', leftIdle);
-  this.graphics.use('left-idle');
+    // const leftIdle = new Animation({
+    //   frames: [
+    //     { graphic: playerSpriteSheet.getSprite(0, 1), duration: 300 },
+    //     { graphic: playerSpriteSheet.getSprite(1, 1), duration: 300 },
+    //     { graphic: playerSpriteSheet.getSprite(2, 1), duration: 300 },
+    //     { graphic: playerSpriteSheet.getSprite(3, 1), duration: 300 },
+    //   ],
+    // });
+    // this.graphics.add('left-idle', leftIdle);
+    // this.graphics.use('left-idle');
 
     // Create walk animation using frames
     // this.walkAnimation = Animation.fromSpriteSheet(
@@ -62,21 +59,21 @@ export class Enemy extends Actor {
     });
   }
 
-  async onInitialize(): Promise<void> {
-    // Add and play the walk animation
-    if (this.runAnimation) {
-      this.graphics.add(this.runAnimation);
-      // this.graphics.use(this.runAnimation);
-      // this.runAnimation.play();
-    }
-    if (this.spriteSheet) {
-      this.graphics.add(this.spriteSheet.getSprite(0, 0));
-      // this.graphics.use(this.spriteSheet.getSprite(0, 0));
-    }
-    const sprite = Resources.Girl[0].toSprite();
-    this.graphics.add(sprite);
-    this.graphics.use(sprite);
-  }
+  // async onInitialize(): Promise<void> {
+  //   // Add and play the walk animation
+  //   if (this.runAnimation) {
+  //     this.graphics.add(this.runAnimation);
+  //     // this.graphics.use(this.runAnimation);
+  //     // this.runAnimation.play();
+  //   }
+  //   if (this.spriteSheet) {
+  //     this.graphics.add(this.spriteSheet.getSprite(0, 0));
+  //     // this.graphics.use(this.spriteSheet.getSprite(0, 0));
+  //   }
+  //   const sprite = RESOURCES.characters.Girl.toSprite();
+  //   this.graphics.add(sprite);
+  //   this.graphics.use(sprite);
+  // }
 
   private updateMovement(delta: number): void {
     const pathPoints = GAME_CONFIG.pathPoints.map(point => new Vector(point.x, point.y));
@@ -99,12 +96,9 @@ export class Enemy extends Actor {
   }
 
   private updateHealthBar(): void {
-    console.log('ll:');
     if (this.health < this.maxHealth) {
       const healthPercentage = this.health / this.maxHealth;
       const healthBarWidth = 20 * healthPercentage;
-      console.log('ll:');
-      console.log('ll:');
 
       this.graphics.add(
         new Rectangle({
@@ -114,6 +108,7 @@ export class Enemy extends Actor {
           color: Color.Red,
         })
       );
+
       this.graphics.add(
         new Rectangle({
           width: healthBarWidth,

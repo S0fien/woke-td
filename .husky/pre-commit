@@ -1,0 +1,7 @@
+echo "Running pre-commit hook..."
+echo "Running prettier..."
+pnpm run format
+echo "Running lint..."
+pnpm run lint
+echo "Running type-check..."
+pnpm run type-check

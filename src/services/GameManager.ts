@@ -1,61 +1,80 @@
-import { Engine, ExitViewPortEvent, Timer, Vector } from 'excalibur';
-import { GAME_CONFIG, TOWER_TYPES } from '../config/gameConfig';
+import { Color, ExitViewPortEvent, Font, Label, Timer, Vector } from 'excalibur';
+import GAME_CONFIG from '../constants/config';
+import { TOWER_TYPES } from '../constants/towers';
 import { Projectile } from '../entities/Projectile';
 import { Tower } from '../entities/Tower';
-import { Enemy, GameState } from '../types/game';
+import { Enemy, TowerTypes } from '../types/game';
 import { Dude } from '../entities/Dude';
 import { GameScene } from '../scenes/GameScene';
+import { GameEngine } from './GameEngine';
+import useGameStore from '../hooks/useGameStore';
+import RESOURCES from '../constants/resources';
 
 export class GameManager {
-  private engine: Engine;
-  private state: GameState;
+  public engine: GameEngine;
   private updateTimer: Timer | null = null;
-  // eslint-disable-next-line no-unused-vars
-  private setGameState: (state: GameState) => void;
+  private static instance: GameManager | null = null;
 
-  constructor(engine: Engine, setGameState: () => void) {
+  private constructor(engine: GameEngine) {
     this.engine = engine;
-    this.state = {
-      money: GAME_CONFIG.initialMoney,
-      lives: GAME_CONFIG.initialLives,
-      wave: 0,
-      gameStarted: false,
-      gameOver: false,
-      victory: false,
-      selectedTower: null,
-    };
-    this.setGameState = setGameState;
   }
 
-  startGame(): void {
-    this.state.gameStarted = true;
+  // public setState(state: Partial<GameState>) {
+  //   return new Promise(resolve => {
+  //     setTimeout(() => {
+  //       useGameStore.setState(state);
+  //       resolve(true);
+  //     }, 100);
+  //   });
+  // }
+
+  public static getInstance(engine: GameEngine): GameManager {
+    if (!GameManager.instance) {
+      if (!engine) {
+        throw new Error('GameManager requires GameEngine instance for first initialization');
+      }
+      GameManager.instance = new GameManager(engine);
+    }
+    return GameManager.instance;
+  }
+
+  async startGame(): Promise<void> {
+    console.log('startGame', useGameStore.getState());
+    useGameStore.setState({ ...useGameStore.getState(), gameStarted: true });
     this.startNextWave();
     this.startUpdateLoop();
-    
+
     // Handle mouse move for grid highlighting
     this.engine.canvas.addEventListener('mousemove', (event: MouseEvent) => {
-      if (this.state.selectedTower) {
+      const state = useGameStore.getState();
+      console.log('mousemove', state.selectedTower);
+      if (state.selectedTower) {
         const pos = new Vector(event.offsetX, event.offsetY);
-        const gameScene = this.engine.currentScene as GameScene;
-        gameScene.resetGridHighlight();
-        gameScene.highlightCell(pos);
+        this.engine.currentScene.resetGridHighlight();
+        this.engine.currentScene.highlightCell(pos);
       }
     });
 
     // Handle click for tower placement
     this.engine.canvas.addEventListener('click', (event: MouseEvent) => {
-      if (this.state.selectedTower) {
+      this.engine.currentScene.resetGridHighlight();
+      const state = useGameStore.getState();
+      console.log('click', state.selectedTower);
+      if (state.selectedTower) {
         const pos = new Vector(event.offsetX, event.offsetY);
-        const gameScene = this.engine.currentScene as GameScene;
+        const gameScene = this.engine.currentScene;
         const gridPos = gameScene.getGridPosition(pos);
-        this.placeTower(gridPos, this.state.selectedTower);
-        this.setGameState(this.getState());
+        const { selectedTower } = state;
+        if (selectedTower) {
+          this.placeTower(gridPos, selectedTower);
+        }
       }
     });
+
+    console.log('state', useGameStore.getState());
   }
 
   private startUpdateLoop(): void {
-    console.log('startUpdateLoop');
     this.updateTimer = new Timer({
       fcn: () => this.update(),
       interval: GAME_CONFIG.updateInterval,
@@ -65,17 +84,14 @@ export class GameManager {
     this.updateTimer.start();
   }
 
-
   private update(): void {
-    console.log('update');
-    if (this.state.gameOver || this.state.victory) return;
+    const state = useGameStore.getState();
+    if (state.gameOver || state.victory) return;
 
     const currentTime = this.engine.currentFrameElapsedMs;
     const towers = this.getTowers();
     const enemies = this.getEnemies();
-    console.log('towers', towers);
     towers.forEach(tower => {
-      console.log('tower', tower);
       if (currentTime - tower.lastFireTime < tower.towerType.fireRate) {
         this.fireTower(tower, enemies);
       }
@@ -83,7 +99,6 @@ export class GameManager {
   }
 
   private fireTower(tower: Tower, enemies: Enemy[]): void {
-    console.log('fireTower', tower, enemies);
     let closestEnemy: Enemy | null = null;
     let closestDistance = Infinity;
 
@@ -96,7 +111,6 @@ export class GameManager {
     });
 
     if (closestEnemy) {
-      console.log('closestEnemy', closestEnemy);
       const projectile = new Projectile(tower.pos, closestEnemy, tower.towerType.damage);
       this.engine.currentScene.add(projectile);
       projectile.graphics.isVisible = true;
@@ -104,12 +118,12 @@ export class GameManager {
     }
   }
 
-  startNextWave(): void {
-    console.log('startNextWave', this.state);
-    if (this.state.gameOver || this.state.victory) return;
+  async startNextWave(): Promise<void> {
+    const state = useGameStore.getState();
+    if (state.gameOver || state.victory) return;
 
-    const newWave = this.state.wave + 1;
-    this.state.wave = newWave;
+    const newWave = state.wave + 1;
+    useGameStore.setState({ wave: newWave });
 
     const enemyCount = GAME_CONFIG.baseEnemyCount + newWave * GAME_CONFIG.enemyCountScaling;
     const enemyHp = GAME_CONFIG.baseEnemyHp + newWave * GAME_CONFIG.enemyHpScaling;
@@ -117,21 +131,19 @@ export class GameManager {
     let spawned = 0;
 
     const spawnTimer = new Timer({
-      fcn: () => {
-        console.log('spawnTimer', spawned, enemyCount);
+      action: () => {
         if (spawned < enemyCount) {
           const enemy = new Dude(enemyHp);
-          console.log('enemy', enemy);
           this.engine.currentScene.add(enemy);
           enemy.graphics.isVisible = true;
-          enemy.events.on('fadeout', (truc) => {
-            console.log('fadeout', truc);
-            this.enemyKilled(enemy.value);
-          });          
-          enemy.events.on('exitviewport', (truc) => {
-            console.log('exitviewport', truc);
+          enemy.on('exitviewport', truc => {
             this.enemyReachedEnd(truc);
           });
+
+          enemy.on('kill', () => {
+            this.enemyKilled(enemy.value);
+          });
+
           spawned++;
         } else {
           spawnTimer.cancel();
@@ -142,22 +154,31 @@ export class GameManager {
       repeats: true,
     });
 
-    this.engine.addTimer(spawnTimer);
+    this.engine.add(spawnTimer);
     spawnTimer.start();
   }
 
   private checkForNextWave(): void {
-    console.log('checkForNextWave');
     const checkTimer = new Timer({
-      fcn: () => {
-        console.log('checkTimer', this.getEnemies().length);
+      fcn: async () => {
         if (this.getEnemies().length === 0) {
           checkTimer.cancel();
 
-          if (this.state.wave < GAME_CONFIG.maxWaves) {
+          const state = useGameStore.getState();
+          if (state.wave < GAME_CONFIG.maxWaves) {
             setTimeout(() => this.startNextWave(), GAME_CONFIG.waveDelay);
           } else {
-            this.state.victory = true;
+            useGameStore.setState({ victory: true });
+            this.engine.currentScene.add(
+              new Label({
+                text: 'Victory!',
+                font: new Font({
+                  family: 'Arial',
+                  size: 32,
+                  color: Color.White,
+                }),
+              })
+            );
           }
         }
       },
@@ -165,16 +186,27 @@ export class GameManager {
       repeats: true,
     });
 
-    // this.engine.addTimer(checkTimer);
-    this.engine.currentScene.add(checkTimer);
+    this.engine.add(checkTimer);
+    // this.engine.currentScene.add(checkTimer);
     checkTimer.start();
   }
 
-  placeTower(pos: Vector, towerType: string): boolean {
-    if (this.state.money < TOWER_TYPES.find(t => t.type === towerType)!.cost) {
+  placeTower(pos: Vector, towerType: TowerTypes): boolean {
+    const state = useGameStore.getState();
+    if (state.money < TOWER_TYPES.find(t => t.type === towerType)!.cost) {
       return false;
     }
 
+    const tldl = this.engine.currentScene.actors.find(a => {
+      console.log('a', a.pos, pos);
+      const isTower = TOWER_TYPES.find(t => t.type === a.name);
+      console.log('isTower', isTower);
+      return a.pos.equals(pos) && isTower;
+    });
+    console.log('tldl', tldl);
+    if (tldl) {
+      return false;
+    }
     if (this.isOnPath(pos)) {
       console.log('on path');
       return false;
@@ -186,14 +218,16 @@ export class GameManager {
     }
     const tower = new Tower(pos, findTower);
     this.engine.currentScene.add(tower);
-    this.engine.add(tower);
-    this.state.money -= findTower.cost;
+    // this.engine.add(tower);
+    useGameStore.setState({
+      money: state.money - findTower.cost,
+      selectedTower: null,
+    });
     return true;
   }
 
-  private isOnPath(pos: Vector): boolean {
+  public isOnPath(pos: Vector): boolean {
     const gameScene = this.engine.currentScene as GameScene;
-    console.log('isOnPath', gameScene.pathPoints);
     for (let i = 0; i < gameScene.pathPoints.length - 1; i++) {
       const start = gameScene.pathPoints[i];
       const end = gameScene.pathPoints[i + 1];
@@ -223,33 +257,35 @@ export class GameManager {
     return false;
   }
 
-  enemyReachedEnd(event: ExitViewPortEvent): void {
-    event.target.kill()
-    this.state.lives--;
-    if (this.state.lives <= 0) {
-      this.state.gameOver = true;
+  async enemyReachedEnd(event: ExitViewPortEvent): Promise<void> {
+    event.target.kill();
+    RESOURCES.musics.lose.play();
+    const state = useGameStore.getState();
+    useGameStore.setState({ lives: state.lives - 1 });
+    const newState = useGameStore.getState();
+    if (newState.lives <= 0) {
+      useGameStore.setState({ gameOver: true });
+      this.cleanup();
     }
   }
 
-  enemyKilled(value: number): void {
-    this.state.money += value;
+  async enemyKilled(value: number): Promise<void> {
+    const state = useGameStore.getState();
+    useGameStore.setState({ money: state.money + value });
   }
 
-  getState(): GameState {
-    return { ...this.state };
-  }
-
-  setSelectedTower(towerType: string | null): void {
-    this.state.selectedTower = towerType;
+  async setSelectedTower(towerType: TowerTypes | null): Promise<void> {
+    useGameStore.setState({ selectedTower: towerType });
   }
 
   cleanup(): void {
     if (this.updateTimer) {
       this.updateTimer.cancel();
       this.engine.remove(this.updateTimer);
+      this.engine.stop();
     }
   }
-  
+
   getTowers(): Tower[] {
     return this.engine.currentScene.actors.filter((a): a is Tower => 'towerType' in a);
   }

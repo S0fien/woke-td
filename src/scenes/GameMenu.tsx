@@ -1,6 +1,7 @@
 import { Color, Font, Label, Scene } from 'excalibur';
 import { createRoot } from 'react-dom/client';
 import App from '../app';
+import useGameStore from '../hooks/useGameStore';
 
 export class GameMenu extends Scene {
   private uiRoot: ReturnType<typeof createRoot> | null = null;
@@ -54,10 +55,13 @@ export class GameMenu extends Scene {
 
 // React component for the menu UI
 function MenuUI() {
+  const resetGame = useGameStore(state => state.resetGame);
+
   return (
-    <>
+    <div className="size-full">
       <h1>Game Menu</h1>
+      <button onClick={resetGame}>Reset Game</button>
       <App />
-    </>
+    </div>
   );
 }

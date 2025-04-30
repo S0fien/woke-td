@@ -1,9 +1,10 @@
-import { Actor, Vector } from 'excalibur';
+import { Actor, Engine, ImageSource, Vector } from 'excalibur';
 import { TowerType } from '../types/game';
 
 export class Tower extends Actor {
   towerType: TowerType;
   lastFireTime: number;
+  background: ImageSource;
 
   constructor(pos: Vector, towerType: TowerType) {
     super({
@@ -12,9 +13,18 @@ export class Tower extends Actor {
       width: 30,
       height: 30,
       color: towerType.color,
+      name: towerType.type,
     });
-
     this.towerType = towerType;
     this.lastFireTime = 0;
+    this.background = towerType.image;
+  }
+
+  onInitialize(engine: Engine): void {
+    super.onInitialize(engine);
+    const tower = this.background.toSprite();
+    tower.width = 100;
+    tower.height = 100;
+    this.graphics.add(tower);
   }
 }

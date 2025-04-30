@@ -5,7 +5,10 @@
     "module": "ESNext",
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
-
+      "baseUrl": ".",
+    "paths": {
+      "#/*": ["src/*"],
+    },
     /* Bundler mode */
     "moduleResolution": "node",
     "allowImportingTsExtensions": true,
@@ -20,5 +23,5 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["./src", "vite-env.d.ts", "vit2.config.js"]
+  "include": ["./src", "vite-env.d.ts", "vit2.config.js", "eslint.config.js", "tailwind.config.js"]
 }

@@ -1,12 +1,16 @@
-import { Actor, Color, Vector } from 'excalibur';
+import { Actor, Color, ImageSource } from 'excalibur';
+
+export type TowerTypes = 'trump-tower' | 'church';
 
 export interface TowerType {
-  type: string;
+  type: TowerTypes;
+  label: string;
   cost: number;
   damage: number;
   range: number;
   color: Color;
   fireRate: number;
+  image: ImageSource;
 }
 
 export interface Tower extends Actor {
@@ -36,4 +40,6 @@ export interface GameState {
   gameOver: boolean;
   victory: boolean;
   selectedTower: string | null;
+  setState: () => void;
+  // setState: (state: Partial<GameState>) => void
 }
