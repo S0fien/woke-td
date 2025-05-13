@@ -5,9 +5,9 @@
     "module": "ESNext",
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
-      "baseUrl": ".",
+    "baseUrl": ".",
     "paths": {
-      "#/*": ["src/*"],
+      "#/*": ["src/*"]
     },
     /* Bundler mode */
     "moduleResolution": "node",
@@ -21,7 +21,18 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    /* Storybook and Vite compatibility */
+    "types": ["vite/client", "@storybook/react-vite", "@storybook/addon-essentials", "@storybook/react"],
+    "allowSyntheticDefaultImports": true,
   },
-  "include": ["./src", "vite-env.d.ts", "vit2.config.js", "eslint.config.js", "tailwind.config.js"]
+  "include": [
+    "./src",
+    ".storybook",
+    "./.storybook/*",
+    "vite-env.d.ts",
+    "vite.config.ts",
+    "eslint.config.js",
+    "tailwind.config.js"
+  ]
 }

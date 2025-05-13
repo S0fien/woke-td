@@ -2,6 +2,7 @@ import { Actor, Animation, Color, Vector } from 'excalibur';
 import { Enemy } from '../types/game';
 import GAME_CONFIG from '../constants/config';
 import RESOURCES from '../constants/resources';
+import useGameStore from '#/hooks/useGameStore';
 
 export class Projectile extends Actor {
   damage: number;
@@ -56,7 +57,7 @@ export class Projectile extends Actor {
       this.target.health -= this.damage;
       if (this.target.health <= 0) {
         this.target.kill();
-        RESOURCES.musics.win.play();
+        if (useGameStore.getState().musicRunning) RESOURCES.musics.win.play();
       }
       this.kill();
     }

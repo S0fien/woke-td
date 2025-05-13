@@ -1,6 +1,6 @@
 import { Color } from 'excalibur';
 import { TowerType } from '../types/game';
-import { Resources } from '../resources';
+import Resources from '../constants/resources';
 
 export const GAME_CONFIG = {
   width: window.innerWidth,
@@ -55,5 +55,3 @@ export const TOWER_TYPES_MAP = TOWER_TYPES.reduce((acc, tower) => {
   acc = { ...acc, [tower.type]: tower.type };
   return acc;
 }, {});
-
-console.log('TOWER_TYPES_MAP', Object.keys(TOWER_TYPES_MAP));

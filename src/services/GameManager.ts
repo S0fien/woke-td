@@ -39,7 +39,6 @@ export class GameManager {
   }
 
   async startGame(): Promise<void> {
-    console.log('startGame', useGameStore.getState());
     useGameStore.setState({ ...useGameStore.getState(), gameStarted: true });
     this.startNextWave();
     this.startUpdateLoop();
@@ -47,7 +46,6 @@ export class GameManager {
     // Handle mouse move for grid highlighting
     this.engine.canvas.addEventListener('mousemove', (event: MouseEvent) => {
       const state = useGameStore.getState();
-      console.log('mousemove', state.selectedTower);
       if (state.selectedTower) {
         const pos = new Vector(event.offsetX, event.offsetY);
         this.engine.currentScene.resetGridHighlight();
@@ -59,7 +57,6 @@ export class GameManager {
     this.engine.canvas.addEventListener('click', (event: MouseEvent) => {
       this.engine.currentScene.resetGridHighlight();
       const state = useGameStore.getState();
-      console.log('click', state.selectedTower);
       if (state.selectedTower) {
         const pos = new Vector(event.offsetX, event.offsetY);
         const gameScene = this.engine.currentScene;
@@ -70,8 +67,6 @@ export class GameManager {
         }
       }
     });
-
-    console.log('state', useGameStore.getState());
   }
 
   private startUpdateLoop(): void {
@@ -198,17 +193,13 @@ export class GameManager {
     }
 
     const tldl = this.engine.currentScene.actors.find(a => {
-      console.log('a', a.pos, pos);
       const isTower = TOWER_TYPES.find(t => t.type === a.name);
-      console.log('isTower', isTower);
       return a.pos.equals(pos) && isTower;
     });
-    console.log('tldl', tldl);
     if (tldl) {
       return false;
     }
     if (this.isOnPath(pos)) {
-      console.log('on path');
       return false;
     }
 
@@ -259,8 +250,8 @@ export class GameManager {
 
   async enemyReachedEnd(event: ExitViewPortEvent): Promise<void> {
     event.target.kill();
-    RESOURCES.musics.lose.play();
     const state = useGameStore.getState();
+    if (useGameStore.getState().musicRunning) RESOURCES.musics.lose.play();
     useGameStore.setState({ lives: state.lives - 1 });
     const newState = useGameStore.getState();
     if (newState.lives <= 0) {
@@ -282,7 +273,7 @@ export class GameManager {
     if (this.updateTimer) {
       this.updateTimer.cancel();
       this.engine.remove(this.updateTimer);
-      this.engine.stop();
+      //this.engine.stop();
     }
   }
 

@@ -1,5 +1,6 @@
 {
-    "entry": ["src/**/*.{js,ts,tsx}"],
-    "project": ["src/**/*.{js,ts,tsx}"],
-    "ignore": ["node_modules/**", "dist/**"]
+    "entry": ["src/**/*.{js,ts,tsx,css}"],
+    "project": ["src/**/*.{js,ts,tsx,css}"],
+    "ignore": ["node_modules/**", "dist/**"],
+    "ignoreDependencies": ["eslint-plugin-prettier", "commitizen", "@tauri-apps/*", "tw-animate-css"]
 }

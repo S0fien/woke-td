@@ -17,7 +17,6 @@ export class Level extends Scene {
   onInitialize(engine: GameEngine): void {
     void engine; // Explicitly indicate that we're ignoring this parameter
 
-    console.log('Level onInitialize');
     this.createGrid();
     this.createPath();
   }
@@ -26,7 +25,6 @@ export class Level extends Scene {
     const cols = Math.floor(GAME_CONFIG.width / GAME_CONFIG.gridSize);
     const rows = Math.floor(GAME_CONFIG.height / GAME_CONFIG.gridSize);
 
-    console.log('createGrid', cols, rows);
     for (let row = 0; row < rows; row++) {
       this.grid[row] = [];
       for (let col = 0; col < cols; col++) {

@@ -1,5 +1,5 @@
 import { BiArrowFromRight } from 'react-icons/bi';
-import { cn } from './../libs/utils';
+import { cn } from '../../libs/utils';
 
 export default function ShiningButton() {
   const label = 'See Calendar';

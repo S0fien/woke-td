@@ -1,6 +1,7 @@
 import viteReact from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import eslint from "vite-plugin-eslint";
+
 import tailwindcss from "@tailwindcss/vite";
 
 const host = process.env.TAURI_DEV_HOST;

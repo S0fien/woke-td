@@ -5,7 +5,8 @@ import { GameManager } from '../services/GameManager';
 import { Level } from './Level';
 import RESOURCES from '../constants/resources';
 import { createRoot } from 'react-dom/client';
-import Bar from '../components/bar';
+import Bar from '../components/containers/bar';
+import useGameStore from '#/hooks/useGameStore';
 
 export class GameScene extends Level {
   static instance: GameScene | null = null;
@@ -28,8 +29,6 @@ export class GameScene extends Level {
   // }
 
   override onInitialize(engine: GameEngine) {
-    console.log('GameScene onInitialize');
-
     this.pathPoints = GAME_CONFIG.pathPoints.map(point => new Vector(point.x, point.y));
     // this.add(new Dude(100));
 
@@ -37,7 +36,7 @@ export class GameScene extends Level {
     // test.graphics.anchor = new Vector(0, 0);
 
     RESOURCES.musics.main.loop = true;
-    RESOURCES.musics.main.play();
+    if (useGameStore.getState().musicRunning) RESOURCES.musics.main.play();
 
     const map = RESOURCES.maps.begin.toSprite();
     // RESOURCES.Fusion[0]. addToScene(th\is)\\\;
@@ -60,13 +59,13 @@ export class GameScene extends Level {
 
     const gameManager = GameManager.getInstance(engine);
     gameManager.startGame();
-    console.log('MainMenu onInitialize', engine);
     // Add Excalibur label
     // Create a container for React UI
     const uiContainer = document.createElement('div');
     uiContainer.style.position = 'absolute';
     uiContainer.style.bottom = '5px';
-    uiContainer.style.left = '25%';
+    uiContainer.style.left = '0';
+    uiContainer.style.width = '100%';
     uiContainer.style.display = 'flex';
     uiContainer.style.flexDirection = 'row';
     uiContainer.style.justifyContent = 'space-around';
@@ -76,7 +75,10 @@ export class GameScene extends Level {
     // document.body.appendChild(uiContainer);
     const container = document.getElementById('game-interface');
     if (container) {
-      container.appendChild(uiContainer);
+      const lkdsj = document.createElement('div');
+      lkdsj.className = 'size-full flex justify-center';
+      lkdsj.appendChild(uiContainer);
+      container.appendChild(lkdsj);
     }
 
     // Create React root and render UI
@@ -85,7 +87,6 @@ export class GameScene extends Level {
   }
 
   onDeactivate() {
-    console.log('deactivating');
     RESOURCES.musics.main.stop();
     // Clean up React root when scene is deactivated
     if (this.uiRoot) {

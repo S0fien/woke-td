@@ -1,14 +1,18 @@
 import { Actor, Color, vec, Vector } from 'excalibur';
 import { useEffect, useState } from 'react';
 import RESOURCES from '../constants/resources';
-import { GameEngine } from '../services/GameEngine';
+import { useEngine } from '#/hooks/useEngine';
 
-export default function ExcaliburUiApp({ engine }: { engine: GameEngine }) {
+export default function ExcaliburUiApp() {
+  const { engine } = useEngine();
   const [visible, setVisible] = useState(true);
   const [worldPos, setWorldPos] = useState(Vector.Zero);
   const [screenPos, setScreenPos] = useState(Vector.Zero);
 
   useEffect(() => {
+    if (!engine) {
+      return;
+    }
     const pointerSubscription = engine.input.pointers.on('down', evt => {
       setVisible(true);
       setWorldPos(engine.screen.pageToWorldCoordinates(vec(evt.pagePos.x, evt.pagePos.y)));
@@ -22,20 +26,19 @@ export default function ExcaliburUiApp({ engine }: { engine: GameEngine }) {
   }, [engine]);
 
   function addUnit() {
-    console.log('adding', engine.currentScene);
     const actor = new Actor({
       pos: worldPos,
       scale: vec(2, 2),
       color: Color.Red,
     });
     actor.graphics.use(RESOURCES.weapons.sword.toSprite());
-    engine.currentScene.add(actor);
-    console.log(engine.currentScene);
-    console.log(RESOURCES.weapons.sword.toSprite());
     setVisible(false);
   }
 
   function removeUnit() {
+    if (!engine) {
+      return;
+    }
     for (const actor of engine.currentScene.actors) {
       if (actor.graphics.bounds.contains(worldPos)) {
         actor.kill();

@@ -2,7 +2,7 @@ import { Actor, Scene, Vector } from 'excalibur';
 import { createRoot } from 'react-dom/client';
 import { GameEngine } from '../services/GameEngine';
 import RESOURCES from '../constants/resources';
-import { Menu } from '#/components/menu';
+import { Menu } from '#/features/menu';
 import useGameStore from '#/hooks/useGameStore';
 
 export class MainMenu extends Scene {

@@ -7,8 +7,6 @@ export const useEngine = () => {
   const [gameManager, setGameManager] = useState<GameManager | null>(null);
 
   useEffect(() => {
-    console.log('useEffect');
-
     // Ensure container element exists
     let container = document.getElementById('container');
     if (!container) {
@@ -20,7 +18,6 @@ export const useEngine = () => {
     // Get the engine instance outside of render
     const engineInstance = GameEngine.getInstance();
     setEngine(engineInstance);
-    console.log('useEngine', engineInstance);
 
     engineInstance.initializeUI();
     // Initialize UI after component is mounted

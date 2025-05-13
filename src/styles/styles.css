@@ -34,6 +34,9 @@
   }
 }
 
+#excalibur-play-root {
+  display: none;
+}
 * {
   box-sizing: border-box;
 }
@@ -207,22 +210,36 @@ button {
 }
 
 @font-face {
+  font-family: 'mercy';
+  font-weight: 400;
+  font-style: normal;
+  src: url('../../public/fonts/mercy.ttf') format('truetype');
+}
+
+@font-face {
   font-family: 'romantic';
   font-weight: 400;
   font-style: normal;
-  src: url('./../../mercy.ttf') format('truetype');
+  src: url('../../public/fonts/romantic.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'panic';
+  font-weight: 400;
+  font-style: normal;
+  src: url('../../public/fonts/panic.ttf') format('truetype');
 }
 
 @font-face {
   font-family: 'chewy';
-  src: url('./Chewy-Regular.ttf') format('truetype');
+  src: url('../../public/fonts/chewy.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'barriecito';
-  src: url('./Barriecito-Regular.ttf') format('truetype');
+  src: url('../../public/fonts/barriecito.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
 }

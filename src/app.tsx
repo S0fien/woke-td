@@ -1,3 +1,4 @@
+import { GlobalOverlay } from './features/global-overlay';
 import GAME_CONFIG from './constants/config';
 import { useEngine } from './hooks/useEngine';
 import useGameStore from './hooks/useGameStore';
@@ -8,6 +9,7 @@ export default function App() {
 
   return (
     <div id="game-interface" className="flex flex-col items-center">
+      {engine?.isRunning && <GlobalOverlay />}
       {/* <div id="game-interface" className="absolute top-0 left-0 translate-1/2 flex flex-col items-center"> */}
       {/* <Bar /> */}
       {state && engine && (
@@ -33,6 +35,7 @@ export default function App() {
                 onClick={async () => {
                   useGameStore.getState().resetGame();
                   engine.run();
+                  engine.goToScene('mainMenu');
                 }}
               >
                 Play Again

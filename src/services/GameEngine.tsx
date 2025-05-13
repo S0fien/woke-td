@@ -34,7 +34,6 @@ export class GameEngine extends Engine {
   }
 
   public initializeUI(): void {
-    console.log('GameEngine initializeUI', GameEngine.instance);
     if (!this.isRunning()) {
       this.run();
     }
@@ -61,11 +60,10 @@ export class GameEngine extends Engine {
   }
 
   public run() {
-    console.log('GameEngine run', this.isRunning(), this.stats);
     if (this.isRunning()) {
+      console.log('is already running');
       return;
     }
-    console.log('GameEngine start');
     this.start(loader).then(async () => {
       await this.goToScene('mainMenu');
     });
