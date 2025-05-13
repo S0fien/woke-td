@@ -13,6 +13,7 @@
   "quoteProps": "as-needed",
   "useTabs": false,
   "plugins": [
-    "prettier-plugin-tailwindcss"
+    "prettier-plugin-tailwindcss",
+    "prettier-plugin-packagejson"
   ]
 }
