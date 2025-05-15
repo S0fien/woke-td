@@ -1,8 +1,8 @@
 import { Actor, Animation, Color, Vector } from 'excalibur';
-import { Enemy } from '../types/game';
-import GAME_CONFIG from '../constants/config';
-import RESOURCES from '../constants/resources';
-import useGameStore from '#/hooks/useGameStore';
+import { Enemy } from '../types/game.ts';
+import GAME_CONFIG from '../constants/config.ts';
+import RESOURCES from '../constants/resources.ts';
+import useGameOptionsStore from '#/hooks/useGameOptionsStore.ts';
 
 export class Projectile extends Actor {
   damage: number;
@@ -57,7 +57,7 @@ export class Projectile extends Actor {
       this.target.health -= this.damage;
       if (this.target.health <= 0) {
         this.target.kill();
-        if (useGameStore.getState().musicRunning) RESOURCES.musics.win.play();
+        RESOURCES.musics.win.play(useGameOptionsStore.getState().musicVolume);
       }
       this.kill();
     }

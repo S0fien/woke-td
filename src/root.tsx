@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
-import App from './app';
+import App from './app.tsx';
 import 'primereact/resources/themes/lara-light-cyan/theme.css';
 import { PrimeReactProvider } from 'primereact/api';
 
@@ -12,7 +12,6 @@ if (domNode) {
   root.render(
     <React.StrictMode>
       <PrimeReactProvider>
-        {/* <canvas className='size-full' id="game2"></canvas> */}
         <App />
       </PrimeReactProvider>
     </React.StrictMode>

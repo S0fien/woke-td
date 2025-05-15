@@ -7,6 +7,7 @@ const RESOURCES = {
     church: new ImageSource('./towers/church.png'),
   },
   maps: {
+    simple: new ImageSource('./maps/map-bg.png'),
     begin: new ImageSource('./maps/map.jpg'),
     fusion: new SpriteFusionResource({
       mapPath: './maps/map.json',
@@ -39,8 +40,8 @@ const RESOURCES = {
   },
   musics: {
     caketown: new Sound('./sounds/caketown.mp3'),
-    lose: new Sound('./sounds/lose.ogg'),
-    win: new Sound('./sounds/win.wav'),
+    lose: new Sound('./sounds/lose.mp3'),
+    win: new Sound('./sounds/win.mp3'),
     main: new Sound('./sounds/happy.mp3'),
   },
 } as const;

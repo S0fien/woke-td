@@ -1,9 +1,9 @@
-import { GameManager } from './GameManager';
+import { GameManager } from './GameManager.ts';
 import { Engine, Loader } from 'excalibur';
-import { Level } from '../scenes/Level';
+import { Level } from '../scenes/Level.ts';
 import { createRoot } from 'react-dom/client';
-import RESOURCES from '#/constants/resources';
-import GAME_OPTIONS from '#/constants/options';
+import RESOURCES from '#/constants/resources.ts';
+import GAME_OPTIONS from '#/constants/options.ts';
 
 export const loader = new Loader();
 Object.values(RESOURCES).forEach(r => {
@@ -26,9 +26,13 @@ export class GameEngine extends Engine {
     super(GAME_OPTIONS);
   }
 
-  public static getInstance(): GameEngine {
-    if (!GameEngine.instance) {
-      GameEngine.instance = new GameEngine();
+  public static getInstance(): GameEngine | null {
+    try {
+      if (!GameEngine.instance) {
+        GameEngine.instance = new GameEngine();
+      }
+    } catch {
+      console.debug('Engine does not exist.');
     }
     return GameEngine.instance;
   }

@@ -1,5 +1,5 @@
 import { Actor, Engine, ImageSource, Vector } from 'excalibur';
-import { TowerType } from '../types/game';
+import { TowerType } from '../types/game.ts';
 
 export class Tower extends Actor {
   towerType: TowerType;

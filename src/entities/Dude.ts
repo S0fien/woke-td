@@ -1,6 +1,6 @@
-import RESOURCES from '../constants/resources';
+import GAME_CONFIG from '#/constants/config.ts';
+import RESOURCES from '#/constants/resources.ts';
 import { Actor, Animation, AnimationStrategy, Color, Engine, range, Rectangle, SpriteSheet, Vector } from 'excalibur';
-import GAME_CONFIG from '../constants/config';
 
 export class Dude extends Actor {
   health: number;

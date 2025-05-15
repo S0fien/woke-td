@@ -1,14 +1,15 @@
+import GAME_CONFIG from '#/constants/config.ts';
+import RESOURCES from '#/constants/resources.ts';
+import { TOWER_TYPES } from '#/constants/towers.ts';
+import { Dude } from '#/entities/Dude.ts';
+import { Projectile } from '#/entities/Projectile.ts';
+import { Tower } from '#/entities/Tower.ts';
+import useGameOptionsStore from '#/hooks/useGameOptionsStore.ts';
+import useLevelStore from '#/hooks/useLevelStore.ts';
+import { GameScene } from '#/scenes/GameScene.tsx';
+import { Enemy, TowerTypes } from '#/types/game.ts';
 import { Color, ExitViewPortEvent, Font, Label, Timer, Vector } from 'excalibur';
-import GAME_CONFIG from '../constants/config';
-import { TOWER_TYPES } from '../constants/towers';
-import { Projectile } from '../entities/Projectile';
-import { Tower } from '../entities/Tower';
-import { Enemy, TowerTypes } from '../types/game';
-import { Dude } from '../entities/Dude';
-import { GameScene } from '../scenes/GameScene';
-import { GameEngine } from './GameEngine';
-import useGameStore from '../hooks/useGameStore';
-import RESOURCES from '../constants/resources';
+import { GameEngine } from './GameEngine.tsx';
 
 export class GameManager {
   public engine: GameEngine;
@@ -19,10 +20,10 @@ export class GameManager {
     this.engine = engine;
   }
 
-  // public setState(state: Partial<GameState>) {
+  // public setState(state: Partial<LevelState>) {
   //   return new Promise(resolve => {
   //     setTimeout(() => {
-  //       useGameStore.setState(state);
+  //       useLevelStore.setState(state);
   //       resolve(true);
   //     }, 100);
   //   });
@@ -39,13 +40,13 @@ export class GameManager {
   }
 
   async startGame(): Promise<void> {
-    useGameStore.setState({ ...useGameStore.getState(), gameStarted: true });
+    useGameOptionsStore.setState({ ...useGameOptionsStore.getState(), gameStarted: true });
     this.startNextWave();
     this.startUpdateLoop();
 
     // Handle mouse move for grid highlighting
     this.engine.canvas.addEventListener('mousemove', (event: MouseEvent) => {
-      const state = useGameStore.getState();
+      const state = useLevelStore.getState();
       if (state.selectedTower) {
         const pos = new Vector(event.offsetX, event.offsetY);
         this.engine.currentScene.resetGridHighlight();
@@ -56,7 +57,7 @@ export class GameManager {
     // Handle click for tower placement
     this.engine.canvas.addEventListener('click', (event: MouseEvent) => {
       this.engine.currentScene.resetGridHighlight();
-      const state = useGameStore.getState();
+      const state = useLevelStore.getState();
       if (state.selectedTower) {
         const pos = new Vector(event.offsetX, event.offsetY);
         const gameScene = this.engine.currentScene;
@@ -80,7 +81,7 @@ export class GameManager {
   }
 
   private update(): void {
-    const state = useGameStore.getState();
+    const state = useLevelStore.getState();
     if (state.gameOver || state.victory) return;
 
     const currentTime = this.engine.currentFrameElapsedMs;
@@ -114,11 +115,11 @@ export class GameManager {
   }
 
   async startNextWave(): Promise<void> {
-    const state = useGameStore.getState();
+    const state = useLevelStore.getState();
     if (state.gameOver || state.victory) return;
 
     const newWave = state.wave + 1;
-    useGameStore.setState({ wave: newWave });
+    useLevelStore.setState({ wave: newWave });
 
     const enemyCount = GAME_CONFIG.baseEnemyCount + newWave * GAME_CONFIG.enemyCountScaling;
     const enemyHp = GAME_CONFIG.baseEnemyHp + newWave * GAME_CONFIG.enemyHpScaling;
@@ -159,11 +160,11 @@ export class GameManager {
         if (this.getEnemies().length === 0) {
           checkTimer.cancel();
 
-          const state = useGameStore.getState();
+          const state = useLevelStore.getState();
           if (state.wave < GAME_CONFIG.maxWaves) {
             setTimeout(() => this.startNextWave(), GAME_CONFIG.waveDelay);
           } else {
-            useGameStore.setState({ victory: true });
+            useLevelStore.setState({ victory: true });
             this.engine.currentScene.add(
               new Label({
                 text: 'Victory!',
@@ -187,7 +188,7 @@ export class GameManager {
   }
 
   placeTower(pos: Vector, towerType: TowerTypes): boolean {
-    const state = useGameStore.getState();
+    const state = useLevelStore.getState();
     if (state.money < TOWER_TYPES.find(t => t.type === towerType)!.cost) {
       return false;
     }
@@ -210,7 +211,7 @@ export class GameManager {
     const tower = new Tower(pos, findTower);
     this.engine.currentScene.add(tower);
     // this.engine.add(tower);
-    useGameStore.setState({
+    useLevelStore.setState({
       money: state.money - findTower.cost,
       selectedTower: null,
     });
@@ -250,23 +251,23 @@ export class GameManager {
 
   async enemyReachedEnd(event: ExitViewPortEvent): Promise<void> {
     event.target.kill();
-    const state = useGameStore.getState();
-    if (useGameStore.getState().musicRunning) RESOURCES.musics.lose.play();
-    useGameStore.setState({ lives: state.lives - 1 });
-    const newState = useGameStore.getState();
+    const state = useLevelStore.getState();
+    RESOURCES.musics.lose.play(useGameOptionsStore.getState().musicVolume);
+    useLevelStore.setState({ lives: state.lives - 1 });
+    const newState = useLevelStore.getState();
     if (newState.lives <= 0) {
-      useGameStore.setState({ gameOver: true });
+      useLevelStore.setState({ gameOver: true });
       this.cleanup();
     }
   }
 
   async enemyKilled(value: number): Promise<void> {
-    const state = useGameStore.getState();
-    useGameStore.setState({ money: state.money + value });
+    const state = useLevelStore.getState();
+    useLevelStore.setState({ money: state.money + value });
   }
 
   async setSelectedTower(towerType: TowerTypes | null): Promise<void> {
-    useGameStore.setState({ selectedTower: towerType });
+    useLevelStore.setState({ selectedTower: towerType });
   }
 
   cleanup(): void {

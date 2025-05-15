@@ -1,9 +1,9 @@
-import { Actor, Color, Scene, Vector } from 'excalibur';
-import GAME_CONFIG from '../constants/config';
-import { GameEngine } from '../services/GameEngine';
-import { GameManager } from '#/services/GameManager';
-import useGameStore from '#/hooks/useGameStore';
-import { TOWER_TYPES_MAP } from '#/constants/towers';
+import GAME_CONFIG from '#/constants/config.ts';
+import { TOWER_TYPES_MAP } from '#/constants/towers.ts';
+import useLevelStore from '#/hooks/useLevelStore.ts';
+import { GameEngine } from '#/services/GameEngine.tsx';
+import { GameManager } from '#/services/GameManager.ts';
+import { Actor, Color, Scene, SceneActivationContext, Vector } from 'excalibur';
 
 export class Level extends Scene {
   private grid: Actor[][] = [];
@@ -14,7 +14,7 @@ export class Level extends Scene {
     super();
   }
 
-  onInitialize(engine: GameEngine): void {
+  onActivate(engine: SceneActivationContext): void {
     void engine; // Explicitly indicate that we're ignoring this parameter
 
     this.createGrid();
@@ -81,7 +81,7 @@ export class Level extends Scene {
     const gridPos = this.getGridPosition(pos);
     const col = Math.floor(gridPos.x / GAME_CONFIG.gridSize);
     const row = Math.floor(gridPos.y / GAME_CONFIG.gridSize);
-    const { selectedTower } = useGameStore.getState();
+    const { selectedTower } = useLevelStore.getState();
 
     if (row >= 0 && row < this.grid.length && col >= 0 && col < this.grid[0].length && selectedTower) {
       const engine = this.engine as GameEngine;

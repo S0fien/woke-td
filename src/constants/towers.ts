@@ -1,6 +1,6 @@
-import { TowerType } from '#/types/game';
+import { TowerType } from '#/types/game.ts';
 import { Color } from 'excalibur';
-import RESOURCES from './resources';
+import RESOURCES from './resources.ts';
 
 export const TOWER_TYPES: TowerType[] = [
   {

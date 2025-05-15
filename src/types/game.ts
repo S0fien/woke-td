@@ -32,14 +32,17 @@ export interface Projectile extends Actor {
   speed: number;
 }
 
-export interface GameState {
+export interface LevelState {
   money: number;
   lives: number;
   wave: number;
-  gameStarted: boolean;
   gameOver: boolean;
   victory: boolean;
-  selectedTower: string | null;
-  setState: () => void;
-  // setState: (state: Partial<GameState>) => void
+  selectedTower: TowerTypes | null;
+}
+
+export interface GameOptions {
+  gameStarted: boolean;
+  musicRunning: boolean;
+  musicVolume: number;
 }

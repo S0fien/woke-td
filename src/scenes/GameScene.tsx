@@ -1,12 +1,13 @@
-import { Actor, Vector } from 'excalibur';
-import GAME_CONFIG from '../constants/config';
-import { GameEngine } from '../services/GameEngine';
-import { GameManager } from '../services/GameManager';
-import { Level } from './Level';
-import RESOURCES from '../constants/resources';
+import GAME_CONFIG from '#/constants/config.ts';
+import RESOURCES from '#/constants/resources.ts';
+import useGameOptionsStore from '#/hooks/useGameOptionsStore.ts';
+import { GameEngine } from '#/services/GameEngine.tsx';
+import { GameManager } from '#/services/GameManager.ts';
+import Bar from '#/ui/components/containers/bar.tsx';
+import { Actor, SceneActivationContext, Vector } from 'excalibur';
+
 import { createRoot } from 'react-dom/client';
-import Bar from '../components/containers/bar';
-import useGameStore from '#/hooks/useGameStore';
+import { Level } from './Level.ts';
 
 export class GameScene extends Level {
   static instance: GameScene | null = null;
@@ -28,7 +29,10 @@ export class GameScene extends Level {
   //     // this.gameManager.update(elapsed);
   // }
 
-  override onInitialize(engine: GameEngine) {
+  // override onInitialize(engine: GameEngine) {
+
+  // }
+  override onActivate(context: SceneActivationContext): void {
     this.pathPoints = GAME_CONFIG.pathPoints.map(point => new Vector(point.x, point.y));
     // this.add(new Dude(100));
 
@@ -36,9 +40,9 @@ export class GameScene extends Level {
     // test.graphics.anchor = new Vector(0, 0);
 
     RESOURCES.musics.main.loop = true;
-    if (useGameStore.getState().musicRunning) RESOURCES.musics.main.play();
+    RESOURCES.musics.main.play(useGameOptionsStore.getState().musicVolume);
 
-    const map = RESOURCES.maps.begin.toSprite();
+    const map = RESOURCES.maps.simple.toSprite();
     // RESOURCES.Fusion[0]. addToScene(th\is)\\\;
     // map.width = GAME_CONFIG.width;
     // map.height = GAME_CONFIG.height;
@@ -51,13 +55,12 @@ export class GameScene extends Level {
     // map.height =  mapHeight - (rest / 2);
 
     test.graphics.add(map);
-    test.pos = new Vector(engine.screen.width / 2, engine.screen.height / 2);
+    test.pos = new Vector(context.engine.screen.width / 2, context.engine.screen.height / 2);
     this.add(test);
 
     this.createGrid();
     this.createPath();
-
-    const gameManager = GameManager.getInstance(engine);
+    const gameManager = GameManager.getInstance(context.engine as GameEngine);
     gameManager.startGame();
     // Add Excalibur label
     // Create a container for React UI
@@ -92,9 +95,10 @@ export class GameScene extends Level {
     if (this.uiRoot) {
       this.uiRoot.unmount();
       const container = document.getElementById('container');
-      if (container && container.lastChild) {
+      if (container && container.lastChild && container.lastElementChild?.id !== 'game-interface') {
         container.removeChild(container.lastChild);
       }
     }
+    this.clear();
   }
 }

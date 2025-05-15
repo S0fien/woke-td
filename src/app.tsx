@@ -1,28 +1,37 @@
-import { GlobalOverlay } from './features/global-overlay';
-import GAME_CONFIG from './constants/config';
-import { useEngine } from './hooks/useEngine';
-import useGameStore from './hooks/useGameStore';
+import { GlobalOverlay } from './ui/features/global-overlay.tsx';
+import GAME_CONFIG from './constants/config.ts';
+import { useEngine } from './hooks/useEngine.ts';
+import useLevelStore from './hooks/useLevelStore.ts';
 
 export default function App() {
   const { engine } = useEngine();
-  const state = useGameStore();
+  const state = useLevelStore();
+
+  const restartGame = () => {
+    useLevelStore.getState().resetGame();
+    engine?.goToScene('mainMenu');
+  };
+
+  const retryLevel = () => {
+    engine?.stop();
+    useLevelStore.getState().resetGame();
+    if (engine) {
+      // engine.removeScene(engine.currentScene);
+      // engine.addScene(engine.currentSceneName, engine.currentScene);
+      engine.start();
+      engine.goToScene(engine.currentSceneName);
+    }
+  };
 
   return (
     <div id="game-interface" className="flex flex-col items-center">
-      {engine?.isRunning && <GlobalOverlay />}
-      {/* <div id="game-interface" className="absolute top-0 left-0 translate-1/2 flex flex-col items-center"> */}
-      {/* <Bar /> */}
+      {engine?.isRunning() && <GlobalOverlay />}
       {state && engine && (
         <>
           {state.gameOver && (
             <div className="game-over-overlay">
               <h2>Game Over</h2>
-              <button
-                onClick={async () => {
-                  useGameStore.getState().resetGame();
-                  engine.run();
-                }}
-              >
+              <button onClick={retryLevel} className="retry-button">
                 Try Again
               </button>
             </div>
@@ -31,15 +40,7 @@ export default function App() {
             <div className="victory-overlay">
               <h2>Victory!</h2>
               <p>You&apos;ve completed all {GAME_CONFIG.maxWaves} waves!</p>
-              <button
-                onClick={async () => {
-                  useGameStore.getState().resetGame();
-                  engine.run();
-                  engine.goToScene('mainMenu');
-                }}
-              >
-                Play Again
-              </button>
+              <button onClick={restartGame}>Play Again</button>
             </div>
           )}
         </>

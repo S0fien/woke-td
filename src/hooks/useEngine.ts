@@ -1,6 +1,6 @@
-import { GameManager } from '#/services/GameManager';
+import { GameEngine } from '#/services/GameEngine.tsx';
+import { GameManager } from '#/services/GameManager.ts';
 import { useEffect, useState } from 'react';
-import { GameEngine } from '#/services/GameEngine';
 
 export const useEngine = () => {
   const [engine, setEngine] = useState<GameEngine | null>(null);
@@ -17,9 +17,12 @@ export const useEngine = () => {
 
     // Get the engine instance outside of render
     const engineInstance = GameEngine.getInstance();
-    setEngine(engineInstance);
+    if (engineInstance) {
+      setEngine(engineInstance);
 
-    engineInstance.initializeUI();
+      engineInstance.initializeUI();
+    }
+
     // Initialize UI after component is mounted
     // engineInstance.on('visible', (event) => {
     //   console.log('initializeUIIIII', event);

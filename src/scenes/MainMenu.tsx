@@ -1,9 +1,9 @@
+import RESOURCES from '#/constants/resources.ts';
+import useGameOptionsStore from '#/hooks/useGameOptionsStore.ts';
+import { GameEngine } from '#/services/GameEngine.tsx';
+import { Menu } from '#/ui/features/menu.tsx';
 import { Actor, Scene, Vector } from 'excalibur';
 import { createRoot } from 'react-dom/client';
-import { GameEngine } from '../services/GameEngine';
-import RESOURCES from '../constants/resources';
-import { Menu } from '#/features/menu';
-import useGameStore from '#/hooks/useGameStore';
 
 export class MainMenu extends Scene {
   private uiRoot: ReturnType<typeof createRoot> | null = null;
@@ -12,26 +12,8 @@ export class MainMenu extends Scene {
     super();
   }
 
-  override onInitialize(engine: GameEngine) {
-    console.log('MainMenu onInitialize', engine);
-    // Add Excalibur labe
-    if (useGameStore.getState().musicRunning) {
-      RESOURCES.musics.caketown.loop = true;
-      RESOURCES.musics.caketown.play();
-    }
-
-    const menu = RESOURCES.backgrounds.forest.toSprite();
-    menu.width = engine.screen.width;
-    menu.height = engine.screen.height;
-    // const menu = RESOURCES.backgrounds.menu.toSprite()
-    const bgImage = new Actor();
-    bgImage.graphics.add(menu);
-    bgImage.pos = new Vector(engine.screen.width / 2, engine.screen.height / 2);
-
-    this.add(bgImage);
-
-    console.log('menu', bgImage, RESOURCES.backgrounds.menu);
-
+  onActivate(): void {
+    console.log('MainMenu onActivate');
     // Create a container for React UI
     const uiContainer = document.createElement('div');
     uiContainer.className = 'mx-auto absolute top-0 left-0 flex flex-col gap-4 w-[100vw]';
@@ -48,6 +30,22 @@ export class MainMenu extends Scene {
     this.uiRoot = createRoot(uiContainer);
     this.uiRoot.render(<Menu />);
   }
+  override onInitialize(engine: GameEngine) {
+    console.log('MainMenu onInitialize', engine);
+
+    RESOURCES.musics.caketown.loop = true;
+    RESOURCES.musics.caketown.play(useGameOptionsStore.getState().musicVolume);
+
+    const menu = RESOURCES.backgrounds.forest.toSprite();
+    menu.width = engine.screen.width;
+    menu.height = engine.screen.height;
+    // const menu = RESOURCES.backgrounds.menu.toSprite()
+    const bgImage = new Actor();
+    bgImage.graphics.add(menu);
+    bgImage.pos = new Vector(engine.screen.width / 2, engine.screen.height / 2);
+
+    this.add(bgImage);
+  }
 
   onDeactivate() {
     console.log('deactivating');
@@ -56,7 +54,7 @@ export class MainMenu extends Scene {
     if (this.uiRoot) {
       this.uiRoot.unmount();
       const container = document.getElementById('container');
-      if (container && container.lastChild) {
+      if (container && container.lastChild && container.lastElementChild?.id !== 'game-interface') {
         container.removeChild(container.lastChild);
       }
     }

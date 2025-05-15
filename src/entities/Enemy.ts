@@ -1,5 +1,5 @@
 import { Actor, Color, Rectangle, Vector } from 'excalibur';
-import GAME_CONFIG from '../constants/config';
+import GAME_CONFIG from '../constants/config.ts';
 
 export class Enemy extends Actor {
   health: number;
