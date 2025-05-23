@@ -12,7 +12,7 @@ export const TowerContainer = () => {
   };
 
   return (
-    <>
+    <div className="flex gap-4">
       {TOWER_TYPES.map(tower => (
         <div
           key={tower.type}
@@ -54,6 +54,6 @@ export const TowerContainer = () => {
           </div>
         </div>
       ))}
-    </>
+    </div>
   );
 };

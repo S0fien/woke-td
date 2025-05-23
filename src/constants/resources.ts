@@ -1,5 +1,5 @@
 import { SpriteFusionResource } from '@excaliburjs/plugin-spritefusion';
-import { ImageSource, Sound } from 'excalibur';
+import { Gif, ImageSource, Sound } from 'excalibur';
 
 const RESOURCES = {
   towers: {
@@ -15,6 +15,7 @@ const RESOURCES = {
     }),
   },
   backgrounds: {
+    test: new ImageSource('./backgrounds/test.jpg'),
     forest: new ImageSource('./backgrounds/forest.svg'),
     menu: new ImageSource('./backgrounds/menu.jpg'),
     bar: new ImageSource('./backgrounds/bar.png'),
@@ -22,7 +23,7 @@ const RESOURCES = {
     circle: new ImageSource('./circle-button.png'),
   },
   characters: {
-    Dude: new ImageSource('./characters/dude.gif'),
+    Dude: new Gif('./characters/dude.gif'),
     Girl: new ImageSource('./characters/work.png'),
   },
   projectiles: {

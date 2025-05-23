@@ -18,7 +18,7 @@ const useLevelStore = create<LevelStore>()(
         resetGame: () => set({ ...levelStore }),
       }),
       {
-        name: 'game-storage',
+        name: 'level-storage',
       }
     )
   )

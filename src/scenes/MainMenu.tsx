@@ -36,7 +36,7 @@ export class MainMenu extends Scene {
     RESOURCES.musics.caketown.loop = true;
     RESOURCES.musics.caketown.play(useGameOptionsStore.getState().musicVolume);
 
-    const menu = RESOURCES.backgrounds.forest.toSprite();
+    const menu = RESOURCES.backgrounds.test.toSprite();
     menu.width = engine.screen.width;
     menu.height = engine.screen.height;
     // const menu = RESOURCES.backgrounds.menu.toSprite()

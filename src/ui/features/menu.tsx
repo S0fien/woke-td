@@ -11,7 +11,7 @@ export const Menu = () => {
       <SparklesText className="mx-auto mt-[20vh] font-bold">
         <AuroraText className="font-[mercy] text-[8rem]">KILL THE WOKE</AuroraText>
       </SparklesText>
-      <div className="row-auto mx-auto mt-[10rem] grid h-[220px] w-64 grid-rows-3 gap-8 font-[chewy]">
+      <div className="row-auto mx-auto mt-[15rem] grid h-[220px] w-80 grid-rows-3 gap-8 font-[chewy] text-7xl">
         <LevelSelector />
         <Shine onClick={() => window.close()}>Exit</Shine>
       </div>

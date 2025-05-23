@@ -33,12 +33,12 @@ const GAME_OPTIONS: EngineOptions = {
         in: new FadeInOut({
           duration: 500,
           direction: 'in',
-          color: Color.Pink,
+          color: Color.Black,
         }),
         out: new FadeInOut({
           duration: 500,
           direction: 'out',
-          color: Color.Green,
+          color: Color.Black,
         }),
       },
     },

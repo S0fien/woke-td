@@ -8,7 +8,7 @@ import useGameOptionsStore from '#/hooks/useGameOptionsStore.ts';
 import useLevelStore from '#/hooks/useLevelStore.ts';
 import { GameScene } from '#/scenes/GameScene.tsx';
 import { Enemy, TowerTypes } from '#/types/game.ts';
-import { Color, ExitViewPortEvent, Font, Label, Timer, Vector } from 'excalibur';
+import { ExitViewPortEvent, Timer, Vector } from 'excalibur';
 import { GameEngine } from './GameEngine.tsx';
 
 export class GameManager {
@@ -165,16 +165,7 @@ export class GameManager {
             setTimeout(() => this.startNextWave(), GAME_CONFIG.waveDelay);
           } else {
             useLevelStore.setState({ victory: true });
-            this.engine.currentScene.add(
-              new Label({
-                text: 'Victory!',
-                font: new Font({
-                  family: 'Arial',
-                  size: 32,
-                  color: Color.White,
-                }),
-              })
-            );
+            this.cleanup();
           }
         }
       },
@@ -276,6 +267,7 @@ export class GameManager {
       this.engine.remove(this.updateTimer);
       //this.engine.stop();
     }
+    this.engine.stop();
   }
 
   getTowers(): Tower[] {

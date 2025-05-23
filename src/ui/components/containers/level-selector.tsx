@@ -17,6 +17,7 @@ export default function LevelSelector({ modalSize = 'lg' }: { modalSize?: 'sm' |
         Open Modal
       </button> */}
       <Shine
+        className="text-7xl"
         onClick={() => setIsOpen(true)}
 
         //   onClick={async () => {

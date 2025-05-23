@@ -1,6 +1,6 @@
 import GAME_CONFIG from '#/constants/config.ts';
 import RESOURCES from '#/constants/resources.ts';
-import { Actor, Animation, AnimationStrategy, Color, Engine, range, Rectangle, SpriteSheet, Vector } from 'excalibur';
+import { Actor, Color, Engine, Rectangle, Vector } from 'excalibur';
 
 export class Dude extends Actor {
   health: number;
@@ -52,24 +52,14 @@ export class Dude extends Actor {
   }
 
   async onInitialize(): Promise<void> {
-    const anim = Animation.fromSpriteSheet(
-      SpriteSheet.fromImageSource({
-        image: RESOURCES.characters.Girl,
-        grid: {
-          columns: 4,
-          rows: 4,
-          spriteWidth: 100,
-          spriteHeight: 109,
-        },
-      }),
-      range(1, 15),
-      100,
-      AnimationStrategy.Loop
-    );
-    this.graphics.add(anim);
-    this.graphics.use(anim);
+    const animddfdf = await RESOURCES.characters.Dude.toAnimation();
+    if (animddfdf) {
+      console.log('lolol1');
+      this.graphics.add(animddfdf);
+      this.graphics.use(animddfdf);
+    }
+
     this.pos = new Vector(GAME_CONFIG.pathPoints[0].x, GAME_CONFIG.pathPoints[0].y);
-    anim.play();
   }
 
   private updateMovement(delta: number): void {

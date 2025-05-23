@@ -1,17 +1,19 @@
-import { Toolbar } from 'primereact/toolbar';
 import GameInfo from './game-info.tsx';
 import { TowerContainer } from './tower-container.tsx';
 
 const Bar = () => {
   return (
-    <Toolbar
-      className="h-[125px] w-[800px] rounded-sm text-white"
-      ptOptions={{
-        classNameMergeFunction: className => `flex-row ${className}`,
-      }}
-      end={<GameInfo />}
-      start={<TowerContainer />}
-    />
+    <div
+      className={`fixed bottom-0 left-1/4 z-50 h-[125px] w-[800px] rounded-sm border-t border-gray-200 text-white dark:border-gray-600`}
+    >
+      <div
+        className={`my-2 flex size-full justify-between bg-[url(./backgrounds/bar.png)] bg-repeat-round px-6 font-medium`}
+      >
+        <TowerContainer />
+
+        <GameInfo />
+      </div>
+    </div>
   );
 };
 

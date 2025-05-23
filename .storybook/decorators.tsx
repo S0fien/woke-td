@@ -1,17 +1,11 @@
-import { PrimeReactProvider } from "primereact/api";
-import React from "react";
+import React from 'react';
 
 export const decorators = [
-    (Story: () => React.JSX.Element) => (
-        <div className="flex flex-col h-screen justify-center">
-        <PrimeReactProvider>
-                    {/* <canvas className='hidden' id="game"></canvas> */}
-  <main className="flex m-auto w-full justify-center" id="container">
-  <Story />
-  </main>
-            
-        </PrimeReactProvider>
-        </div>
-
-    )
+  (Story: () => React.JSX.Element) => (
+    <div className="flex h-screen flex-col justify-center bg-white text-gray-700">
+      <main className="m-auto flex w-1/2 justify-center" id="container">
+        <Story />
+      </main>
+    </div>
+  ),
 ];

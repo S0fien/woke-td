@@ -24,7 +24,7 @@
     "noFallthroughCasesInSwitch": true,
     /* Storybook and Vite compatibility */
     "types": ["vite/client", "@storybook/react-vite", "@storybook/addon-essentials", "@storybook/react"],
-    "allowSyntheticDefaultImports": true,
+    "allowSyntheticDefaultImports": true
   },
   "include": [
     "./src",
@@ -35,6 +35,7 @@
     "oldeslint.config.js",
     "./src/vite-plugin-eslint.d.ts",
     "eslint.config.ts",
-    "tailwind.config.js"
+    "tailwind.config.js",
+    "src/ui/components/texts/.tsx"
   ]
 }

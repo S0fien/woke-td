@@ -40,7 +40,7 @@ export const Shine = React.forwardRef<HTMLButtonElement, ShineProps>(({ children
       {...props}
     >
       <span
-        className="relative block size-full text-xl tracking-wide uppercase dark:font-light"
+        className="relative block size-full text-2xl tracking-wide uppercase dark:font-light"
         style={{
           maskImage:
             'linear-gradient(-75deg,var(--primary) calc(var(--x) + 20%),transparent calc(var(--x) + 30%),var(--primary) calc(var(--x) + 100%))',

@@ -1,7 +1,6 @@
 import { decorators } from './decorators.tsx';
 import type { Preview } from '@storybook/react';
 import '../src/styles/styles.css';
-import 'primereact/resources/themes/lara-light-cyan/theme.css';
 
 const preview: Preview = {
   decorators,

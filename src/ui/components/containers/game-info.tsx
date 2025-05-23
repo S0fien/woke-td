@@ -1,7 +1,7 @@
 import useLevelStore from '#/hooks/useLevelStore.ts';
 import { GiChainedHeart, GiMoneyStack, GiFist } from 'react-icons/gi';
 import Counter from '../texts/Counter.tsx';
-import Popover from '../popover.tsx';
+import Popover from '../elements/popover.tsx';
 
 const GameInfo = () => {
   const state = useLevelStore();

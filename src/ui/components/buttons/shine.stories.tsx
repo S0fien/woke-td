@@ -5,7 +5,7 @@ const meta: Meta<typeof Shine> = {
   title: 'Components/Buttons/Shine',
   component: Shine,
   args: {
-    children: 'Shine Button',
+    children: 'Shine button',
   },
 };
 
