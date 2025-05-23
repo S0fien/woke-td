@@ -25,6 +25,7 @@
     "prepare": "husky",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
+    "storybook:build": "storybook build",
     "tauri": "tauri",
     "tauri:android-dev": "tauri android dev",
     "tauri:dev": "tauri dev",

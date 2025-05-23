@@ -33,3 +33,4 @@ src-tauri/gen/schemas
 
 tests-results/*
 *storybook.log
+storybook-static
