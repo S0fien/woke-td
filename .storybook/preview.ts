@@ -1,5 +1,5 @@
 import { decorators } from './decorators.tsx';
-import type { Preview } from '@storybook/react';
+import type { Preview } from '@storybook/react-vite';
 import '../src/styles/styles.css';
 
 const preview: Preview = {

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Confetti, ConfettiButton } from './confetti.tsx';
 
 const meta: Meta<typeof Confetti> = {

@@ -1,30 +1,17 @@
-import { useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
 import { LEVELS } from '#/constants/levels.ts';
 import { cn } from '#/libs/utils.ts';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useState } from 'react';
+import { Button } from '../buttons/button.tsx';
 import { Shine } from '../buttons/shine.tsx';
 import FlipCard from './flip-card.tsx';
 
 export default function LevelSelector({ modalSize = 'lg' }: { modalSize?: 'sm' | 'lg' }) {
   const [isOpen, setIsOpen] = useState(false);
-  console.log('LevelSelector', isOpen, LEVELS);
+
   return (
     <>
-      {/* <button
-        onClick={() => setIsOpen(true)}
-        className="rounded bg-indigo-800 p-2 font-medium text-white transition-opacity hover:opacity-90"
-      >
-        Open Modal
-      </button> */}
-      <Shine
-        className="text-7xl"
-        onClick={() => setIsOpen(true)}
-
-        //   onClick={async () => {
-        //     console.log('Start Game');
-        //     await engine.goToScene('gameScene');
-        //   }}
-      >
+      <Shine className="text-7xl" onClick={() => setIsOpen(true)}>
         Start Game
       </Shine>
       <AnimatePresence>
@@ -46,7 +33,7 @@ export default function LevelSelector({ modalSize = 'lg' }: { modalSize?: 'sm' |
               exit={{ scale: 0, rotate: '180deg' }}
               onClick={e => e.stopPropagation()}
               className={cn(
-                'relative w-full max-w-lg cursor-default overflow-hidden rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-500 p-6 text-white shadow-2xl',
+                'relative w-full max-w-lg cursor-default overflow-hidden rounded-xl bg-black/40 px-16 py-6 text-white shadow-2xl',
                 {
                   'max-w-sm': modalSize === 'sm',
                 }
@@ -81,12 +68,12 @@ export default function LevelSelector({ modalSize = 'lg' }: { modalSize?: 'sm' |
                   //             </div>
                 ))}
                 <div className="flex justify-center">
-                  <button
+                  <Button
                     onClick={() => setIsOpen(false)}
-                    className="w-full rounded bg-white py-2 font-semibold text-indigo-600 transition-opacity hover:opacity-80"
+                    className="w-full rounded bg-purple-500 py-2 font-semibold transition-opacity hover:opacity-80"
                   >
                     Back to menu
-                  </button>
+                  </Button>
                 </div>
               </div>
             </motion.div>

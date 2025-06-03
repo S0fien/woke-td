@@ -1,53 +1,60 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { AuroraText } from './aurora-text.tsx';
-import { HyperText } from './hyper-text.tsx';
-import { TypingAnimation } from './typing-animation.tsx';
-import { SparklesText } from './sparkles.tsx';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { JSX } from 'react';
+import { AuroraText } from './aurora-text.tsx';
 import Counter from './Counter.tsx';
+import { HyperText } from './hyper-text.tsx';
+import { SparklesText } from './sparkles.tsx';
+import { TypingAnimation } from './typing-animation.tsx';
 
-const Test = ({ children }: { children: JSX.Element }) => <div>{children}</div>;
-const meta: Meta<typeof Test> = {
+const Fonts = ({ children }: { children: JSX.Element }) => <div>{children}</div>;
+const meta: Meta<typeof Fonts> = {
   title: 'Components/Fonts',
-  subcomponents: { AuroraText, HyperText, TypingAnimation, SparklesText, Counter },
-  component: Test,
+
+  subcomponents: {
+    AuroraText: AuroraText as React.ComponentType<any>,
+    HyperText: HyperText as React.ComponentType<any>,
+    TypingAnimation: TypingAnimation as React.ComponentType<any>,
+    SparklesText: SparklesText as React.ComponentType<any>,
+    Counter: Counter as React.ComponentType<any>,
+  },
+  component: Fonts,
 };
 
 export default meta;
 
-type Story = StoryObj<typeof Test>;
+type Story = StoryObj<typeof Fonts>;
 
 export const Aurora: Story = {
   render: () => (
-    <Test>
+    <Fonts>
       <AuroraText colors={['#FF0080', '#7928CA', '#0070F3', '#38bdf8']} className={'text-2xl'} speed={1}>
         Aurora text
       </AuroraText>
-    </Test>
+    </Fonts>
   ),
 };
 
 export const Hyper: Story = {
   render: () => (
-    <Test>
+    <Fonts>
       <HyperText>Aurora text</HyperText>
-    </Test>
+    </Fonts>
   ),
 };
 
 export const Typing: Story = {
   render: () => (
-    <Test>
+    <Fonts>
       <TypingAnimation>Aurora text</TypingAnimation>
-    </Test>
+    </Fonts>
   ),
 };
 
 export const SparklesT: Story = {
   render: () => (
-    <Test>
+    <Fonts>
       <SparklesText>Aurora text</SparklesText>
-    </Test>
+    </Fonts>
   ),
 };
 
@@ -59,24 +66,24 @@ const counterArgs = {
 };
 export const CounterDefault: Story = {
   render: () => (
-    <Test>
+    <Fonts>
       <Counter {...counterArgs} />
-    </Test>
+    </Fonts>
   ),
 };
 
 export const CounterLargeFont: Story = {
   render: () => (
-    <Test>
+    <Fonts>
       <Counter {...counterArgs} fontSize={100} />
-    </Test>
+    </Fonts>
   ),
 };
 
 export const CounterCustomColors: Story = {
   render: () => (
-    <Test>
+    <Fonts>
       <Counter {...counterArgs} textColor="lime" />
-    </Test>
+    </Fonts>
   ),
 };

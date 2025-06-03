@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import LevelSelector from './level-selector.tsx';
 // import './level-selector.css';
 

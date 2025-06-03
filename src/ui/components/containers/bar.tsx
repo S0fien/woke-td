@@ -7,7 +7,8 @@ const Bar = () => {
       className={`fixed bottom-0 left-1/4 z-50 h-[125px] w-[800px] rounded-sm border-t border-gray-200 text-white dark:border-gray-600`}
     >
       <div
-        className={`my-2 flex size-full justify-between bg-[url(./backgrounds/bar.png)] bg-repeat-round px-6 font-medium`}
+        className={'p-toolbar h-full'}
+        // className={`p-toolbar my-2 flex size-full justify-between bg-repeat-round px-6 font-medium`}
       >
         <TowerContainer />
 

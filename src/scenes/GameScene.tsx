@@ -39,20 +39,21 @@ export class GameScene extends Level {
     const test = new Actor();
     // test.graphics.anchor = new Vector(0, 0);
 
-    RESOURCES.musics.main.loop = true;
-    RESOURCES.musics.main.play(useGameOptionsStore.getState().musicVolume);
+    RESOURCES.musics.happy.loop = true;
+    RESOURCES.musics.happy.play(useGameOptionsStore.getState().musicVolume);
+    // RESOURCES.backgrounds.tiled.addToScene(this, { pos: new Vector(0, 0) });
 
     const map = RESOURCES.maps.simple.toSprite();
     // RESOURCES.Fusion[0]. addToScene(th\is)\\\;
     // map.width = GAME_CONFIG.width;
     // map.height = GAME_CONFIG.height;
     map.scale = new Vector(1, 1);
-    // const imgWidth = map.width;
-    // const mapHeight = map.height;
-    // const screenWidth = engine.screen.width;
-    // const rest =  imgWidth - screenWidth;
-    // map.width = screenWidth;
-    // map.height =  mapHeight - (rest / 2);
+    const imgWidth = map.width;
+    const mapHeight = map.height;
+    const screenWidth = this.engine.screen.width;
+    const rest = imgWidth - screenWidth;
+    map.width = screenWidth;
+    map.height = mapHeight - rest / 2;
 
     test.graphics.add(map);
     test.pos = new Vector(context.engine.screen.width / 2, context.engine.screen.height / 2);
@@ -90,7 +91,7 @@ export class GameScene extends Level {
   }
 
   onDeactivate() {
-    RESOURCES.musics.main.stop();
+    RESOURCES.musics.happy.stop();
     // Clean up React root when scene is deactivated
     if (this.uiRoot) {
       this.uiRoot.unmount();

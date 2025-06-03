@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import GameInfo from './game-info.tsx';
 
 const meta: Meta<typeof GameInfo> = {

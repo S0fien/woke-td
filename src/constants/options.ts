@@ -1,15 +1,16 @@
 import { GameScene } from '#/scenes/GameScene.tsx';
 import { MainMenu } from '#/scenes/MainMenu.tsx';
-import { DisplayMode, FadeInOut, Color, EngineOptions } from 'excalibur';
+import { Color, DisplayMode, EngineOptions, FadeInOut } from 'excalibur';
 import GAME_CONFIG from './config.ts';
 
 const GAME_OPTIONS: EngineOptions = {
-  suppressPlayButton: true,
+  // suppressPlayButton: true,
   canvasElementId: 'game',
-  suppressHiDPIScaling: true,
+  // suppressHiDPIScaling: true,
 
-  displayMode: DisplayMode.FillScreen, // the display mode  width: GAME_CONFIG.width,
-  height: GAME_CONFIG.height,
+  displayMode: DisplayMode.Fixed, // the display mode
+  width: Math.min(1280, GAME_CONFIG.width),
+  height: Math.min(960, GAME_CONFIG.height),
   backgroundColor: GAME_CONFIG.backgroundColor,
   scenes: {
     mainMenu: {

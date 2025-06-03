@@ -12,9 +12,8 @@ export class MainMenu extends Scene {
     super();
   }
 
-  onActivate(): void {
-    console.log('MainMenu onActivate');
-    // Create a container for React UI
+  createUi(): void {
+    if (this.uiRoot) return;
     const uiContainer = document.createElement('div');
     uiContainer.className = 'mx-auto absolute top-0 left-0 flex flex-col gap-4 w-[100vw]';
 
@@ -30,6 +29,10 @@ export class MainMenu extends Scene {
     this.uiRoot = createRoot(uiContainer);
     this.uiRoot.render(<Menu />);
   }
+  override onActivate(): void {
+    console.log('MainMenu onActivate');
+    this.createUi();
+  }
   override onInitialize(engine: GameEngine) {
     console.log('MainMenu onInitialize', engine);
 
@@ -37,14 +40,15 @@ export class MainMenu extends Scene {
     RESOURCES.musics.caketown.play(useGameOptionsStore.getState().musicVolume);
 
     const menu = RESOURCES.backgrounds.test.toSprite();
-    menu.width = engine.screen.width;
-    menu.height = engine.screen.height;
+    menu.width = engine.screen.canvasWidth;
+    menu.height = engine.screen.canvasHeight;
     // const menu = RESOURCES.backgrounds.menu.toSprite()
     const bgImage = new Actor();
     bgImage.graphics.add(menu);
     bgImage.pos = new Vector(engine.screen.width / 2, engine.screen.height / 2);
 
     this.add(bgImage);
+    this.createUi();
   }
 
   onDeactivate() {
@@ -52,9 +56,14 @@ export class MainMenu extends Scene {
     RESOURCES.musics.caketown.stop();
     // Clean up React root when scene is deactivated
     if (this.uiRoot) {
+      console.log('unmounting uiRoot');
       this.uiRoot.unmount();
       const container = document.getElementById('container');
       if (container && container.lastChild && container.lastElementChild?.id !== 'game-interface') {
+        console.log('removing last child from container', container.innerHTML);
+        console.log('container last child', container.firstChild?.textContent);
+
+        console.log('container last child', container.lastChild.textContent);
         container.removeChild(container.lastChild);
       }
     }

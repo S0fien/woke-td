@@ -1,12 +1,10 @@
-version: "3.9"
-
 services:
-  vite-app:
+  game:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.game
     ports:
-      - "3000:80" # Map port 3000 on the host to port 80 in the container
+      - '3000:80' # Map port 3000 on the host to port 80 in the container
     environment:
       - NODE_ENV=production
     restart: always
@@ -16,11 +14,11 @@ services:
       context: .
       dockerfile: Dockerfile.storybook
     ports:
-      - "6006:6006" # Map port 6006 on the host to port 6006 in the container
+      - '6006:6006' # Map port 6006 on the host to port 6006 in the container
     environment:
       - NODE_ENV=development
       - CI=true # Prevent Storybook from opening the browser
-    command: ["pnpm", "storybook", "--ci", "--host", "0.0.0.0"] # Bind to all interfaces
-    volumes:
-      - .:/app # Mount the current directory for live updates
+    # command: ["npm", "run", "storybook", "--ci", "--host", "0.0.0.0"] # Bind to all interfaces
+    # volumes:
+    #   - .:/app # Mount the current directory for live updates
     restart: always

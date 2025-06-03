@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { GlobalOverlay } from './global-overlay.tsx';
 
 const meta: Meta<typeof GlobalOverlay> = {

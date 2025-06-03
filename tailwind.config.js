@@ -1,9 +1,5 @@
-import animate from "tailwindcss-animate";
 
 export default {
-  // plugins: [
-  //   animate
-  // ],
   theme: {
     extend: {
       backgroundImage: {
@@ -12,7 +8,4 @@ export default {
       },
     },
   },
-  plugins: [
-	 animate,
-	],
 }

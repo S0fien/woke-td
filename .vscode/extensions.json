@@ -1,0 +1,14 @@
+{
+    "recommendations": [
+        "formulahendry.auto-close-tag",
+        "steoates.autoimport",
+        "formulahendry.auto-rename-tag",
+        "dbaeumer.vscode-eslint",
+        "pkief.material-icon-theme",
+        "christian-kohler.npm-intellisense",
+        "zhuangtongfa.material-theme",
+        "christian-kohler.path-intellisense",
+        "esbenp.prettier-vscode",
+        "bradlc.vscode-tailwindcss"
+    ]
+}

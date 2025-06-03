@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { BeamDemo } from './beam.tsx';
 import { JSX } from 'react';
 import { BorderDemo } from './border-beam.tsx';

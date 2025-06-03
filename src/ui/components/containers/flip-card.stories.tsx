@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import FlipCard from './flip-card.tsx';
 
 const meta: Meta<typeof FlipCard> = {

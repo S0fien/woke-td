@@ -1,18 +1,31 @@
-import viteReact from "@vitejs/plugin-react";
-import { defineConfig } from "vite";
-import eslint from "vite-plugin-eslint";
+import viteReact from '@vitejs/plugin-react';
+import { defineConfig } from 'vite';
+import eslint from 'vite-plugin-eslint';
 
-import tailwindcss from "@tailwindcss/vite";
+import tailwindcss from '@tailwindcss/vite';
 
 const host = process.env.TAURI_DEV_HOST;
+
+// const tiledPlugin = () => {
+//   return {
+//     name: 'tiled-tileset-plugin',
+//     resolveId: {
+//       order: 'pre',
+//       handler(sourceId: string) {
+//         if (!sourceId.endsWith('.tsx')) return;
+//         return { id: 'tileset:' + sourceId, external: 'relative' };
+//       },
+//     },
+//   };
+// };
 
 // https://vitejs.dev/config/
 export default defineConfig(async () => ({
   plugins: [viteReact(), eslint(), tailwindcss()],
-  base: "./",
+  base: './',
   resolve: {
     alias: {
-      "#/*": "./src/*",
+      '#/*': './src/*',
     },
   },
   publicDir: './public',
@@ -28,18 +41,17 @@ export default defineConfig(async () => ({
     host: host || false,
     hmr: host
       ? {
-          protocol: "ws",
+          protocol: 'ws',
           host,
           port: 1421,
         }
       : undefined,
     watch: {
       // 3. tell vite to ignore watching `src-tauri`
-      ignored: ["**/src-tauri/**"],
+      ignored: ['**/src-tauri/**'],
     },
   },
 }));
-
 
 // if you use tiled maps
 // there is a collision between react w/ typescript .tsx

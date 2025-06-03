@@ -2,5 +2,5 @@
   "entry": ["src/**/*.{js,ts,tsx,css}"],
   "project": ["src/**/*.{js,ts,tsx,css}"],
   "ignore": ["node_modules/**", "dist/**"],
-  "ignoreDependencies": ["eslint-plugin-prettier", "commitizen", "@tauri-apps/*", "tw-animate-css", "typescript-eslint"]
+  "ignoreDependencies": ["tailwindcss", "@tauri-apps/*", "tw-animate-css", "typescript-eslint"]
 }

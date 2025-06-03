@@ -86,37 +86,15 @@ logo.vite:hover {
 
 .p-toolbar {
   background-color: transparent;
-  background-image: url('../../public/backgrounds/bar.png');
+  background-image: url('../assets/bar.png');
   background-size: cover;
   background-position: center;
   background-repeat: round;
   padding: 0.5rem;
   align-items: start;
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  grid-template-rows: 100px;
-  grid-template-areas: 'start center end';
-  border: none;
-}
-
-.p-toolbar-group-start {
-  /* grid-column: 1; */
-  grid-column: 1/5;
-  height: 100%;
-  gap: 20px;
-}
-
-.p-toolbar-group-center {
   display: flex;
-  justify-content: center;
-  align-items: baseline;
-  gap: 10px;
-  height: 100%;
-}
-
-.p-toolbar-group-end {
-  /* grid-column: 1; */
-  height: 100%;
+  justify-content: space-between;
+  border: none;
 }
 
 html,
@@ -238,43 +216,37 @@ button {
   }
 }
 
-#game {
-  width: 800px;
-  height: 600px;
-  position: relative;
-}
-
 @font-face {
   font-family: 'mercy';
   font-weight: 400;
   font-style: normal;
-  src: url('../../public/fonts/mercy.ttf') format('truetype');
+  src: url('https://res.cloudinary.com/djaxek6tl/raw/upload/v1748939107/mercy_rnjxqo.ttf') format('truetype');
 }
 
 @font-face {
   font-family: 'romantic';
   font-weight: 400;
   font-style: normal;
-  src: url('../../public/fonts/romantic.ttf') format('truetype');
+  src: url('https://res.cloudinary.com/djaxek6tl/raw/upload/v1748939110/romantic_sd0azc.ttf') format('truetype');
 }
 
 @font-face {
   font-family: 'panic';
   font-weight: 400;
   font-style: normal;
-  src: url('../../public/fonts/panic.ttf') format('truetype');
+  src: url('https://res.cloudinary.com/djaxek6tl/raw/upload/v1748939108/panic_y2geja.ttf') format('truetype');
 }
 
 @font-face {
   font-family: 'chewy';
-  src: url('../../public/fonts/chewy.ttf') format('truetype');
+  src: url('https://res.cloudinary.com/djaxek6tl/raw/upload/v1748939105/chewy_of8iy3.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'barriecito';
-  src: url('../../public/fonts/barriecito.ttf') format('truetype');
+  src: url('https://res.cloudinary.com/djaxek6tl/raw/upload/v1748939103/barriecito_agsoyc.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
 }
