@@ -1,9 +1,9 @@
+import { useEngine } from '#/hooks/useEngine.ts';
 import { Actor, Color, vec, Vector } from 'excalibur';
 import { useEffect, useState } from 'react';
 import RESOURCES from '../../constants/resources.ts';
-import { useEngine } from '#/hooks/useEngine.ts';
 
-export default function ExcaliburUiApp() {
+export default function ContextualMenu() {
   const { engine } = useEngine();
   const [visible, setVisible] = useState(true);
   const [worldPos, setWorldPos] = useState(Vector.Zero);

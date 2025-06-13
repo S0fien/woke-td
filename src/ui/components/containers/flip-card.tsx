@@ -1,17 +1,12 @@
 import { useEngine } from '#/hooks/useEngine.ts';
-import { BiNoEntry } from 'react-icons/bi';
+import { FaQuestionCircle } from 'react-icons/fa';
 import { cn } from '../../../libs/utils.ts';
-import { ShinyButton } from '../buttons/shiny-button.tsx';
-
+import ShiningButton from '../buttons/shining-button.tsx';
 function Component() {
   return (
-    <div className="rounded-md border border-red-500/50 px-4 py-3 text-white">
-      <div className="flex gap-3">
-        <BiNoEntry size={40} aria-hidden="true" />
-        <div className="flex grow justify-between gap-3">
-          <p className="text-4xl">NOT RELEASE</p>
-        </div>
-      </div>
+    <div className="flex flex-col items-center justify-center gap-3 px-4 py-3 text-white">
+      <FaQuestionCircle size={60} aria-hidden="true" />
+      <p className="text-xl">NOT RELEASE YET</p>
     </div>
   );
 }
@@ -75,19 +70,15 @@ export default function FlipCard({
                   {description}{' '}
                 </p>
               </div>
-              <ShinyButton
-                //#region
-                className="w-full rounded bg-white py-2 font-semibold text-indigo-600 transition-opacity hover:opacity-80"
-                onClick={() => engine?.goToScene(scene)}
-              >
+              <ShiningButton className="max-h-26 text-sm" onClick={() => engine?.goToScene(scene)}>
                 START THE FIGHT
-              </ShinyButton>
+              </ShiningButton>
             </div>
           </div>
         </div>
       </div>
       {!available && (
-        <div className="absolute top-1/3 left-1/7 z-50 -rotate-20">
+        <div className="absolute top-0 left-0 z-50 flex size-full justify-center">
           <Component />
         </div>
       )}

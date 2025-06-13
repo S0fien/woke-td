@@ -1,4 +1,7 @@
-// filepath: /home/s0/projets/woke-td/types/vite-plugin-eslint.d.ts
+/// <reference types="vite/client" />
+
+declare module '@tailwindcss/vite';
+
 declare module 'vite-plugin-eslint' {
   import { Plugin } from 'vite';
   const eslint: () => Plugin;

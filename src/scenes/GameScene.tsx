@@ -41,22 +41,15 @@ export class GameScene extends Level {
 
     RESOURCES.musics.happy.loop = true;
     RESOURCES.musics.happy.play(useGameOptionsStore.getState().musicVolume);
-    // RESOURCES.backgrounds.tiled.addToScene(this, { pos: new Vector(0, 0) });
 
     const map = RESOURCES.maps.simple.toSprite();
-    // RESOURCES.Fusion[0]. addToScene(th\is)\\\;
-    // map.width = GAME_CONFIG.width;
-    // map.height = GAME_CONFIG.height;
+    map.width = 1264;
+    map.height = 960;
     map.scale = new Vector(1, 1);
-    const imgWidth = map.width;
-    const mapHeight = map.height;
-    const screenWidth = this.engine.screen.width;
-    const rest = imgWidth - screenWidth;
-    map.width = screenWidth;
-    map.height = mapHeight - rest / 2;
 
     test.graphics.add(map);
-    test.pos = new Vector(context.engine.screen.width / 2, context.engine.screen.height / 2);
+    test.graphics.anchor = new Vector(0, 0);
+    test.pos = new Vector(0, 0);
     this.add(test);
 
     this.createGrid();
@@ -66,23 +59,13 @@ export class GameScene extends Level {
     // Add Excalibur label
     // Create a container for React UI
     const uiContainer = document.createElement('div');
-    uiContainer.style.position = 'absolute';
-    uiContainer.style.bottom = '5px';
-    uiContainer.style.left = '0';
-    uiContainer.style.width = '100%';
-    uiContainer.style.display = 'flex';
-    uiContainer.style.flexDirection = 'row';
-    uiContainer.style.justifyContent = 'space-around';
+    uiContainer.classList = 'absolute bottom-0 w-full flex justify-center items-end pointer-all';
     uiContainer.style.pointerEvents = 'all'; // This allows clicking through to the game
 
     // Add the container to the document
-    // document.body.appendChild(uiContainer);
-    const container = document.getElementById('game-interface');
+    const container = document.getElementById('game-root');
     if (container) {
-      const lkdsj = document.createElement('div');
-      lkdsj.className = 'size-full flex justify-center';
-      lkdsj.appendChild(uiContainer);
-      container.appendChild(lkdsj);
+      container.appendChild(uiContainer);
     }
 
     // Create React root and render UI

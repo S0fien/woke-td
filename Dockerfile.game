@@ -17,16 +17,20 @@ RUN pnpm install
 COPY . .
 
 # Build the Vite app
-RUN pnpm build
+# RUN pnpm build
 
-# Use a lightweight web server to serve the built app
-FROM nginx:alpine AS production
+# RUN pnpm dev
 
-# Copy the built Vite app to the nginx web server
-COPY --from=builder /app/dist /usr/share/nginx/html
-
-# Expose the default nginx port
 EXPOSE 80
 
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+# # Use a lightweight web server to serve the built app
+# FROM nginx:alpine AS production
+
+# # Copy the built Vite app to the nginx web server
+# COPY --from=builder /app/dist /usr/share/nginx/html
+
+# # Expose the default nginx port
+# EXPOSE 80
+
+# # Start nginx
+# CMD ["nginx", "-g", "daemon off;"]

@@ -30,10 +30,10 @@
     "./src",
     ".storybook",
     "./.storybook/*",
-    "vite-env.d.ts",
+    "src/types/vite-env.d.ts",
     "vite.config.ts",
     "oldeslint.config.js",
-    "./src/vite-plugin-eslint.d.ts",
+    "src/types/vite-plugin-eslint.d.ts",
     "eslint.config.js",
     "tailwind.config.js",
     "src/ui/components/texts/.tsx"

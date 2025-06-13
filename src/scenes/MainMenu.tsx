@@ -13,14 +13,14 @@ export class MainMenu extends Scene {
   }
 
   createUi(): void {
-    if (this.uiRoot) return;
+    if (document.querySelector('#menu-interface')) return;
     const uiContainer = document.createElement('div');
-    uiContainer.className = 'mx-auto absolute top-0 left-0 flex flex-col gap-4 w-[100vw]';
-
+    uiContainer.className = `size-full  absolute top-0 left-0`;
+    uiContainer.id = 'menu-interface';
     uiContainer.style.pointerEvents = 'all'; // This allows clicking through to the game
 
     // Add the container to the document
-    const container = document.getElementById('container');
+    const container = document.getElementById('game-root');
     if (container) {
       container.appendChild(uiContainer);
     }
@@ -29,13 +29,12 @@ export class MainMenu extends Scene {
     this.uiRoot = createRoot(uiContainer);
     this.uiRoot.render(<Menu />);
   }
+
   override onActivate(): void {
-    console.log('MainMenu onActivate');
     this.createUi();
   }
-  override onInitialize(engine: GameEngine) {
-    console.log('MainMenu onInitialize', engine);
 
+  override onInitialize(engine: GameEngine) {
     RESOURCES.musics.caketown.loop = true;
     RESOURCES.musics.caketown.play(useGameOptionsStore.getState().musicVolume);
 
@@ -58,13 +57,12 @@ export class MainMenu extends Scene {
     if (this.uiRoot) {
       console.log('unmounting uiRoot');
       this.uiRoot.unmount();
-      const container = document.getElementById('container');
-      if (container && container.lastChild && container.lastElementChild?.id !== 'game-interface') {
-        console.log('removing last child from container', container.innerHTML);
-        console.log('container last child', container.firstChild?.textContent);
-
-        console.log('container last child', container.lastChild.textContent);
-        container.removeChild(container.lastChild);
+      const container = document.getElementById('game-root');
+      const menuContainer = document.getElementById('menu-interface');
+      if (menuContainer) {
+        console.log('removing menu container', menuContainer.innerHTML);
+        console.log('menu container last child', menuContainer.lastChild?.textContent);
+        container?.removeChild(menuContainer);
       }
     }
   }

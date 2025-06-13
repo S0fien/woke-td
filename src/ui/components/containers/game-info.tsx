@@ -6,7 +6,7 @@ const GameInfo = () => {
   const state = useLevelStore();
 
   return (
-    <div className="flex h-full flex-col justify-between gap-1 pt-4 pr-2 pb-6 text-white">
+    <div className="flex h-full flex-col justify-between gap-1 pt-5 pr-2 pb-7 text-white">
       <div className="flex flex-row items-center justify-end">
         <GiMoneyStack color="lime" className="size-4" />
         <Counter fontSize={14} value={state.money} />

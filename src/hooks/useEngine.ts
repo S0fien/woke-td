@@ -10,9 +10,7 @@ export const useEngine = () => {
     // Ensure container element exists
     let container = document.getElementById('container');
     if (!container) {
-      container = document.createElement('div');
-      container.id = 'container';
-      document.body.appendChild(container);
+      return;
     }
 
     // Get the engine instance outside of render

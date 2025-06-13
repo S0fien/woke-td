@@ -1,19 +1,25 @@
+import { useEngine } from '#/hooks/useEngine.ts';
+import { cn } from '#/libs/utils.ts';
 import { Shine } from '../components/buttons/shine.tsx';
 import LevelSelector from '../components/containers/level-selector.tsx';
 import { AuroraText } from '../components/texts/aurora-text.tsx';
 import { SparklesText } from '../components/texts/sparkles.tsx';
 
 export const Menu = () => {
-  console.log('Menu');
+  const truc = useEngine();
+
+  console.log('Menu', truc.engine?.canvas.height, truc.engine?.canvas.width);
 
   return (
-    <div className="h-[100vh] text-center">
-      <SparklesText className="mx-auto mt-[20vh] font-bold">
-        <AuroraText className="font-[mercy] text-[8rem]">ZKIddddLL THEdfdfsff WOKE</AuroraText>
+    <div className={cn(`flex size-full flex-col items-center justify-between py-30`)}>
+      <SparklesText className="font-bold">
+        <AuroraText className="font-[mercy] text-[7rem]">Woke TD</AuroraText>
       </SparklesText>
-      <div className="row-auto mx-auto mt-[15rem] grid h-[220px] w-80 grid-rows-3 gap-8 font-[chewy] text-7xl">
+      <div className="flex flex-col gap-8 font-[chewy] text-7xl">
         <LevelSelector />
-        <Shine onClick={() => window.close()}>wwwwExicvvvvvooooooot</Shine>
+        <Shine className="bg-purple-500 text-2xl" onClick={() => window.close()}>
+          Exit Game
+        </Shine>
       </div>
     </div>
   );

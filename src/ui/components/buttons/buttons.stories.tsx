@@ -25,7 +25,7 @@ type Story = StoryObj<typeof Buttons>;
 export const Default: Story = {
   render: () => (
     <Buttons>
-      <Button>Aurora text</Button>
+      <Button>Aqsdsqqsdurora teuihiusdfdsfsfdsfdxt</Button>
     </Buttons>
   ),
 };

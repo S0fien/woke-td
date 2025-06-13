@@ -8,9 +8,9 @@ const GAME_OPTIONS: EngineOptions = {
   canvasElementId: 'game',
   // suppressHiDPIScaling: true,
 
-  displayMode: DisplayMode.Fixed, // the display mode
-  width: Math.min(1280, GAME_CONFIG.width),
-  height: Math.min(960, GAME_CONFIG.height),
+  displayMode: DisplayMode.FillContainer, // the display mode
+  width: GAME_CONFIG.width,
+  height: GAME_CONFIG.height,
   backgroundColor: GAME_CONFIG.backgroundColor,
   scenes: {
     mainMenu: {

@@ -1,8 +1,8 @@
 import { Color } from 'excalibur';
 
 const GAME_CONFIG = {
-  width: window.innerWidth,
-  height: window.innerHeight,
+  width: 1280,
+  height: 960,
   backgroundColor: Color.Black,
   gridSize: 80, // Size of each grid cell
   pathPoints: [

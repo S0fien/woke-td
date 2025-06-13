@@ -12,7 +12,8 @@ interface AuroraTextProps {
 export const AuroraText = ({
   children,
   className = '',
-  colors = ['#FF0080', '#7928CA'],
+  // colors = ['#FF0080', '#7928CA'],
+  colors = ['white', 'pink'],
   speed = 1,
 }: AuroraTextProps) => {
   const gradientStyle = {

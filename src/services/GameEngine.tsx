@@ -1,5 +1,6 @@
 import GAME_OPTIONS from '#/constants/options.ts';
 import RESOURCES from '#/constants/resources.ts';
+import { GameStatus } from '#/ui/components/containers/game-status.tsx';
 import { Color, Engine, Loader } from 'excalibur';
 import { createRoot } from 'react-dom/client';
 import { Level } from '../scenes/Level.ts';
@@ -75,9 +76,21 @@ export class GameEngine extends Engine {
     const lol = loader.startButtonFactory();
     lol.innerText = 'Start Game222';
     loader.playButtonText = 'Defend';
+
     this.start(loader).then(async () => {
       console.log('go to scene');
       await this.goToScene('mainMenu');
+      const container = document.createElement('div');
+      container.className = 'z-99 absolute bottom-0 right-0 flex justify-end items-end pointer-all';
+      container.style.pointerEvents = 'all'; // This allows clicking through to the game
+      container.id = 'game-status-container';
+
+      // 2. Append the container to the desired parent
+      document.getElementById('game-root')?.appendChild(container);
+      if (container) {
+        GameEngine.uiRoot = createRoot(container);
+        GameEngine.uiRoot.render(<GameStatus />);
+      }
     });
   }
 }

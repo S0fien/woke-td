@@ -2,7 +2,6 @@ import { LEVELS } from '#/constants/levels.ts';
 import { cn } from '#/libs/utils.ts';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
-import { Button } from '../buttons/button.tsx';
 import { Shine } from '../buttons/shine.tsx';
 import FlipCard from './flip-card.tsx';
 
@@ -11,7 +10,7 @@ export default function LevelSelector({ modalSize = 'lg' }: { modalSize?: 'sm' |
 
   return (
     <>
-      <Shine className="text-7xl" onClick={() => setIsOpen(true)}>
+      <Shine className="bg-purple-500 text-2xl" onClick={() => setIsOpen(true)}>
         Start Game
       </Shine>
       <AnimatePresence>
@@ -39,7 +38,7 @@ export default function LevelSelector({ modalSize = 'lg' }: { modalSize?: 'sm' |
                 }
               )}
             >
-              <div className="flex flex-col gap-5">
+              <div className="flex flex-col gap-8">
                 <h3
                   className={cn('text-center text-3xl font-bold', {
                     'text-2xl': modalSize === 'sm',
@@ -53,7 +52,7 @@ export default function LevelSelector({ modalSize = 'lg' }: { modalSize?: 'sm' |
                     scene={level.scene}
                     available={level.available}
                     key={level.name}
-                    className={cn(!level.available && 'blur-[5px]')}
+                    className={cn(!level.available && 'blur-[10px]')}
                     title={level.name}
                     description={level.description}
                     image={level.image}
@@ -68,12 +67,12 @@ export default function LevelSelector({ modalSize = 'lg' }: { modalSize?: 'sm' |
                   //             </div>
                 ))}
                 <div className="flex justify-center">
-                  <Button
+                  <Shine
                     onClick={() => setIsOpen(false)}
-                    className="w-full rounded bg-purple-500 py-2 font-semibold transition-opacity hover:opacity-80"
+                    className="w-full rounded bg-purple-500 text-lg font-semibold transition-opacity hover:opacity-80"
                   >
                     Back to menu
-                  </Button>
+                  </Shine>
                 </div>
               </div>
             </motion.div>

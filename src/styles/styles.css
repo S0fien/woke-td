@@ -86,25 +86,29 @@ logo.vite:hover {
 
 .p-toolbar {
   background-color: transparent;
-  background-image: url('../assets/bar.png');
   background-size: cover;
   background-position: center;
   background-repeat: round;
-  padding: 0.5rem;
+  padding: 0 0.5rem;
   align-items: start;
   display: flex;
   justify-content: space-between;
   border: none;
 }
 
+html {
+  height: 100%;
+  width: 100%;
+}
 html,
 body {
-  height: 100%;
   box-sizing: border-box;
 }
 
 body {
   display: flex;
+  height: 960px;
+  width: 1280px;
 }
 
 :root {
@@ -220,40 +224,32 @@ button {
   font-family: 'mercy';
   font-weight: 400;
   font-style: normal;
-  src: url('https://res.cloudinary.com/djaxek6tl/raw/upload/v1748939107/mercy_rnjxqo.ttf') format('truetype');
+  src: url('https://res.cloudinary.com/djaxek6tl/raw/upload/v1748939107/mercy-ttf') format('truetype');
 }
 
 @font-face {
   font-family: 'romantic';
   font-weight: 400;
   font-style: normal;
-  src: url('https://res.cloudinary.com/djaxek6tl/raw/upload/v1748939110/romantic_sd0azc.ttf') format('truetype');
-}
-
-@font-face {
-  font-family: 'panic';
-  font-weight: 400;
-  font-style: normal;
-  src: url('https://res.cloudinary.com/djaxek6tl/raw/upload/v1748939108/panic_y2geja.ttf') format('truetype');
+  src: url('https://res.cloudinary.com/djaxek6tl/raw/upload/v1748939110/romantic-ttf') format('truetype');
 }
 
 @font-face {
   font-family: 'chewy';
-  src: url('https://res.cloudinary.com/djaxek6tl/raw/upload/v1748939105/chewy_of8iy3.ttf') format('truetype');
+  src: url('https://res.cloudinary.com/djaxek6tl/raw/upload/v1748939105/chewy-ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'barriecito';
-  src: url('https://res.cloudinary.com/djaxek6tl/raw/upload/v1748939103/barriecito_agsoyc.ttf') format('truetype');
+  src: url('https://res.cloudinary.com/djaxek6tl/raw/upload/v1748939103/barriecito-ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
 }
 
 /* src/App.css */
 body {
-  margin: 0;
   padding: 0;
   font-family: 'Arial', sans-serif;
 }

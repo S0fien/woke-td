@@ -12,5 +12,9 @@ export default meta;
 type Story = StoryObj<typeof Menu>;
 
 export const Default: Story = {
-  render: () => <Menu />,
+  render: () => (
+    <div className="bg-black">
+      <Menu />
+    </div>
+  ),
 };

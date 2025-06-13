@@ -1,20 +1,16 @@
 <!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="./public/favicon.png" />
+    <link rel="stylesheet" href="/src/styles/styles.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WOKE TD</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <link rel="icon" href="./public/favicon.png" />
-  <link rel="stylesheet" href="/src/styles/styles.css" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>WOKE TD</title>
-</head>
-
-<body>
-  <canvas id="game" class="m-auto">/canvas>
-  <main class="size-full flex" id="container">
-    <p id="greet-msg"></p>
-  </main>
-</body>
-<script type="module" src="./src/root.tsx"></script>
-
+  <body id="game-root" class="relative m-auto">
+    <canvas id="game" class="m-auto"></canvas>
+    <main class="l-0 absolute top-0 flex" id="container" />
+  </body>
+  <script type="module" src="./src/root.tsx"></script>
 </html>

@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   game:
     build:
@@ -6,19 +8,36 @@ services:
     ports:
       - '3000:80' # Map port 3000 on the host to port 80 in the container
     environment:
-      - NODE_ENV=production
+      - NODE_ENV=development
+    command: 'pnpm dev'
     restart: always
 
   storybook:
     build:
       context: .
       dockerfile: Dockerfile.storybook
+      target: development
     ports:
-      - '6006:6006' # Map port 6006 on the host to port 6006 in the container
+      - '6006:6006'
+    volumes:
+      # Mount source code for hot reloading
+      - ./src:/app/src:ro
+      - ./.storybook:/app/.storybook:ro
+      # Mount other common directories that might affect Storybook
+      - ./public:/app/public:ro
+      - ./stories:/app/stories:ro
+      # Preserve node_modules (don't mount from host)
+      - /app/node_modules
     environment:
       - NODE_ENV=development
-      - CI=true # Prevent Storybook from opening the browser
-    # command: ["npm", "run", "storybook", "--ci", "--host", "0.0.0.0"] # Bind to all interfaces
-    # volumes:
-    #   - .:/app # Mount the current directory for live updates
-    restart: always
+      - CHOKIDAR_USEPOLLING=true # Better file watching in Docker
+      - WATCHPACK_POLLING=true # Alternative polling option
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+    networks:
+      - storybook-network
+
+networks:
+  storybook-network:
+    driver: bridge
