@@ -1,21 +1,30 @@
 import useGameOptionsStore from '#/hooks/useGameOptionsStore.ts';
+import useLevelStore from '#/hooks/useLevelStore.ts';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@radix-ui/react-tooltip';
 import { AudioContextFactory } from 'excalibur';
-import { BiGlobe, BiVolumeFull, BiVolumeMute } from 'react-icons/bi';
+import { BiGlobe, BiTrash, BiVolumeFull, BiVolumeMute } from 'react-icons/bi';
 import { CiSettings } from 'react-icons/ci';
 export const GlobalOverlay = () => {
   const kdsjds = AudioContextFactory.create();
 
   const gameOptions = useGameOptionsStore();
+
+  const clearStore = () => {
+    useGameOptionsStore.getState().resetGame();
+    useLevelStore.getState().resetGame();
+    console.log('Store cleared');
+  };
   return (
     <div className={`ml-auto flex cursor-pointer gap-3 pr-10 pb-5`}>
+      <BiTrash
+        color="white"
+        onClick={clearStore}
+        className="size-14 transition-all hover:animate-[pulse_2s_ease-in-out_infinite] hover:fill-red-300"
+      />
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
-            <CiSettings
-              className="pointer-all hover:fill-lightblue size-14 transition-all hover:animate-[spin_ease-in-out_3s]"
-              color="lightgray"
-            />
+            <CiSettings className="pointer-all hover:fill-lightblue size-14 transition-all" color="lightgray" />
           </TooltipTrigger>
           <TooltipContent className="dark bg-black/80 px-4 py-3">
             <div className="flex gap-3">

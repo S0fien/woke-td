@@ -13,7 +13,7 @@ export const Menu = () => {
   return (
     <div className={cn(`flex size-full flex-col items-center justify-between py-30`)}>
       <SparklesText className="font-bold">
-        <AuroraText className="font-[mercy] text-[7rem]">Woke TD</AuroraText>
+        <AuroraText className="font-[mercy] text-[7rem]">WOKE TD</AuroraText>
       </SparklesText>
       <div className="flex flex-col gap-8 font-[chewy] text-7xl">
         <LevelSelector />

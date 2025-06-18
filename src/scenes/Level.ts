@@ -31,11 +31,10 @@ export class Level extends Scene {
         const cell = new Actor({
           x: col * GAME_CONFIG.gridSize + GAME_CONFIG.gridSize / 2,
           y: row * GAME_CONFIG.gridSize + GAME_CONFIG.gridSize / 2,
-          width: GAME_CONFIG.gridSize - 1, // Slightly smaller to show gaps
-          height: GAME_CONFIG.gridSize - 0, // Slightly smaller to show gaps
-          //   z: 9999999999,
+          width: GAME_CONFIG.gridSize - 2, // Slightly smaller to show gaps
+          height: GAME_CONFIG.gridSize - 2, // Slightly smaller to show gaps
           opacity: 0.2,
-          color: Color.Black,
+          color: Color.LightGray,
         });
         this.grid[row][col] = cell;
         this.add(cell);
@@ -47,17 +46,15 @@ export class Level extends Scene {
       const start = this.pathPoints[i];
       const end = this.pathPoints[i + 1];
       const pathSegment = new Actor({
-        x: (start.x + end.x) / 2,
+        x: (start.x + end.x) / 2 + 40,
         y: (start.y + end.y) / 2,
-        width: Math.abs(end.x - start.x) || 40,
-        height: Math.abs(end.y - start.y) || 40,
-        color: Color.Gray,
+        width: Math.abs(end.x - start.x) || 80,
+        height: Math.abs(end.y - start.y) || 80,
+        color: Color.Pink,
         opacity: 1,
-        // z: 9999999999,
       });
 
       this.add(pathSegment);
-      //   this.engine.add(pathSegment);
     }
   }
 
@@ -71,10 +68,15 @@ export class Level extends Scene {
   }
 
   public isAlreadyUsed(pos: Vector) {
+    console.log(Object.values(TOWER_TYPES_MAP));
     const isTower = Object.values(TOWER_TYPES_MAP).find(t => t === pos);
-    return this.actors.find(actor => {
-      return isTower && actor.pos.equals(pos);
+    console.log('isAlreadyUsed', isTower, pos);
+    const finding = this.actors.find(actor => {
+      return actor.pos.equals(pos);
     });
+    console.log('Checking  finding', finding);
+
+    return finding;
   }
 
   public highlightCell(pos: Vector) {
@@ -83,28 +85,30 @@ export class Level extends Scene {
     const row = Math.floor(gridPos.y / GAME_CONFIG.gridSize);
     const { selectedTower } = useLevelStore.getState();
 
+    const hoverCellConfig = {
+      x: gridPos.x,
+      y: gridPos.y,
+      width: GAME_CONFIG.gridSize,
+      height: GAME_CONFIG.gridSize,
+      z: 9999999999, // Ensure the hover cell is always on top
+      color: Color.Pink,
+      opacity: 0.3,
+    };
+
     if (row >= 0 && row < this.grid.length && col >= 0 && col < this.grid[0].length && selectedTower) {
       const engine = this.engine as GameEngine;
       const gameManager = GameManager.getInstance(engine);
 
-      if (this.isAlreadyUsed(gridPos) || gameManager.isOnPath(gridPos)) {
+      if (gameManager.isCellOccupied(gridPos) || gameManager.isOnPath(gridPos)) {
         this.hoverCell = new Actor({
-          x: gridPos.x,
-          y: gridPos.y,
-          width: GAME_CONFIG.gridSize,
-          height: GAME_CONFIG.gridSize,
+          ...hoverCellConfig,
           color: Color.Red,
-          opacity: 0.3,
         });
         this.add(this.hoverCell);
       } else {
         this.hoverCell = new Actor({
-          x: gridPos.x,
-          y: gridPos.y,
-          width: GAME_CONFIG.gridSize,
-          height: GAME_CONFIG.gridSize,
+          ...hoverCellConfig,
           color: Color.Green,
-          opacity: 0.3,
         });
       }
       this.add(this.hoverCell);

@@ -14,6 +14,7 @@ export class Tower extends Actor {
       height: 30,
       color: towerType.color,
       name: towerType.type,
+      z: 9999999999, // Ensure the tower is always on top
     });
     this.towerType = towerType;
     this.lastFireTime = 0;

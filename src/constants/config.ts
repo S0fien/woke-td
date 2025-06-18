@@ -1,16 +1,16 @@
 import { Color } from 'excalibur';
 
 const GAME_CONFIG = {
-  width: 1280,
-  height: 960,
+  width: 1368,
+  height: 780,
   backgroundColor: Color.Black,
   gridSize: 80, // Size of each grid cell
   pathPoints: [
     { x: 160, y: 0 },
-    { x: 160, y: 425 },
-    { x: window.innerWidth + 100, y: 425 },
+    { x: 160, y: 700 },
+    { x: 1368 + 200, y: 700 },
   ],
-  pathBuffer: 30,
+  pathBuffer: 40,
   maxWaves: 3,
   initialMoney: 100,
   initialLives: 3,

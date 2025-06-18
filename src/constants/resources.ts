@@ -15,6 +15,7 @@ const RESOURCES = {
     church: new ImageSource(client.image('church').toURL()),
   },
   maps: {
+    nice: new ImageSource(client.image('nice-map').toURL()),
     simple: new ImageSource(client.image('map-bg').toURL()),
     begin: new ImageSource(client.image('map-intro').toURL()),
   },

@@ -23,27 +23,10 @@ export class Dude extends Actor {
     this.value = 10;
     this.currentPathIndex = 1;
     this.speed = GAME_CONFIG.enemySpeed;
+  }
 
-    // Create sprite sheet from the RESOURCES
-
-    // const leftIdle = new Animation({
-    //     frames: [
-    //         {graphic: playerSpriteSheet.getSprite(0, 1), duration: 300},
-    //         {graphic: playerSpriteSheet.getSprite(1, 1), duration: 300},
-    //         {graphic: playerSpriteSheet.getSprite(2, 1), duration: 300},
-    //         {graphic: playerSpriteSheet.getSprite(3, 1), duration: 300},
-    //     ]
-    // // })
-    // this.graphics.add('left-idle', leftIdle);
-    // this.graphics.use('left-idle');
-
-    // Create walk animation using frames
-    // this.walkAnimation = Animation.fromSpriteSheet(
-    //   this.spriteSheet,
-    //   range(0, 15), // Use all 16 frames
-    //   200, // 200ms per frame
-    //   AnimationStrategy.Loop
-    // );
+  onEnterViewport(): void {
+    console.log('Dude entered viewport');
   }
 
   onPostUpdate(_: Engine, elapsed: number): void {
@@ -52,14 +35,15 @@ export class Dude extends Actor {
   }
 
   async onInitialize(): Promise<void> {
-    const animddfdf = await RESOURCES.characters.Dude.toAnimation();
-    if (animddfdf) {
-      console.log('lolol1');
-      this.graphics.add(animddfdf);
-      this.graphics.use(animddfdf);
-    }
+    const dudeAnimation = RESOURCES.characters.Dude.toAnimation();
 
     this.pos = new Vector(GAME_CONFIG.pathPoints[0].x, GAME_CONFIG.pathPoints[0].y);
+
+    if (dudeAnimation) {
+      this.graphics.add(dudeAnimation);
+      // this.graphics.use(dudeAnimation);
+    }
+    // this.graphics.use(dudeAnimation);
   }
 
   private updateMovement(delta: number): void {
@@ -82,15 +66,16 @@ export class Dude extends Actor {
   }
 
   private updateHealthBar(): void {
-    if (this.health < this.maxHealth) {
-      const healthPercentage = this.health / this.maxHealth;
-      const healthBarWidth = 20 * healthPercentage;
+    const maxHealth = this.maxHealth;
+    if (this.health < maxHealth) {
+      const healthPercentage = this.health / maxHealth;
+      const healthBarWidth = 60 * healthPercentage;
 
       this.graphics.add(
         new Rectangle({
           width: 20,
           height: 3,
-          origin: new Vector(-10, -15),
+          origin: new Vector(50, 15),
           color: Color.Red,
         })
       );
@@ -98,10 +83,19 @@ export class Dude extends Actor {
         new Rectangle({
           width: healthBarWidth,
           height: 3,
-          origin: new Vector(-10, -35),
+          origin: new Vector(-50, 35),
           color: Color.Green,
         })
       );
+    } else {
+      const rectangle = new Rectangle({
+        width: maxHealth,
+        height: 3,
+        origin: new Vector(-10, 35),
+        color: Color.Green,
+        opacity: 1,
+      });
+      this.graphics.add(rectangle);
     }
   }
 }

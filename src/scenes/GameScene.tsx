@@ -34,18 +34,13 @@ export class GameScene extends Level {
   // }
   override onActivate(context: SceneActivationContext): void {
     this.pathPoints = GAME_CONFIG.pathPoints.map(point => new Vector(point.x, point.y));
-    // this.add(new Dude(100));
 
     const test = new Actor();
-    // test.graphics.anchor = new Vector(0, 0);
 
     RESOURCES.musics.happy.loop = true;
     RESOURCES.musics.happy.play(useGameOptionsStore.getState().musicVolume);
 
-    const map = RESOURCES.maps.simple.toSprite();
-    map.width = 1264;
-    map.height = 960;
-    map.scale = new Vector(1, 1);
+    const map = RESOURCES.maps.nice.toSprite();
 
     test.graphics.add(map);
     test.graphics.anchor = new Vector(0, 0);

@@ -20,15 +20,6 @@ export class GameManager {
     this.engine = engine;
   }
 
-  // public setState(state: Partial<LevelState>) {
-  //   return new Promise(resolve => {
-  //     setTimeout(() => {
-  //       useLevelStore.setState(state);
-  //       resolve(true);
-  //     }, 100);
-  //   });
-  // }
-
   public static getInstance(engine: GameEngine): GameManager {
     if (!GameManager.instance) {
       if (!engine) {
@@ -174,38 +165,41 @@ export class GameManager {
     });
 
     this.engine.add(checkTimer);
-    // this.engine.currentScene.add(checkTimer);
     checkTimer.start();
+  }
+
+  isCellOccupied(pos: Vector): boolean {
+    const towerAtCell = this.engine.currentScene.actors.find(a => {
+      const isTower = TOWER_TYPES.find(t => t.type === a.name);
+      return a.pos.equals(pos) && isTower;
+    });
+    if (towerAtCell) {
+      return true;
+    }
+    return false;
   }
 
   placeTower(pos: Vector, towerType: TowerTypes): boolean {
     const state = useLevelStore.getState();
+
     if (state.money < TOWER_TYPES.find(t => t.type === towerType)!.cost) {
       return false;
     }
 
-    const tldl = this.engine.currentScene.actors.find(a => {
-      const isTower = TOWER_TYPES.find(t => t.type === a.name);
-      return a.pos.equals(pos) && isTower;
-    });
-    if (tldl) {
-      return false;
-    }
-    if (this.isOnPath(pos)) {
+    const findTower = TOWER_TYPES.find(t => t.type === towerType);
+
+    if (this.isCellOccupied(pos) || this.isOnPath(pos) || !findTower) {
       return false;
     }
 
-    const findTower = TOWER_TYPES.find(t => t.type === towerType);
-    if (!findTower) {
-      return false;
-    }
     const tower = new Tower(pos, findTower);
     this.engine.currentScene.add(tower);
-    // this.engine.add(tower);
+
     useLevelStore.setState({
       money: state.money - findTower.cost,
       selectedTower: null,
     });
+
     return true;
   }
 
@@ -265,7 +259,6 @@ export class GameManager {
     if (this.updateTimer) {
       this.updateTimer.cancel();
       this.engine.remove(this.updateTimer);
-      //this.engine.stop();
     }
     this.engine.stop();
   }
