@@ -1,24 +1,30 @@
 import GAME_CONFIG from '#/constants/config.ts';
 import { TOWER_TYPES_MAP } from '#/constants/towers.ts';
 import useLevelStore from '#/hooks/useLevelStore.ts';
-import { GameEngine } from '#/services/GameEngine.tsx';
-import { GameManager } from '#/services/GameManager.ts';
+import type { GameEngine } from '#/services/GameEngine.tsx';
+import { GameManager } from '#/services/GameManager.tsx';
+import { Polyline, TiledResource } from '@excaliburjs/plugin-tiled';
 import { Actor, Color, Scene, SceneActivationContext, Vector } from 'excalibur';
 
 export class Level extends Scene {
   private grid: Actor[][] = [];
   private hoverCell: Actor | null = null;
   public pathPoints: Vector[] = [];
+  private map: TiledResource;
 
-  constructor() {
+  constructor(public tiledMap: TiledResource) {
     super();
+    this.map = tiledMap;
   }
 
-  onActivate(engine: SceneActivationContext): void {
-    void engine; // Explicitly indicate that we're ignoring this parameter
-
-    this.createGrid();
-    this.createPath();
+  onActivate(engine: SceneActivationContext) {
+    void engine;
+    console.log('on activate');
+    try {
+      this.loadPathFromTiled();
+    } catch (e) {
+      console.log('on activate error', e);
+    }
   }
 
   public createGrid() {
@@ -31,9 +37,9 @@ export class Level extends Scene {
         const cell = new Actor({
           x: col * GAME_CONFIG.gridSize + GAME_CONFIG.gridSize / 2,
           y: row * GAME_CONFIG.gridSize + GAME_CONFIG.gridSize / 2,
-          width: GAME_CONFIG.gridSize - 2, // Slightly smaller to show gaps
-          height: GAME_CONFIG.gridSize - 2, // Slightly smaller to show gaps
-          opacity: 0.2,
+          width: GAME_CONFIG.gridSize - 2,
+          height: GAME_CONFIG.gridSize - 2,
+          opacity: 0.5,
           color: Color.LightGray,
         });
         this.grid[row][col] = cell;
@@ -41,12 +47,37 @@ export class Level extends Scene {
       }
     }
   }
+
+  // Load path points from Tiled object layer named "Path"
+  private loadPathFromTiled() {
+    // Find the object layer named "Path"
+    // const pathLayer = RESOURCES.maps.tiled.data.layers.find(
+    //   (layer: any) => layer.type === 'objectgroup' && layer.name === 'road'
+    // );
+    const pathLayer = this.map.getObjectLayers('path');
+    if (!pathLayer) return;
+
+    console.log('pathlayr', pathLayer);
+    // Find the first polyline object
+    const polylineObj = pathLayer[0].objects.find((obj: any) => obj.points);
+    console.log(polylineObj);
+    if (!polylineObj) return;
+
+    // Polyline points are relative to the object's (x, y)
+    this.pathPoints = (polylineObj as Polyline).points.map(
+      (pt: any) => new Vector(polylineObj.x + pt.x, polylineObj.y + pt.y)
+    );
+    console.log('this path', this.pathPoints);
+  }
+
+  // Draw the path as a polyline using a custom Actor
   public createPath() {
+    console.log('creating path', this.pathPoints);
     for (let i = 0; i < this.pathPoints.length - 1; i++) {
       const start = this.pathPoints[i];
       const end = this.pathPoints[i + 1];
       const pathSegment = new Actor({
-        x: (start.x + end.x) / 2 + 40,
+        x: (start.x + end.x) / 2,
         y: (start.y + end.y) / 2,
         width: Math.abs(end.x - start.x) || 80,
         height: Math.abs(end.y - start.y) || 80,

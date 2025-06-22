@@ -1,7 +1,7 @@
 import { useEngine } from '#/hooks/useEngine.ts';
 import { FaQuestionCircle } from 'react-icons/fa';
 import { cn } from '../../../libs/utils.ts';
-import ShiningButton from '../buttons/shining-button.tsx';
+import { Button } from '../buttons/button.tsx';
 function Component() {
   return (
     <div className="flex flex-col items-center justify-center gap-3 px-4 py-3 text-white">
@@ -37,8 +37,8 @@ export default function FlipCard({
   const { engine } = useEngine();
 
   return (
-    <div className="relative">
-      <div className={cn('group h-72 w-full [perspective:1000px]', className)} {...props}>
+    <div className="relative size-full">
+      <div className={cn('group h-60 w-full [perspective:1000px]', className)} {...props}>
         <div
           className={cn(
             'relative h-full rounded-2xl transition-all duration-500 [transform-style:preserve-3d]',
@@ -70,9 +70,13 @@ export default function FlipCard({
                   {description}{' '}
                 </p>
               </div>
-              <ShiningButton className="max-h-26 text-sm" onClick={() => engine?.goToScene(scene)}>
+              <Button
+                variant={'secondary'}
+                className="bg-blue-700 font-bold text-white"
+                onClick={() => engine?.goToScene(scene)}
+              >
                 START THE FIGHT
-              </ShiningButton>
+              </Button>
             </div>
           </div>
         </div>

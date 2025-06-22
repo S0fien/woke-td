@@ -22,6 +22,7 @@ const GAME_CONFIG = {
   updateInterval: 100,
   projectileSpeed: 300,
   enemySpeed: 100,
+  containerId: 'ui-container',
 };
 
 export default GAME_CONFIG;

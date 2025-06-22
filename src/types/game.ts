@@ -42,6 +42,7 @@ export interface LevelState {
 }
 
 export interface GameOptions {
+  isInitialized: boolean;
   gameStarted: boolean;
   musicRunning: boolean;
   musicVolume: number;

@@ -1,5 +1,5 @@
 import { useEngine } from '#/hooks/useEngine.ts';
-import { Actor, Color, vec, Vector } from 'excalibur';
+import { Actor, Color, PointerEvent, vec, Vector } from 'excalibur';
 import { useEffect, useState } from 'react';
 import RESOURCES from '../../constants/resources.ts';
 
@@ -13,7 +13,7 @@ export default function ContextualMenu() {
     if (!engine) {
       return;
     }
-    const pointerSubscription = engine.input.pointers.on('down', evt => {
+    const pointerSubscription = engine.input.pointers.on('down', (evt: PointerEvent) => {
       setVisible(true);
       setWorldPos(engine.screen.pageToWorldCoordinates(vec(evt.pagePos.x, evt.pagePos.y)));
       setScreenPos(evt.coordinates.screenPos);

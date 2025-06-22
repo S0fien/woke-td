@@ -6,4 +6,7 @@ export default {
       },
     },
   },
+  content: [
+    './src/**/*.{js,jsx,ts,tsx,html}', // Adjust to match your file structure
+  ],
 };

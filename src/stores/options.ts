@@ -4,4 +4,5 @@ export const gameOptionsStore: GameOptions = {
   gameStarted: false,
   musicRunning: true,
   musicVolume: 1,
+  isInitialized: false,
 };

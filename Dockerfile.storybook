@@ -10,4 +10,4 @@ COPY . .
 
 EXPOSE 6006
 
-CMD ["npm", "run", "storybook", "--", "--host", "0.0.0.0"]
+CMD ["npm", "run", "storybook", "--", "--ci", "--host", "0.0.0.0"]

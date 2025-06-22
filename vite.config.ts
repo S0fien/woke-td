@@ -6,6 +6,19 @@ import tailwindcss from '@tailwindcss/vite';
 
 const host = process.env.TAURI_DEV_HOST;
 
+// const tiledPlugin = () => {
+//   return {
+//     name: 'tiled-tileset-plugin',
+//     resolveId: {
+//       order: 'pre',
+//       handler(sourceId: any) {
+//         if (!sourceId.endsWith('.tsx')) return;
+//         return { id: 'tileset:' + sourceId, external: 'relative' };
+//       },
+//     },
+//   };
+// };
+
 // https://vitejs.dev/config/
 export default defineConfig(async () => ({
   plugins: [viteReact(), eslint(), tailwindcss()],
@@ -26,9 +39,12 @@ export default defineConfig(async () => ({
     rollupOptions: {
       output: {
         manualChunks: {
+          react: ['react', 'react-dom'],
           motion: ['motion', 'framer-motion'],
           'react-icons': ['react-icons'],
           css: ['tailwindcss'],
+          tauri: ['@tauri-apps/api', '@tauri-apps/plugin-*'],
+          excalibur: ['excalibur'],
         },
       },
     },

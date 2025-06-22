@@ -1,18 +1,22 @@
-import GAME_CONFIG from '#/constants/config.ts';
 import RESOURCES from '#/constants/resources.ts';
 import useGameOptionsStore from '#/hooks/useGameOptionsStore.ts';
 import { Actor, SceneActivationContext, Vector } from 'excalibur';
 
+import GAME_CONFIG from '#/constants/config.ts';
 import type { GameEngine } from '#/services/GameEngine.tsx';
 import { GameManager } from '#/services/GameManager.tsx';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Level } from './Level.ts';
 
+// You cannot lazy import a type in TypeScript.
+// Types are erased at compile time and do not exist at runtime.
+// Just import the type directly:
+
 const Bar = React.lazy(() => import('#/ui/components/containers/bar.tsx'));
 
-export class GameScene extends Level {
-  static instance: GameScene | null = null;
+export class DemoScene extends Level {
+  static instance: DemoScene | null = null;
   private uiRoot: ReturnType<typeof createRoot> | null = null;
 
   constructor() {
@@ -20,10 +24,10 @@ export class GameScene extends Level {
   }
 
   public static getInstance() {
-    if (!GameScene.instance) {
-      GameScene.instance = new GameScene();
+    if (!DemoScene.instance) {
+      DemoScene.instance = new DemoScene();
     }
-    return GameScene.instance;
+    return DemoScene.instance;
   }
 
   // onPostUpdate(engine: Engine, elapsed: number): void {
@@ -34,20 +38,22 @@ export class GameScene extends Level {
   // override onInitialize(engine: GameEngine) {
 
   // }
-  override async onActivate(context: SceneActivationContext): Promise<void> {
-    this.pathPoints = GAME_CONFIG.pathPoints.map(point => new Vector(point.x, point.y));
+  override onActivate(context: SceneActivationContext): void {
+    super.onActivate(context); // Call Level's onActivate
+    // this.pathPoints = DemoPathPoints.map(point => new Vector(point.x, point.y));
 
     const test = new Actor();
 
     RESOURCES.musics.happy.loop = true;
     RESOURCES.musics.happy.play(useGameOptionsStore.getState().musicVolume);
 
-    const map = RESOURCES.maps.nice.toSprite();
+    RESOURCES.maps.tiled.addToScene(this);
 
-    test.graphics.add(map);
+    // test.graphics.add(map);
     test.graphics.anchor = new Vector(0, 0);
     test.pos = new Vector(0, 0);
     this.add(test);
+
     this.createGrid();
     this.createPath();
     const gameManager = GameManager.getInstance(context.engine as GameEngine);
@@ -55,7 +61,6 @@ export class GameScene extends Level {
     // Add Excalibur label
     // Create a container for React UI
     const uiContainer = document.createElement('div');
-    uiContainer.id = 'scene-interface';
     uiContainer.classList = 'absolute bottom-0 w-full flex justify-center items-end pointer-all';
     uiContainer.style.pointerEvents = 'all'; // This allows clicking through to the game
 
@@ -76,8 +81,9 @@ export class GameScene extends Level {
     if (this.uiRoot) {
       this.uiRoot.unmount();
       const container = document.getElementById(GAME_CONFIG.containerId);
-      const sceneContainer = document.getElementById('scene-interface');
-      if (sceneContainer) container?.removeChild(sceneContainer);
+      if (container && container.lastChild && container.lastElementChild?.id !== 'game-interface') {
+        container.removeChild(container.lastChild);
+      }
     }
     this.clear();
   }

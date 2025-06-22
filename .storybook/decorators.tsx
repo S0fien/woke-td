@@ -3,10 +3,8 @@ import React from 'react';
 export const decorators = [
   (Story: () => React.JSX.Element) => (
     <div className="flex h-screen flex-col content-center justify-center bg-black text-gray-700">
-      <main className="m-auto flex w-1/2 h-[450px] content-center  bg-gray-500 justify-center" id="container">
-        <div className='m-auto'>
-          <Story />
-          </div>
+      <main className="m-auto flex h-full min-w-[1000px] content-center justify-center bg-gray-500" id="container">
+        <Story />
       </main>
     </div>
   ),

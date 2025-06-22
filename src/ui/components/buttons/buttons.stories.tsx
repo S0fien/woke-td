@@ -1,19 +1,21 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { JSX } from 'react';
 import { Button } from './button.tsx';
-import { Shine } from './shine.tsx';
+import { RetroButton } from './retro-button.tsx';
 import ShiningButton from './shining-button.tsx';
-import { ShinyButton } from './shiny-button.tsx';
 
-const Buttons = ({ children }: { children: JSX.Element }) => <div>{children}</div>;
+const Buttons = ({ children }: { children: JSX.Element }) => <div className="m-auto">{children}</div>;
 const meta: Meta<typeof Buttons> = {
   title: 'Components/Buttons',
-
+  decorators: Story => (
+    <div className="m-auto">
+      <Story />
+    </div>
+  ),
   subcomponents: {
     Button: Button as React.ComponentType<any>,
-    Shine: Shine as React.ComponentType<any>,
     ShiningButton: ShiningButton as React.ComponentType<any>,
-    ShinyButton: ShinyButton as React.ComponentType<any>,
+    Retro: RetroButton as React.ComponentType<any>,
   },
   component: Buttons,
 };
@@ -24,16 +26,64 @@ type Story = StoryObj<typeof Buttons>;
 
 export const Default: Story = {
   render: () => (
+    // <Buttons>
+    <Button>Default</Button>
+    // </Buttons>
+  ),
+};
+
+export const Destructive: Story = {
+  render: () => (
     <Buttons>
-      <Button>Aqsdsqqsdurora teuihiusdfdsfsfdsfdxt</Button>
+      <Button variant="destructive">Destructive</Button>
     </Buttons>
   ),
 };
 
-export const ShineButton: Story = {
+export const Outline: Story = {
   render: () => (
     <Buttons>
-      <Shine>Aurora text</Shine>
+      <Button variant="outline">Outline</Button>
+    </Buttons>
+  ),
+};
+
+export const Secondary: Story = {
+  render: () => (
+    <Buttons>
+      <Button variant="secondary">Secondary</Button>
+    </Buttons>
+  ),
+};
+
+export const Ghost: Story = {
+  render: () => (
+    <Buttons>
+      <Button variant="ghost">Ghost</Button>
+    </Buttons>
+  ),
+};
+
+export const Link: Story = {
+  render: () => (
+    <Buttons>
+      <Button variant="link">Link</Button>
+    </Buttons>
+  ),
+};
+
+export const Brutal: Story = {
+  render: () => (
+    <Buttons>
+      <Button variant="brutal">Brutal</Button>
+    </Buttons>
+  ),
+};
+
+export const BrutalNormal: Story = {
+  render: () => (
+    <Buttons>
+      <Button variant="brutal-normal">Brutal Normal</Button>
     </Buttons>
   ),
 };
@@ -46,10 +96,18 @@ export const ShiningButtonn: Story = {
   ),
 };
 
-export const ShinyButtonn: Story = {
+export const RetroBtn: Story = {
   render: () => (
     <Buttons>
-      <ShinyButton>Aurora text</ShinyButton>
+      <RetroButton>Aurora text</RetroButton>
+    </Buttons>
+  ),
+};
+
+export const RetroShinyBtn: Story = {
+  render: () => (
+    <Buttons>
+      <RetroButton variant={'shiny'}>Aurora text</RetroButton>
     </Buttons>
   ),
 };

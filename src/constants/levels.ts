@@ -2,6 +2,13 @@ import RESOURCES from './resources.ts';
 
 export const LEVELS = [
   {
+    name: 'Tutorial',
+    scene: 'demoScene',
+    image: RESOURCES.backgrounds.forest.path,
+    description: 'Test your skills with this intro level',
+    available: true,
+  },
+  {
     name: 'The beginning',
     scene: 'gameScene',
     image: RESOURCES.backgrounds.forest.path,

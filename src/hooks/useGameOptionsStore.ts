@@ -1,11 +1,11 @@
 import { gameOptionsStore } from '#/stores/options.ts';
-import { GameOptions, LevelState } from '#/types/game.ts';
+import { GameOptions } from '#/types/game.ts';
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 
 interface GameOptionsStore extends GameOptions {
   // eslint-disable-next-line no-unused-vars
-  setState: (state: Partial<LevelState>) => void;
+  setState: (state: Partial<GameOptions>) => void;
   resetGame: () => void;
 }
 

@@ -1,5 +1,6 @@
 import useGameOptionsStore from '#/hooks/useGameOptionsStore.ts';
 import useLevelStore from '#/hooks/useLevelStore.ts';
+import { toast } from '#/hooks/useToast.ts';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@radix-ui/react-tooltip';
 import { AudioContextFactory } from 'excalibur';
 import { BiGlobe, BiTrash, BiVolumeFull, BiVolumeMute } from 'react-icons/bi';
@@ -12,10 +13,15 @@ export const GlobalOverlay = () => {
   const clearStore = () => {
     useGameOptionsStore.getState().resetGame();
     useLevelStore.getState().resetGame();
-    console.log('Store cleared');
+    toast({
+      title: 'Store Cleared',
+      description: 'All game data has been reset.',
+      // duration: 500,
+    });
   };
+
   return (
-    <div className={`ml-auto flex cursor-pointer gap-3 pr-10 pb-5`}>
+    <div className={`mt-auto ml-auto flex cursor-pointer gap-3 pr-10 pb-5`}>
       <BiTrash
         color="white"
         onClick={clearStore}

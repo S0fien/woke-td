@@ -112,6 +112,15 @@ body {
   width: 1368px;
 }
 
+#excalibur-play-root {
+  color: white;
+  left: 0 !important;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 :root {
   /* height: 100%; */
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
@@ -313,39 +322,6 @@ canvas {
   align-items: center;
   z-index: 100;
   color: white;
-}
-
-.game-over-overlay h2,
-.victory-overlay h2 {
-  font-size: 48px;
-  margin-bottom: 20px;
-}
-
-.victory-overlay h2 {
-  color: #ffd700;
-  /* Gold color for victory */
-}
-
-.game-over-overlay button,
-.victory-overlay button {
-  background-color: #4caf50;
-  color: white;
-  padding: 15px 30px;
-  font-size: 18px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.game-over-overlay button:hover,
-.victory-overlay button:hover {
-  background-color: #45a049;
-}
-
-.victory-overlay p {
-  font-size: 24px;
-  margin-bottom: 20px;
 }
 
 @media (prefers-color-scheme: dark) {

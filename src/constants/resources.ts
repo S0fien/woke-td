@@ -1,4 +1,5 @@
 import { Cloudinary } from '@cloudinary/url-gen';
+import { TiledResource } from '@excaliburjs/plugin-tiled';
 import { Gif, ImageSource, Sound } from 'excalibur';
 import { API_KEY, API_SECRET } from './secrets.ts';
 const client = new Cloudinary({
@@ -18,6 +19,7 @@ const RESOURCES = {
     nice: new ImageSource(client.image('nice-map').toURL()),
     simple: new ImageSource(client.image('map-bg').toURL()),
     begin: new ImageSource(client.image('map-intro').toURL()),
+    tiled: new TiledResource('tile.tmx'),
   },
   backgrounds: {
     test: new ImageSource(client.image('menu-bg').toURL()),
@@ -43,6 +45,10 @@ const RESOURCES = {
     happy: new Sound(client.video('happy.mp3').toURL()),
     lose: new Sound(client.video('lose.mp3').toURL()),
     win: new Sound(client.video('win.mp3').toURL()),
+  },
+  icons: {
+    winning: new ImageSource('./win.png'),
+    lose: new ImageSource('./loser.png'),
   },
 } as const;
 

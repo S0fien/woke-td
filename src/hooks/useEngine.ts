@@ -1,15 +1,16 @@
+import GAME_CONFIG from '#/constants/config.ts';
 import { GameEngine } from '#/services/GameEngine.tsx';
-import { GameManager } from '#/services/GameManager.ts';
+import { GameManager } from '#/services/GameManager.tsx';
 import { useEffect, useState } from 'react';
 
 export const useEngine = () => {
-  const [engine, setEngine] = useState<GameEngine | null>(null);
-  const [gameManager, setGameManager] = useState<GameManager | null>(null);
+  const [engine, setEngine] = useState<GameEngine>();
+  const [gameManager, setGameManager] = useState<GameManager>();
 
   useEffect(() => {
     // Ensure container element exists
-    let container = document.getElementById('container');
-    if (!container) {
+    let container = document.getElementById(GAME_CONFIG.containerId);
+    if (!container || !GameEngine) {
       return;
     }
 

@@ -3,7 +3,7 @@ import { TOWER_TYPES } from '#/constants/towers.ts';
 import { useEngine } from '#/hooks/useEngine.ts';
 import useLevelStore from '#/hooks/useLevelStore.ts';
 import { TowerTypes } from '#/types/game.ts';
-import { Badge } from './badge.tsx';
+import { Badge } from '../elements/badge.tsx';
 
 export const TowerContainer = () => {
   const { gameManager } = useEngine();

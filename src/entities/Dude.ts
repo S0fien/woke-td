@@ -71,7 +71,8 @@ export class Dude extends Actor {
       const healthPercentage = this.health / maxHealth;
       const healthBarWidth = 60 * healthPercentage;
 
-      this.graphics.add(
+      const rectActor = new Actor({});
+      rectActor.graphics.add(
         new Rectangle({
           width: 20,
           height: 3,
@@ -79,7 +80,7 @@ export class Dude extends Actor {
           color: Color.Red,
         })
       );
-      this.graphics.add(
+      rectActor.graphics.add(
         new Rectangle({
           width: healthBarWidth,
           height: 3,
@@ -87,15 +88,19 @@ export class Dude extends Actor {
           color: Color.Green,
         })
       );
+      this.addChild(rectActor);
     } else {
-      const rectangle = new Rectangle({
-        width: maxHealth,
-        height: 3,
-        origin: new Vector(-10, 35),
-        color: Color.Green,
-        opacity: 1,
-      });
-      this.graphics.add(rectangle);
+      const rectActor = new Actor({});
+      rectActor.graphics.add(
+        new Rectangle({
+          width: maxHealth,
+          height: 3,
+          origin: new Vector(-10, 35),
+          color: Color.Green,
+          opacity: 1,
+        })
+      );
+      this.addChild(rectActor);
     }
   }
 }

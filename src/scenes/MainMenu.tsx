@@ -1,9 +1,12 @@
+import GAME_CONFIG from '#/constants/config.ts';
 import RESOURCES from '#/constants/resources.ts';
 import useGameOptionsStore from '#/hooks/useGameOptionsStore.ts';
-import { GameEngine } from '#/services/GameEngine.tsx';
-import { Menu } from '#/ui/features/menu.tsx';
+import type { GameEngine } from '#/services/GameEngine.tsx';
 import { Actor, Scene, Vector } from 'excalibur';
+import React, { Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
+
+const Menu = React.lazy(async () => await import('#/ui/features/menu.tsx'));
 
 export class MainMenu extends Scene {
   private uiRoot: ReturnType<typeof createRoot> | null = null;
@@ -20,14 +23,18 @@ export class MainMenu extends Scene {
     uiContainer.style.pointerEvents = 'all'; // This allows clicking through to the game
 
     // Add the container to the document
-    const container = document.getElementById('game-root');
+    const container = document.getElementById(GAME_CONFIG.containerId);
     if (container) {
       container.appendChild(uiContainer);
     }
 
     // Create React root and render UI
     this.uiRoot = createRoot(uiContainer);
-    this.uiRoot.render(<Menu />);
+    this.uiRoot.render(
+      <Suspense fallback={<div className="text-4xl">Loading...</div>}>
+        <Menu />
+      </Suspense>
+    );
   }
 
   override onActivate(): void {
@@ -57,7 +64,7 @@ export class MainMenu extends Scene {
     if (this.uiRoot) {
       console.log('unmounting uiRoot');
       this.uiRoot.unmount();
-      const container = document.getElementById('game-root');
+      const container = document.getElementById(GAME_CONFIG.containerId);
       const menuContainer = document.getElementById('menu-interface');
       if (menuContainer) {
         console.log('removing menu container', menuContainer.innerHTML);
