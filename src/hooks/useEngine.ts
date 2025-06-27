@@ -10,6 +10,7 @@ export const useEngine = () => {
   useEffect(() => {
     // Ensure container element exists
     let container = document.getElementById(GAME_CONFIG.containerId);
+    console.log('container is', container, GameEngine);
     if (!container || !GameEngine) {
       return;
     }
@@ -21,12 +22,6 @@ export const useEngine = () => {
 
       engineInstance.initializeUI();
     }
-
-    // Initialize UI after component is mounted
-    // engineInstance.on('visible', (event) => {
-    //   console.log('initializeUIIIII', event);
-    //   engineInstance.initializeUI();
-    // })
   }, []);
 
   useEffect(() => {

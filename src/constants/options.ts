@@ -1,9 +1,8 @@
+import { DemoScene } from '#/scenes/DemoScene.tsx';
+import { GameScene } from '#/scenes/GameScene.tsx';
+import { MainMenu } from '#/scenes/MainMenu.tsx';
 import { Color, DisplayMode, EngineOptions, FadeInOut } from 'excalibur';
 import GAME_CONFIG from './config.ts';
-
-const { DemoScene } = await import('#/scenes/DemoScene.tsx');
-const { GameScene } = await import('#/scenes/GameScene.tsx');
-const { MainMenu } = await import('#/scenes/MainMenu.tsx');
 
 const GAME_OPTIONS: EngineOptions = {
   // suppressPlayButton: true,

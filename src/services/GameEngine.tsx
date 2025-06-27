@@ -36,14 +36,13 @@ export class GameEngine extends Engine {
       if (!GameEngine.instance) {
         GameEngine.instance = new GameEngine();
       }
-    } catch {
-      console.debug('Engine does not exist.');
+    } catch (err) {
+      console.debug('Engine does not exist.', err);
     }
     return GameEngine.instance;
   }
 
   public initializeUI(): void {
-    console.log('hello');
     if (!this.isRunning()) {
       this.run();
     }
@@ -56,16 +55,13 @@ export class GameEngine extends Engine {
     }
     loader.backgroundColor = Color.Black.toString();
     // loader.logo = './favicon.png';
-    // loader.logoPosition?.normal;
-    loader.playButtonText = 'Defend';
 
     loader.startButtonFactory = () => {
       let myButton = document.createElement('button');
-      myButton.textContent = 'The best button';
+      myButton.textContent = 'Defend';
       return myButton;
     };
     this.start(loader).then(async () => {
-      console.log('go to scene');
       useGameOptionsStore.getState().setState({
         isInitialized: true,
       });

@@ -1,6 +1,4 @@
 import GAME_CONFIG from '#/constants/config.ts';
-import { TOWER_TYPES_MAP } from '#/constants/towers.ts';
-import useLevelStore from '#/hooks/useLevelStore.ts';
 import type { GameEngine } from '#/services/GameEngine.tsx';
 import { GameManager } from '#/services/GameManager.tsx';
 import { Polyline, TiledResource } from '@excaliburjs/plugin-tiled';
@@ -19,12 +17,7 @@ export class Level extends Scene {
 
   onActivate(engine: SceneActivationContext) {
     void engine;
-    console.log('on activate');
-    try {
-      this.loadPathFromTiled();
-    } catch (e) {
-      console.log('on activate error', e);
-    }
+    this.loadPathFromTiled();
   }
 
   public createGrid() {
@@ -57,22 +50,18 @@ export class Level extends Scene {
     const pathLayer = this.map.getObjectLayers('path');
     if (!pathLayer) return;
 
-    console.log('pathlayr', pathLayer);
     // Find the first polyline object
     const polylineObj = pathLayer[0].objects.find((obj: any) => obj.points);
-    console.log(polylineObj);
     if (!polylineObj) return;
 
     // Polyline points are relative to the object's (x, y)
     this.pathPoints = (polylineObj as Polyline).points.map(
       (pt: any) => new Vector(polylineObj.x + pt.x, polylineObj.y + pt.y)
     );
-    console.log('this path', this.pathPoints);
   }
 
   // Draw the path as a polyline using a custom Actor
   public createPath() {
-    console.log('creating path', this.pathPoints);
     for (let i = 0; i < this.pathPoints.length - 1; i++) {
       const start = this.pathPoints[i];
       const end = this.pathPoints[i + 1];
@@ -99,13 +88,9 @@ export class Level extends Scene {
   }
 
   public isAlreadyUsed(pos: Vector) {
-    console.log(Object.values(TOWER_TYPES_MAP));
-    const isTower = Object.values(TOWER_TYPES_MAP).find(t => t === pos);
-    console.log('isAlreadyUsed', isTower, pos);
     const finding = this.actors.find(actor => {
       return actor.pos.equals(pos);
     });
-    console.log('Checking  finding', finding);
 
     return finding;
   }
@@ -114,7 +99,6 @@ export class Level extends Scene {
     const gridPos = this.getGridPosition(pos);
     const col = Math.floor(gridPos.x / GAME_CONFIG.gridSize);
     const row = Math.floor(gridPos.y / GAME_CONFIG.gridSize);
-    const { selectedTower } = useLevelStore.getState();
 
     const hoverCellConfig = {
       x: gridPos.x,
@@ -123,10 +107,10 @@ export class Level extends Scene {
       height: GAME_CONFIG.gridSize,
       z: 9999999999, // Ensure the hover cell is always on top
       color: Color.Pink,
-      opacity: 0.3,
+      opacity: 0.8,
     };
 
-    if (row >= 0 && row < this.grid.length && col >= 0 && col < this.grid[0].length && selectedTower) {
+    if (row >= 0 && row < this.grid.length && col >= 0 && col < this.grid[0].length) {
       const engine = this.engine as GameEngine;
       const gameManager = GameManager.getInstance(engine);
 
@@ -149,7 +133,6 @@ export class Level extends Scene {
   public resetGridHighlight() {
     if (this.hoverCell) {
       this.remove(this.hoverCell);
-      // this.engine.remove(this.hoverCell);
       this.hoverCell = null;
     }
   }

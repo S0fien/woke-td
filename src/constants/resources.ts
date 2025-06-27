@@ -12,14 +12,12 @@ const client = new Cloudinary({
 
 const RESOURCES = {
   towers: {
-    trumpTower: new ImageSource(client.image('trump-tower').toURL()),
-    church: new ImageSource(client.image('church').toURL()),
+    trumpTower: new ImageSource('trump-tower.png'),
+    church: new ImageSource('church.png'),
   },
   maps: {
-    nice: new ImageSource(client.image('nice-map').toURL()),
-    simple: new ImageSource(client.image('map-bg').toURL()),
-    begin: new ImageSource(client.image('map-intro').toURL()),
-    tiled: new TiledResource('tile.tmx'),
+    tiled: new TiledResource('second.json'),
+    second: new TiledResource('second.json'),
   },
   backgrounds: {
     test: new ImageSource(client.image('menu-bg').toURL()),
@@ -47,8 +45,8 @@ const RESOURCES = {
     win: new Sound(client.video('win.mp3').toURL()),
   },
   icons: {
-    winning: new ImageSource('./win.png'),
-    lose: new ImageSource('./loser.png'),
+    winning: new ImageSource('icons/win.png'),
+    lose: new ImageSource('icons/loser.png'),
   },
 } as const;
 

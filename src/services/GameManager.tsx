@@ -35,11 +35,10 @@ export class GameManager {
     this.startNextWave();
     this.startUpdateLoop();
 
-    // Handle mouse move for grid highlighting
-    this.engine.canvas.addEventListener('mousemove', (event: MouseEvent) => {
+    this.engine.input.pointers.on('move', evt => {
       const state = useLevelStore.getState();
       if (state.selectedTower) {
-        const pos = new Vector(event.offsetX, event.offsetY);
+        const pos = evt.worldPos;
         this.engine.currentScene.resetGridHighlight();
         this.engine.currentScene.highlightCell(pos);
       }
@@ -74,7 +73,6 @@ export class GameManager {
   private update(): void {
     const state = useLevelStore.getState();
     if (state.gameOver || state.victory) return;
-
     const currentTime = this.engine.currentFrameElapsedMs;
     const towers = this.getTowers();
     const enemies = this.getEnemies();
@@ -120,7 +118,7 @@ export class GameManager {
     const spawnTimer = new Timer({
       action: () => {
         if (spawned < enemyCount) {
-          const enemy = new Dude(enemyHp);
+          const enemy = new Dude(enemyHp, this.engine.currentScene.pathPoints);
           this.engine.currentScene.add(enemy);
           enemy.graphics.isVisible = true;
           enemy.on('exitviewport', truc => {

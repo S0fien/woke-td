@@ -37,5 +37,6 @@
     "eslint.config.js",
     "tailwind.config.js",
     "src/ui/components/texts/.tsx"
-  ]
+  ],
+  "exclude": ["public/*.tsx"]
 }

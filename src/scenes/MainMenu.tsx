@@ -2,11 +2,10 @@ import GAME_CONFIG from '#/constants/config.ts';
 import RESOURCES from '#/constants/resources.ts';
 import useGameOptionsStore from '#/hooks/useGameOptionsStore.ts';
 import type { GameEngine } from '#/services/GameEngine.tsx';
+import Menu from '#/ui/features/menu.tsx';
 import { Actor, Scene, Vector } from 'excalibur';
-import React, { Suspense } from 'react';
+import { Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
-
-const Menu = React.lazy(async () => await import('#/ui/features/menu.tsx'));
 
 export class MainMenu extends Scene {
   private uiRoot: ReturnType<typeof createRoot> | null = null;
@@ -18,12 +17,13 @@ export class MainMenu extends Scene {
   createUi(): void {
     if (document.querySelector('#menu-interface')) return;
     const uiContainer = document.createElement('div');
-    uiContainer.className = `size-full  absolute top-0 left-0`;
+    uiContainer.className = `py-20 h-full mx-auto absolute top-0 left-0 flex flex-col items-center justify-between`;
     uiContainer.id = 'menu-interface';
     uiContainer.style.pointerEvents = 'all'; // This allows clicking through to the game
 
     // Add the container to the document
-    const container = document.getElementById(GAME_CONFIG.containerId);
+    const container = document.getElementById('ui-container');
+    // const container = document.getElementById(GAME_CONFIG.containerId);
     if (container) {
       container.appendChild(uiContainer);
     }
@@ -58,17 +58,13 @@ export class MainMenu extends Scene {
   }
 
   onDeactivate() {
-    console.log('deactivating');
     RESOURCES.musics.caketown.stop();
     // Clean up React root when scene is deactivated
     if (this.uiRoot) {
-      console.log('unmounting uiRoot');
       this.uiRoot.unmount();
       const container = document.getElementById(GAME_CONFIG.containerId);
       const menuContainer = document.getElementById('menu-interface');
       if (menuContainer) {
-        console.log('removing menu container', menuContainer.innerHTML);
-        console.log('menu container last child', menuContainer.lastChild?.textContent);
         container?.removeChild(menuContainer);
       }
     }

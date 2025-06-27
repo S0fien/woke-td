@@ -5,15 +5,12 @@ import { Actor, SceneActivationContext, Vector } from 'excalibur';
 import GAME_CONFIG from '#/constants/config.ts';
 import type { GameEngine } from '#/services/GameEngine.tsx';
 import { GameManager } from '#/services/GameManager.tsx';
-import React from 'react';
+import Bar from '#/ui/components/containers/bar.tsx';
 import { createRoot } from 'react-dom/client';
 import { Level } from './Level.ts';
 
-// You cannot lazy import a type in TypeScript.
 // Types are erased at compile time and do not exist at runtime.
 // Just import the type directly:
-
-const Bar = React.lazy(() => import('#/ui/components/containers/bar.tsx'));
 
 export class DemoScene extends Level {
   static instance: DemoScene | null = null;
@@ -61,7 +58,8 @@ export class DemoScene extends Level {
     // Add Excalibur label
     // Create a container for React UI
     const uiContainer = document.createElement('div');
-    uiContainer.classList = 'absolute bottom-0 w-full flex justify-center items-end pointer-all';
+    uiContainer.id = 'demo-interface';
+    uiContainer.classList = 'absolute bottom-0 w-full flex justify-center items-end';
     uiContainer.style.pointerEvents = 'all'; // This allows clicking through to the game
 
     // Add the container to the document
@@ -81,7 +79,7 @@ export class DemoScene extends Level {
     if (this.uiRoot) {
       this.uiRoot.unmount();
       const container = document.getElementById(GAME_CONFIG.containerId);
-      if (container && container.lastChild && container.lastElementChild?.id !== 'game-interface') {
+      if (container && container.lastChild && container.lastElementChild?.id !== 'ui-container') {
         container.removeChild(container.lastChild);
       }
     }

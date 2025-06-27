@@ -21,7 +21,9 @@ export const GlobalOverlay = () => {
   };
 
   return (
-    <div className={`mt-auto ml-auto flex cursor-pointer gap-3 pr-10 pb-5`}>
+    <div
+      className={`pointers-event-all absolute right-0 bottom-0 z-90 mt-auto ml-auto flex cursor-pointer gap-3 pr-10 pb-5`}
+    >
       <BiTrash
         color="white"
         onClick={clearStore}
@@ -30,7 +32,7 @@ export const GlobalOverlay = () => {
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
-            <CiSettings className="pointer-all hover:fill-lightblue size-14 transition-all" color="lightgray" />
+            <CiSettings className="hover:fill-lightblue size-14 transition-all" color="lightgray" />
           </TooltipTrigger>
           <TooltipContent className="dark bg-black/80 px-4 py-3">
             <div className="flex gap-3">

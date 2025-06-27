@@ -4,12 +4,7 @@ const GAME_CONFIG = {
   width: 1368,
   height: 780,
   backgroundColor: Color.Black,
-  gridSize: 80, // Size of each grid cell
-  pathPoints: [
-    { x: 160, y: 0 },
-    { x: 160, y: 700 },
-    { x: 1368 + 200, y: 700 },
-  ],
+  gridSize: 80,
   pathBuffer: 40,
   maxWaves: 3,
   initialMoney: 100,
@@ -23,6 +18,7 @@ const GAME_CONFIG = {
   projectileSpeed: 300,
   enemySpeed: 100,
   containerId: 'ui-container',
+  rootContainerId: 'game-root',
 };
 
 export default GAME_CONFIG;

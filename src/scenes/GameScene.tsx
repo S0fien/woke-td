@@ -5,18 +5,16 @@ import { Actor, SceneActivationContext, Vector } from 'excalibur';
 
 import type { GameEngine } from '#/services/GameEngine.tsx';
 import { GameManager } from '#/services/GameManager.tsx';
-import React from 'react';
+import Bar from '#/ui/components/containers/bar.tsx';
 import { createRoot } from 'react-dom/client';
 import { Level } from './Level.ts';
-
-const Bar = React.lazy(() => import('#/ui/components/containers/bar.tsx'));
 
 export class GameScene extends Level {
   static instance: GameScene | null = null;
   private uiRoot: ReturnType<typeof createRoot> | null = null;
 
   constructor() {
-    super(RESOURCES.maps.tiled);
+    super(RESOURCES.maps.second);
   }
 
   public static getInstance() {
@@ -26,25 +24,15 @@ export class GameScene extends Level {
     return GameScene.instance;
   }
 
-  // onPostUpdate(engine: Engine, elapsed: number): void {
-  //     // console.log('postupdate', elapsed);
-  //     // this.gameManager.update(elapsed);
-  // }
-
-  // override onInitialize(engine: GameEngine) {
-
-  // }
   override async onActivate(context: SceneActivationContext): Promise<void> {
-    this.pathPoints = GAME_CONFIG.pathPoints.map(point => new Vector(point.x, point.y));
-
+    super.onActivate(context); // Call Level's onActivate
     const test = new Actor();
 
     RESOURCES.musics.happy.loop = true;
     RESOURCES.musics.happy.play(useGameOptionsStore.getState().musicVolume);
 
-    const map = RESOURCES.maps.nice.toSprite();
+    RESOURCES.maps.second.addToScene(this);
 
-    test.graphics.add(map);
     test.graphics.anchor = new Vector(0, 0);
     test.pos = new Vector(0, 0);
     this.add(test);
@@ -56,7 +44,7 @@ export class GameScene extends Level {
     // Create a container for React UI
     const uiContainer = document.createElement('div');
     uiContainer.id = 'scene-interface';
-    uiContainer.classList = 'absolute bottom-0 w-full flex justify-center items-end pointer-all';
+    uiContainer.classList = 'absolute bottom-0 w-full flex justify-center items-end';
     uiContainer.style.pointerEvents = 'all'; // This allows clicking through to the game
 
     // Add the container to the document

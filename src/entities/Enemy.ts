@@ -1,4 +1,4 @@
-import { Actor, Color, Rectangle, Vector } from 'excalibur';
+import { Actor, Color, Engine, Rectangle, Vector } from 'excalibur';
 import GAME_CONFIG from '../constants/config.ts';
 
 export class Enemy extends Actor {
@@ -7,8 +7,9 @@ export class Enemy extends Actor {
   value: number;
   currentPathIndex: number;
   speed: number;
+  pathPoints: Vector[];
 
-  constructor(hp: number) {
+  constructor(hp: number, pathPoints: Vector[]) {
     super({
       x: 0,
       y: 200,
@@ -18,45 +19,16 @@ export class Enemy extends Actor {
     });
 
     this.health = hp;
+    this.pathPoints = pathPoints;
     this.maxHealth = hp;
     this.value = Math.floor(hp / 10);
     this.currentPathIndex = 1;
     this.speed = GAME_CONFIG.enemySpeed;
+  }
 
-    // Create sprite sheet from the RESOURCES
-    // const playerSpriteSheet = SpriteSheet.fromImageSource({
-    //   image: RESOURCES.Girl,
-    //   grid: {
-    //     spriteWidth: 416,
-    //     spriteHeight: 454,
-    //     rows: 4,
-    //     columns: 4,
-    //   },
-    // });
-
-    // const leftIdle = new Animation({
-    //   frames: [
-    //     { graphic: playerSpriteSheet.getSprite(0, 1), duration: 300 },
-    //     { graphic: playerSpriteSheet.getSprite(1, 1), duration: 300 },
-    //     { graphic: playerSpriteSheet.getSprite(2, 1), duration: 300 },
-    //     { graphic: playerSpriteSheet.getSprite(3, 1), duration: 300 },
-    //   ],
-    // });
-    // this.graphics.add('left-idle', leftIdle);
-    // this.graphics.use('left-idle');
-
-    // Create walk animation using frames
-    // this.walkAnimation = Animation.fromSpriteSheet(
-    //   this.spriteSheet,
-    //   range(0, 15), // Use all 16 frames
-    //   200, // 200ms per frame
-    //   AnimationStrategy.Loop
-    // );
-
-    this.on('postupdate', evt => {
-      this.updateMovement(evt.elapsed);
-      this.updateHealthBar();
-    });
+  onPostUpdate(_: Engine, elapsed: number) {
+    this.updateMovement(elapsed);
+    this.updateHealthBar();
   }
 
   // async onInitialize(): Promise<void> {
@@ -76,7 +48,7 @@ export class Enemy extends Actor {
   // }
 
   private updateMovement(delta: number): void {
-    const pathPoints = GAME_CONFIG.pathPoints.map(point => new Vector(point.x, point.y));
+    const pathPoints = this.pathPoints.map(point => new Vector(point.x, point.y));
 
     if (this.currentPathIndex >= pathPoints.length) {
       // this.kill();
