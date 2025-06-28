@@ -1,12 +1,10 @@
-import RESOURCES from '#/constants/resources.ts';
+import { RESOURCES } from '#/constants/resources.ts';
 import { TOWER_TYPES } from '#/constants/towers.ts';
-import { useEngine } from '#/hooks/useEngine.ts';
 import useLevelStore from '#/hooks/useLevelStore.ts';
 import { TowerTypes } from '#/types/game.ts';
 import { Badge } from '../elements/badge.tsx';
 
 export const TowerContainer = () => {
-  const { gameManager } = useEngine();
   const selectedTower = useLevelStore(state => state.selectedTower);
 
   return (
@@ -16,7 +14,10 @@ export const TowerContainer = () => {
           <button
             key={'tower-' + index}
             onClick={() => {
-              gameManager?.setSelectedTower(tower.type as TowerTypes);
+              useLevelStore.setState(state => ({
+                ...state,
+                selectedTower: tower.type as TowerTypes,
+              }));
             }}
             type="button"
             value={tower.type}

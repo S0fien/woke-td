@@ -218,7 +218,7 @@ const ToastItem = ({ id, title, description, action, duration = 3000, icon, ...p
   );
 };
 
-export function Toaster() {
+export default function Toaster() {
   const { toasts } = useToast();
 
   return (

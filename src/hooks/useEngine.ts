@@ -1,35 +1,31 @@
 import GAME_CONFIG from '#/constants/config.ts';
 import { GameEngine } from '#/services/GameEngine.tsx';
-import { GameManager } from '#/services/GameManager.tsx';
 import { useEffect, useState } from 'react';
 
 export const useEngine = () => {
+  console.log('hello');
   const [engine, setEngine] = useState<GameEngine>();
-  const [gameManager, setGameManager] = useState<GameManager>();
 
   useEffect(() => {
-    // Ensure container element exists
-    let container = document.getElementById(GAME_CONFIG.containerId);
-    console.log('container is', container, GameEngine);
-    if (!container || !GameEngine) {
-      return;
-    }
+    console.log('first');
+    const initializeEngine = async () => {
+      // Ensure container element exists
+      let container = document.getElementById(GAME_CONFIG.containerId);
+      console.log('container is', container, GameEngine);
+      if (!container || !GameEngine) {
+        return;
+      }
 
-    // Get the engine instance outside of render
-    const engineInstance = GameEngine.getInstance();
-    if (engineInstance) {
-      setEngine(engineInstance);
+      // Get the engine instance outside of render
+      const engineInstance = GameEngine.getInstance();
+      if (engineInstance) {
+        setEngine(engineInstance);
+        await engineInstance.initializeUI();
+      }
+    };
 
-      engineInstance.initializeUI();
-    }
+    initializeEngine();
   }, []);
 
-  useEffect(() => {
-    if (engine) {
-      const gameManagerInstance = GameManager.getInstance(engine);
-      setGameManager(gameManagerInstance);
-    }
-  }, [engine]);
-
-  return { engine, gameManager };
+  return { engine };
 };

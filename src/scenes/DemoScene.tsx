@@ -1,16 +1,15 @@
-import RESOURCES from '#/constants/resources.ts';
-import useGameOptionsStore from '#/hooks/useGameOptionsStore.ts';
-import { Actor, SceneActivationContext, Vector } from 'excalibur';
-
 import GAME_CONFIG from '#/constants/config.ts';
+import { ESSENTIALS, RESOURCES } from '#/constants/resources.ts';
+import useGameOptionsStore from '#/hooks/useGameOptionsStore.ts';
 import type { GameEngine } from '#/services/GameEngine.tsx';
 import { GameManager } from '#/services/GameManager.tsx';
-import Bar from '#/ui/components/containers/bar.tsx';
+import { Transition } from 'excalibur';
+import { lazy } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Level } from './Level.ts';
 
-// Types are erased at compile time and do not exist at runtime.
-// Just import the type directly:
+let ex: typeof import('excalibur');
+const Bar = lazy(() => import('#/ui/components/containers/bar.tsx'));
 
 export class DemoScene extends Level {
   static instance: DemoScene | null = null;
@@ -32,23 +31,25 @@ export class DemoScene extends Level {
   //     // this.gameManager.update(elapsed);
   // }
 
-  // override onInitialize(engine: GameEngine) {
+  override async onInitialize() {
+    super.onInitialize();
+    ex = await import('excalibur');
+  }
 
-  // }
-  override onActivate(context: SceneActivationContext): void {
+  override onActivate(context: ex.SceneActivationContext): void {
     super.onActivate(context); // Call Level's onActivate
     // this.pathPoints = DemoPathPoints.map(point => new Vector(point.x, point.y));
 
-    const test = new Actor();
+    const test = new ex.Actor();
 
-    RESOURCES.musics.happy.loop = true;
-    RESOURCES.musics.happy.play(useGameOptionsStore.getState().musicVolume);
+    ESSENTIALS.musics.happy.loop = true;
+    ESSENTIALS.musics.happy.play(useGameOptionsStore.getState().musicVolume);
 
     RESOURCES.maps.tiled.addToScene(this);
 
     // test.graphics.add(map);
-    test.graphics.anchor = new Vector(0, 0);
-    test.pos = new Vector(0, 0);
+    test.graphics.anchor = new ex.Vector(0, 0);
+    test.pos = new ex.Vector(0, 0);
     this.add(test);
 
     this.createGrid();
@@ -73,8 +74,9 @@ export class DemoScene extends Level {
     this.uiRoot.render(<Bar />);
   }
 
-  onDeactivate() {
-    RESOURCES.musics.happy.stop();
+  override onTransition(direction: 'in' | 'out'): Transition | undefined {
+    void direction;
+    ESSENTIALS.musics.happy.stop();
     // Clean up React root when scene is deactivated
     if (this.uiRoot) {
       this.uiRoot.unmount();
@@ -84,5 +86,6 @@ export class DemoScene extends Level {
       }
     }
     this.clear();
+    return undefined;
   }
 }

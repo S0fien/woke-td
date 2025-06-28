@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { lazy, useEffect, useState } from 'react';
 import { useEngine } from './hooks/useEngine.ts';
-import { Toaster } from './ui/components/elements/toaster.tsx';
-import { GameStatus } from './ui/features/game-status.tsx';
-import { GlobalOverlay } from './ui/features/global-overlay.tsx';
+
+const Toaster = lazy(() => import('./ui/components/elements/toaster.tsx'));
+const GameStatus = lazy(() => import('./ui/features/game-status.tsx'));
+const GlobalOverlay = lazy(() => import('./ui/features/global-overlay.tsx'));
 
 export default function App() {
   const { engine } = useEngine();

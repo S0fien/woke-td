@@ -1,8 +1,10 @@
 import GAME_CONFIG from '#/constants/config.ts';
+import { RESOURCES } from '#/constants/resources.ts';
+import useLevelStore from '#/hooks/useLevelStore.ts';
 import type { GameEngine } from '#/services/GameEngine.tsx';
 import { GameManager } from '#/services/GameManager.tsx';
 import { Polyline, TiledResource } from '@excaliburjs/plugin-tiled';
-import { Actor, Color, Scene, SceneActivationContext, Vector } from 'excalibur';
+import { Actor, Color, DefaultLoader, Scene, SceneActivationContext, Vector } from 'excalibur';
 
 export class Level extends Scene {
   private grid: Actor[][] = [];
@@ -15,8 +17,37 @@ export class Level extends Scene {
     this.map = tiledMap;
   }
 
+  onPreLoad(loader: DefaultLoader): void {
+    Object.values(RESOURCES).forEach(r => {
+      Object.values(r).forEach(resource => {
+        loader.addResource(resource);
+      });
+    });
+  }
+
+  onInitialize(): void {
+    const currentLevel = useLevelStore.getState().level;
+    if (!currentLevel) return;
+
+    useLevelStore.setState({
+      money: currentLevel.initialMoney,
+      lives: currentLevel.initialLives,
+      wave: 0,
+      // ...other state
+    });
+  }
+
   onActivate(engine: SceneActivationContext) {
     void engine;
+    const currentLevel = useLevelStore.getState().level;
+    if (!currentLevel) return;
+
+    useLevelStore.setState({
+      money: currentLevel.initialMoney,
+      lives: currentLevel.initialLives,
+      wave: 0,
+      // ...other state
+    });
     this.loadPathFromTiled();
   }
 
@@ -32,7 +63,7 @@ export class Level extends Scene {
           y: row * GAME_CONFIG.gridSize + GAME_CONFIG.gridSize / 2,
           width: GAME_CONFIG.gridSize - 2,
           height: GAME_CONFIG.gridSize - 2,
-          opacity: 0.5,
+          opacity: 0.2,
           color: Color.LightGray,
         });
         this.grid[row][col] = cell;
@@ -68,10 +99,10 @@ export class Level extends Scene {
       const pathSegment = new Actor({
         x: (start.x + end.x) / 2,
         y: (start.y + end.y) / 2,
-        width: Math.abs(end.x - start.x) || 80,
-        height: Math.abs(end.y - start.y) || 80,
-        color: Color.Pink,
-        opacity: 1,
+        width: Math.abs(end.x - start.x),
+        height: Math.abs(end.y - start.y),
+        color: Color.Red,
+        opacity: 0,
       });
 
       this.add(pathSegment);

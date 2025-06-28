@@ -1,8 +1,8 @@
-import { Actor, Animation, Color, Vector } from 'excalibur';
-import { Enemy } from '../types/game.ts';
-import GAME_CONFIG from '../constants/config.ts';
-import RESOURCES from '../constants/resources.ts';
 import useGameOptionsStore from '#/hooks/useGameOptionsStore.ts';
+import { Actor, Animation, Color, Vector } from 'excalibur';
+import GAME_CONFIG from '../constants/config.ts';
+import { RESOURCES } from '../constants/resources.ts';
+import { Enemy } from '../types/game.ts';
 
 export class Projectile extends Actor {
   damage: number;

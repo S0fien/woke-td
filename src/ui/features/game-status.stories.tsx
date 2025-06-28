@@ -1,6 +1,6 @@
 import useLevelStore from '#/hooks/useLevelStore.ts';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { GameStatus } from './game-status.tsx';
+import GameStatus from './game-status.tsx';
 
 const meta: Meta<typeof GameStatus> = {
   title: 'Features/GameStatus',

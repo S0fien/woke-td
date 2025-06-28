@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { CiCircleCheck } from 'react-icons/ci';
 import { FaMarker } from 'react-icons/fa';
 import { Button } from '../buttons/button.tsx';
-import { ToastAction, Toaster } from './toaster.tsx';
+import Toaster, { ToastAction } from './toaster.tsx';
 
 const meta: Meta<typeof Toaster> = {
   title: 'Containers/Toaster',

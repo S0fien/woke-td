@@ -17,6 +17,7 @@ interface FlipCardProps extends React.HTMLAttributes<HTMLDivElement> {
   description: string;
   available: boolean;
   rotate?: 'x' | 'y';
+  index: number;
 }
 
 export default function FlipCard({
@@ -24,6 +25,7 @@ export default function FlipCard({
   title,
   description,
   scene,
+  index,
   rotate = 'y',
   className,
   available,
@@ -73,7 +75,9 @@ export default function FlipCard({
               <Button
                 variant={'secondary'}
                 className="bg-blue-700 font-bold text-white"
-                onClick={() => engine?.goToScene(scene)}
+                onClick={() => {
+                  engine?.goToScene(scene, {}, index);
+                }}
               >
                 START THE FIGHT
               </Button>

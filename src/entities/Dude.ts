@@ -1,4 +1,4 @@
-import RESOURCES from '#/constants/resources.ts';
+import { RESOURCES } from '#/constants/resources.ts';
 import { Vector } from 'excalibur';
 import { Enemy } from './Enemy.ts';
 

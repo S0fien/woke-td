@@ -1,13 +1,16 @@
 import GAME_CONFIG from '#/constants/config.ts';
-import RESOURCES from '#/constants/resources.ts';
 import useGameOptionsStore from '#/hooks/useGameOptionsStore.ts';
-import { Actor, SceneActivationContext, Vector } from 'excalibur';
 
+import { ESSENTIALS, RESOURCES } from '#/constants/resources.ts';
 import type { GameEngine } from '#/services/GameEngine.tsx';
 import { GameManager } from '#/services/GameManager.tsx';
-import Bar from '#/ui/components/containers/bar.tsx';
+import { Transition } from 'excalibur';
+import { lazy } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Level } from './Level.ts';
+
+let ex: typeof import('excalibur');
+const Bar = lazy(() => import('#/ui/components/containers/bar.tsx'));
 
 export class GameScene extends Level {
   static instance: GameScene | null = null;
@@ -24,17 +27,22 @@ export class GameScene extends Level {
     return GameScene.instance;
   }
 
-  override async onActivate(context: SceneActivationContext): Promise<void> {
-    super.onActivate(context); // Call Level's onActivate
-    const test = new Actor();
+  override async onInitialize() {
+    super.onInitialize();
+    ex = await import('excalibur');
+  }
 
-    RESOURCES.musics.happy.loop = true;
-    RESOURCES.musics.happy.play(useGameOptionsStore.getState().musicVolume);
+  override async onActivate(context: ex.SceneActivationContext): Promise<void> {
+    super.onActivate(context); // Call Level's onActivate
+    const test = new ex.Actor();
+
+    ESSENTIALS.musics.happy.loop = true;
+    ESSENTIALS.musics.happy.play(useGameOptionsStore.getState().musicVolume);
 
     RESOURCES.maps.second.addToScene(this);
 
-    test.graphics.anchor = new Vector(0, 0);
-    test.pos = new Vector(0, 0);
+    test.graphics.anchor = new ex.Vector(0, 0);
+    test.pos = new ex.Vector(0, 0);
     this.add(test);
     this.createGrid();
     this.createPath();
@@ -58,8 +66,9 @@ export class GameScene extends Level {
     this.uiRoot.render(<Bar />);
   }
 
-  onDeactivate() {
-    RESOURCES.musics.happy.stop();
+  override onTransition(direction: 'in' | 'out'): Transition | undefined {
+    void direction;
+    ESSENTIALS.musics.happy.stop();
     // Clean up React root when scene is deactivated
     if (this.uiRoot) {
       this.uiRoot.unmount();
@@ -68,5 +77,6 @@ export class GameScene extends Level {
       if (sceneContainer) container?.removeChild(sceneContainer);
     }
     this.clear();
+    return undefined;
   }
 }

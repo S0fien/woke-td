@@ -1,4 +1,4 @@
-import RESOURCES from '#/constants/resources.ts';
+import { RESOURCES } from '#/constants/resources.ts';
 import GameInfo from './game-info.tsx';
 import { TowerContainer } from './tower-container.tsx';
 

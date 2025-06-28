@@ -1,4 +1,5 @@
 import { DemoScene } from '#/scenes/DemoScene.tsx';
+import { FinalScene } from '#/scenes/FinalScene.tsx';
 import { GameScene } from '#/scenes/GameScene.tsx';
 import { MainMenu } from '#/scenes/MainMenu.tsx';
 import { Color, DisplayMode, EngineOptions, FadeInOut } from 'excalibur';
@@ -46,6 +47,21 @@ const GAME_OPTIONS: EngineOptions = {
     },
     demoScene: {
       scene: DemoScene,
+      transitions: {
+        in: new FadeInOut({
+          duration: 1500,
+          direction: 'in',
+          color: Color.Black,
+        }),
+        out: new FadeInOut({
+          duration: 1500,
+          direction: 'out',
+          color: Color.Black,
+        }),
+      },
+    },
+    finalScene: {
+      scene: FinalScene,
       transitions: {
         in: new FadeInOut({
           duration: 1500,

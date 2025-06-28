@@ -8,6 +8,7 @@ import { cn } from './libs/utils.ts';
 const Root = () => {
   const selectedTower = useLevelStore(state => state.selectedTower);
 
+  console.log('here');
   return (
     <React.StrictMode>
       <canvas id="game" className="pointer-events-all m-auto"></canvas>
@@ -20,8 +21,8 @@ const Root = () => {
     </React.StrictMode>
   );
 };
+
 const domNode = document.getElementById(GAME_CONFIG.rootContainerId);
-console.log('domnode', domNode);
 if (domNode) {
   const root = createRoot(domNode);
   root.render(<Root />);

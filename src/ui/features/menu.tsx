@@ -1,7 +1,8 @@
-import { toast } from '#/hooks/useToast.ts';
+import { lazy } from 'react';
 import { Button } from '../components/buttons/button.tsx';
-import LevelSelector from '../components/containers/level-selector.tsx';
 import { SparklesText } from '../components/texts/sparkles.tsx';
+
+const LevelSelector = lazy(() => import('../components/containers/level-selector.tsx'));
 
 const Menu = () => {
   return (
@@ -10,14 +11,8 @@ const Menu = () => {
         WOKE TD
       </SparklesText>
       <div className="pointer-events-all flex w-50 flex-col gap-8 font-[chewy] text-xl">
-        <LevelSelector
-          Trigger={
-            <Button variant={'brutal'} className="bg-orange-500">
-              Start Game
-            </Button>
-          }
-        />
-        <Button
+        <LevelSelector />
+        {/* <Button
           variant={'brutal'}
           onClick={() =>
             toast({
@@ -28,7 +23,7 @@ const Menu = () => {
           }
         >
           Load Save
-        </Button>
+        </Button> */}
         <Button variant={'brutal-normal'} onClick={() => window.close()}>
           Exit Game
         </Button>

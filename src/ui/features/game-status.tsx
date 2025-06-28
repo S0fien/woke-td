@@ -1,12 +1,12 @@
 import GAME_CONFIG from '#/constants/config.ts';
-import RESOURCES from '#/constants/resources.ts';
+import { RESOURCES } from '#/constants/resources.ts';
 import { useEngine } from '#/hooks/useEngine.ts';
 import useLevelStore from '#/hooks/useLevelStore.ts';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Button } from '../components/buttons/button.tsx';
 import { HyperText } from '../components/texts/hyper-text.tsx';
 
-export const GameStatus = () => {
+const GameStatus = () => {
   const { engine } = useEngine();
   const state = useLevelStore();
 
@@ -86,3 +86,5 @@ export const GameStatus = () => {
     </AnimatePresence>
   );
 };
+
+export default GameStatus;

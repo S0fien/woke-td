@@ -1,7 +1,9 @@
+import useGameOptionsStore from '#/hooks/useGameOptionsStore.ts';
 import { TowerType } from '#/types/game.ts';
 import { Color } from 'excalibur';
-import RESOURCES from './resources.ts';
+import { RESOURCES } from './resources.ts';
 
+console.log(useGameOptionsStore.getState());
 export const TOWER_TYPES: TowerType[] = [
   {
     type: 'trump-tower',

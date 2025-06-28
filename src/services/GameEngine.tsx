@@ -1,22 +1,18 @@
+import { LEVELS } from '#/constants/levels.ts';
 import GAME_OPTIONS from '#/constants/options.ts';
-import RESOURCES from '#/constants/resources.ts';
+import { ESSENTIALS } from '#/constants/resources.ts';
 import useGameOptionsStore from '#/hooks/useGameOptionsStore.ts';
 import useLevelStore from '#/hooks/useLevelStore.ts';
-import { Color, Engine, Loader } from 'excalibur';
+import { DefaultLoader, Engine, GoToOptions } from 'excalibur';
 import { createRoot } from 'react-dom/client';
 import { Level } from '../scenes/Level.ts';
+import { CustomLoader } from './CustomLoader.tsx';
 import { GameManager } from './GameManager.tsx';
-
-export const loader = new Loader({});
-Object.values(RESOURCES).forEach(r => {
-  Object.values(r).forEach(resource => {
-    loader.addResource(resource);
-  });
-});
 
 export class GameEngine extends Engine {
   gameManager: GameManager | null = null;
   static uiRoot: ReturnType<typeof createRoot> | null = null;
+  loader: DefaultLoader;
 
   get currentScene(): Level {
     return super.currentScene as Level;
@@ -26,6 +22,8 @@ export class GameEngine extends Engine {
 
   private constructor() {
     super(GAME_OPTIONS);
+    this.loader = new CustomLoader();
+
     useGameOptionsStore.getState().setState({
       isInitialized: false,
     });
@@ -42,26 +40,36 @@ export class GameEngine extends Engine {
     return GameEngine.instance;
   }
 
-  public initializeUI(): void {
+  public async initializeUI(): Promise<void> {
     if (!this.isRunning()) {
-      this.run();
+      await this.run();
     }
   }
 
-  public run() {
+  override async goToScene<TData = undefined>(
+    destinationScene: any,
+    options?: GoToOptions<TData> | undefined,
+    index?: number | undefined
+  ): Promise<void> {
+    const currentLevel = LEVELS[index ?? 0];
+    await super.goToScene(destinationScene, options);
+    console.log('setting');
+    useLevelStore.setState({ level: currentLevel });
+  }
+
+  public async run() {
     if (this.isRunning()) {
       console.log('is already running');
       return;
     }
-    loader.backgroundColor = Color.Black.toString();
-    // loader.logo = './favicon.png';
 
-    loader.startButtonFactory = () => {
-      let myButton = document.createElement('button');
-      myButton.textContent = 'Defend';
-      return myButton;
-    };
-    this.start(loader).then(async () => {
+    Object.values(ESSENTIALS).forEach(r => {
+      Object.values(r).forEach(resource => {
+        this.loader.addResource(resource);
+      });
+    });
+
+    this.start(this.loader).then(async () => {
       useGameOptionsStore.getState().setState({
         isInitialized: true,
       });

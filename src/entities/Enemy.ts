@@ -1,4 +1,5 @@
-import { Actor, Color, Engine, Rectangle, Vector } from 'excalibur';
+import type { Engine } from 'excalibur';
+import { Actor, Color, Rectangle, Vector } from 'excalibur';
 import GAME_CONFIG from '../constants/config.ts';
 
 export class Enemy extends Actor {
@@ -30,22 +31,6 @@ export class Enemy extends Actor {
     this.updateMovement(elapsed);
     this.updateHealthBar();
   }
-
-  // async onInitialize(): Promise<void> {
-  //   // Add and play the walk animation
-  //   if (this.runAnimation) {
-  //     this.graphics.add(this.runAnimation);
-  //     // this.graphics.use(this.runAnimation);
-  //     // this.runAnimation.play();
-  //   }
-  //   if (this.spriteSheet) {
-  //     this.graphics.add(this.spriteSheet.getSprite(0, 0));
-  //     // this.graphics.use(this.spriteSheet.getSprite(0, 0));
-  //   }
-  //   const sprite = RESOURCES.characters.Girl.toSprite();
-  //   this.graphics.add(sprite);
-  //   this.graphics.use(sprite);
-  // }
 
   private updateMovement(delta: number): void {
     const pathPoints = this.pathPoints.map(point => new Vector(point.x, point.y));
