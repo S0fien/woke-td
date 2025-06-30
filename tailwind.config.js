@@ -1,4 +1,6 @@
 export default {
+  extends: ['airbnb', 'prettier'],
+  plugins: ['@typescript-eslint', 'tailwind-animate', 'tailwindcss'],
   theme: {
     extend: {
       backgroundImage: {

@@ -2,5 +2,5 @@
   "entry": ["src/**/*.{js,ts,tsx,css}", "src/styles/styles.css"],
   "project": ["src/**/*.{js,ts,tsx,css}", "src/styles/styles.css"],
   "ignore": ["node_modules/**", "dist/**"],
-  "ignoreDependencies": ["tailwindcss", "@tauri-apps/*", "typescript-eslint", "tailwind-animate"]
+  "ignoreDependencies": ["typescript-eslint", "tailwind-animate", "@tauri-apps/*", "tailwindcss"]
 }

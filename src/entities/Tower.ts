@@ -4,7 +4,7 @@ import { TowerType } from '../types/game.ts';
 export class Tower extends Actor {
   towerType: TowerType;
   lastFireTime: number;
-  background: ImageSource;
+  background: ImageSource | null = null;
 
   constructor(pos: Vector, towerType: TowerType) {
     super({
@@ -13,7 +13,7 @@ export class Tower extends Actor {
       width: 30,
       height: 30,
       color: towerType.color,
-      name: towerType.type,
+      name: towerType.type ?? 'unknown',
       z: 9999999999, // Ensure the tower is always on top
     });
     this.towerType = towerType;
@@ -23,9 +23,11 @@ export class Tower extends Actor {
 
   onInitialize(engine: Engine): void {
     super.onInitialize(engine);
-    const tower = this.background.toSprite();
-    tower.width = 100;
-    tower.height = 100;
-    this.graphics.add(tower);
+    if (this.background) {
+      const tower = this.background.toSprite();
+      tower.width = 100;
+      tower.height = 100;
+      this.graphics.add(tower);
+    }
   }
 }

@@ -1,5 +1,5 @@
 import GAME_CONFIG from '#/constants/config.ts';
-import { GameEngine } from '#/services/GameEngine.tsx';
+import { GameEngine } from '#/services/GameEngine.ts';
 import { useEffect, useState } from 'react';
 
 export const useEngine = () => {

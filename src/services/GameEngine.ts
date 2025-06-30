@@ -6,8 +6,8 @@ import useLevelStore from '#/hooks/useLevelStore.ts';
 import { DefaultLoader, Engine, GoToOptions } from 'excalibur';
 import { createRoot } from 'react-dom/client';
 import { Level } from '../scenes/Level.ts';
-import { CustomLoader } from './CustomLoader.tsx';
-import { GameManager } from './GameManager.tsx';
+import { CustomLoader } from './CustomLoader.ts';
+import { GameManager } from './GameManager.ts';
 
 export class GameEngine extends Engine {
   gameManager: GameManager | null = null;

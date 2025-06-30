@@ -1,8 +1,8 @@
 import GAME_CONFIG from '#/constants/config.ts';
 import { SCENE_RESOURCES } from '#/constants/resources.ts';
 import useLevelStore from '#/hooks/useLevelStore.ts';
-import type { GameEngine } from '#/services/GameEngine.tsx';
-import { EnemyConstructor, GameManager } from '#/services/GameManager.tsx';
+import type { GameEngine } from '#/services/GameEngine.ts';
+import { EnemyConstructor, GameManager } from '#/services/GameManager.ts';
 import { Polyline, TiledResource } from '@excaliburjs/plugin-tiled';
 import { Actor, Color, DefaultLoader, Scene, SceneActivationContext, Vector } from 'excalibur';
 import { createRoot } from 'react-dom/client';

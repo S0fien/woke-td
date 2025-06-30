@@ -23,9 +23,29 @@ export const TOWER_TYPES: TowerType[] = [
     fireRate: 2000,
     image: SCENE_RESOURCES.towers.church,
   },
+  {
+    type: null,
+    label: '',
+    cost: 50,
+    damage: 25,
+    range: 200,
+    color: Color.Red,
+    fireRate: 2000,
+    image: null,
+  },
+  {
+    type: null,
+    label: '',
+    cost: 50,
+    damage: 25,
+    range: 200,
+    color: Color.Red,
+    fireRate: 2000,
+    image: null,
+  },
 ];
 
 export const TOWER_TYPES_MAP = TOWER_TYPES.reduce((acc, tower) => {
-  acc = { ...acc, [tower.type]: tower.type };
+  acc = { ...acc, [String(tower.type ?? '')]: tower.type ?? '' };
   return acc;
 }, {});

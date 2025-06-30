@@ -1,25 +1,9 @@
 /* eslint-disabe no-unused-vas */
-import { Button } from '#/ui/components/buttons/button.tsx';
-import ProgressBar from '#/ui/components/elements/progress-bar.tsx';
-import { HyperText } from '#/ui/components/texts/hyper-text.tsx';
+import { Loading } from '#/ui/components/containers/loading.tsx';
 import * as ex from 'excalibur';
 import { Root, createRoot } from 'react-dom/client';
-import { GameEngine } from './GameEngine.tsx';
+import { GameEngine } from './GameEngine.ts';
 
-const Loading = ({ progress }: { progress: number }) => {
-  return (
-    <div className="pointer-events-auto flex flex-col items-center gap-20">
-      <HyperText className="overflow-auto py-20 text-[8rem] font-bold text-white drop-shadow">Woke TD</HyperText>
-      {progress === 1 ? (
-        <Button id="startGame" size={'lg'} variant={'brutal-normal'}>
-          Enter Game
-        </Button>
-      ) : (
-        <ProgressBar currentValue={progress} />
-      )}
-    </div>
-  );
-};
 export class CustomLoader extends ex.DefaultLoader {
   private uiRoot: Root | null = null;
 
@@ -39,7 +23,7 @@ export class CustomLoader extends ex.DefaultLoader {
     document.body.appendChild(uiContainer);
 
     this.uiRoot = createRoot(uiContainer);
-    this.uiRoot.render(<Loading progress={this.progress} />);
+    this.uiRoot.render(Loading({ progress: this.progress }));
   }
 
   private destroyUi() {
@@ -78,7 +62,7 @@ export class CustomLoader extends ex.DefaultLoader {
     // Perform something every tick, for example collect time elapsed or check
     // what file namess have been loaded for drawing!
     if (this.uiRoot) {
-      this.uiRoot.render(<Loading progress={this.progress} />);
+      this.uiRoot.render(Loading({ progress: engine.loader.progress }));
     }
   }
 

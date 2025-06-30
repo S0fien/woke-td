@@ -3,8 +3,8 @@ import useGameOptionsStore from '#/hooks/useGameOptionsStore.ts';
 
 import { MAIN_RESOURCES, SCENE_RESOURCES } from '#/constants/resources.ts';
 import { Shroom } from '#/entities/Shroom.ts';
-import type { GameEngine } from '#/services/GameEngine.tsx';
-import { GameManager } from '#/services/GameManager.tsx';
+import type { GameEngine } from '#/services/GameEngine.ts';
+import { GameManager } from '#/services/GameManager.ts';
 import Bar from '#/ui/components/containers/bar.tsx';
 import { Transition } from 'excalibur';
 import { GameScene } from './GameScene.ts';

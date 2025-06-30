@@ -14,8 +14,8 @@ interface ProgressBarProps {
 const ProgressBar = ({
   minValue = 0,
   maxValue = 1,
-  rounded = 'none',
-  color = 'pink',
+  rounded = 'md',
+  color = 'violet',
   currentValue = 0,
   showPercentage = true,
   disabled,

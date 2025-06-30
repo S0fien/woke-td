@@ -4,14 +4,14 @@ import { Actor, Color, ImageSource } from 'excalibur';
 export type TowerTypes = 'trump-tower' | 'church';
 
 export interface TowerType {
-  type: TowerTypes;
+  type: TowerTypes | null;
   label: string;
   cost: number;
   damage: number;
   range: number;
   color: Color;
   fireRate: number;
-  image: ImageSource;
+  image: ImageSource | null;
 }
 
 export interface Tower extends Actor {

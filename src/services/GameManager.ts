@@ -12,7 +12,7 @@ import { Vector } from 'excalibur';
 import { Dog } from '#/entities/Dog.ts';
 import { Dude } from '#/entities/Dude.ts';
 import { Shroom } from '#/entities/Shroom.ts';
-import { GameEngine } from './GameEngine.tsx';
+import { GameEngine } from './GameEngine.ts';
 
 let ex: typeof import('excalibur');
 let towerTypes: typeof import('#/constants/towers.ts');

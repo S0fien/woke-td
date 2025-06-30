@@ -1,7 +1,7 @@
 import GAME_CONFIG from '#/constants/config.ts';
 import { MAIN_RESOURCES } from '#/constants/resources.ts';
 import useGameOptionsStore from '#/hooks/useGameOptionsStore.ts';
-import type { GameEngine } from '#/services/GameEngine.tsx';
+import type { GameEngine } from '#/services/GameEngine.ts';
 import Menu from '#/ui/features/menu.tsx';
 import { Scene, Transition } from 'excalibur';
 import { createRoot } from 'react-dom/client';
