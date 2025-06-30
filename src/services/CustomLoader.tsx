@@ -1,12 +1,25 @@
 /* eslint-disabe no-unused-vas */
 import { Button } from '#/ui/components/buttons/button.tsx';
-import Spinner from '#/ui/components/elements/spinner.tsx';
+import ProgressBar from '#/ui/components/elements/progress-bar.tsx';
 import { HyperText } from '#/ui/components/texts/hyper-text.tsx';
 import * as ex from 'excalibur';
-import { Suspense } from 'react';
 import { Root, createRoot } from 'react-dom/client';
 import { GameEngine } from './GameEngine.tsx';
 
+const Loading = ({ progress }: { progress: number }) => {
+  return (
+    <div className="pointer-events-auto flex flex-col items-center gap-20">
+      <HyperText className="overflow-auto py-20 text-[8rem] font-bold text-white drop-shadow">Woke TD</HyperText>
+      {progress === 1 ? (
+        <Button id="startGame" size={'lg'} variant={'brutal-normal'}>
+          Enter Game
+        </Button>
+      ) : (
+        <ProgressBar currentValue={progress} />
+      )}
+    </div>
+  );
+};
 export class CustomLoader extends ex.DefaultLoader {
   private uiRoot: Root | null = null;
 
@@ -21,13 +34,12 @@ export class CustomLoader extends ex.DefaultLoader {
     uiContainer.id = 'loader-ui';
     uiContainer.className =
       'fixed inset-0 flex items-center justify-center pointer-events-none z-50 size-full m-auto max-w-[1368px] max-h-[768px]';
-    // uiContainer.style.backgroundImage = `url(${ESSENTIALS.backgrounds.forest.path})`;
     uiContainer.style.backgroundSize = 'cover';
     uiContainer.style.backgroundPosition = 'center';
     document.body.appendChild(uiContainer);
 
     this.uiRoot = createRoot(uiContainer);
-    this.uiRoot.render(<Spinner color={`bg-purple-500`} size="lg" />);
+    this.uiRoot.render(<Loading progress={this.progress} />);
   }
 
   private destroyUi() {
@@ -43,6 +55,7 @@ export class CustomLoader extends ex.DefaultLoader {
 
   override onDraw(ctx: CanvasRenderingContext2D) {
     void ctx;
+    // super.onDraw(ctx);
     console.log('do not draw');
   }
 
@@ -64,19 +77,8 @@ export class CustomLoader extends ex.DefaultLoader {
     void engine, elapsedMilliseconds;
     // Perform something every tick, for example collect time elapsed or check
     // what file namess have been loaded for drawing!
-    console.log(this.progress);
-    if (this.progress === 1 && this.uiRoot) {
-      this.uiRoot.render(
-        <Suspense fallback={<Spinner color="bg-orange-500" />}>
-          <div className="pointer-events-auto flex flex-col items-center gap-20">
-            <HyperText className="overflow-auto py-20 text-[8rem] font-bold text-white drop-shadow">Woke TD</HyperText>
-            <Button id="startGame" className="w-70" variant={'brutal-normal'}>
-              Enter Game
-            </Button>
-            {/* You can add more UI here, e.g. a progress bar or custom button */}
-          </div>
-        </Suspense>
-      );
+    if (this.uiRoot) {
+      this.uiRoot.render(<Loading progress={this.progress} />);
     }
   }
 

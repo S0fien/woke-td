@@ -1,20 +1,23 @@
 import GAME_CONFIG from '#/constants/config.ts';
-import { RESOURCES } from '#/constants/resources.ts';
+import { SCENE_RESOURCES } from '#/constants/resources.ts';
 // import { TOWER_TYPES } from '#/constants/towers.ts';
-import { Dude } from '#/entities/Dude.ts';
 import { Projectile } from '#/entities/Projectile.ts';
 import { Tower } from '#/entities/Tower.ts';
 import useGameOptionsStore from '#/hooks/useGameOptionsStore.ts';
 import useLevelStore from '#/hooks/useLevelStore.ts';
 import { Level } from '#/scenes/Level.ts';
 import { Enemy, TowerType, TowerTypes } from '#/types/game.ts';
+import { Color, Vector } from 'excalibur';
 // import { ExitViewPortEvent, Timer, ex.Vector } from 'excalibur';
+import { Dog } from '#/entities/Dog.ts';
+import { Dude } from '#/entities/Dude.ts';
+import { Shroom } from '#/entities/Shroom.ts';
 import { GameEngine } from './GameEngine.tsx';
 
 let ex: typeof import('excalibur');
 let towerTypes: typeof import('#/constants/towers.ts');
 let TOWER_TYPES: TowerType[];
-
+export type EnemyConstructor = typeof Dude | typeof Dog | typeof Shroom;
 export class GameManager {
   public engine: GameEngine;
   private updateTimer: ex.Timer | null = null;
@@ -60,14 +63,16 @@ export class GameManager {
     this.engine.canvas.addEventListener('click', (event: MouseEvent) => {
       this.engine.currentScene.resetGridHighlight();
       const state = useLevelStore.getState();
-      if (state.selectedTower) {
+      if (state.selectedTower && this.engine.currentScene.hoverCell?.color !== Color.Red) {
         const pos = new ex.Vector(event.offsetX, event.offsetY);
         const gameScene = this.engine.currentScene;
         const gridPos = gameScene.getGridPosition(pos);
-        const { selectedTower } = state;
-        if (selectedTower) {
-          this.placeTower(gridPos, selectedTower);
-        }
+        this.placeTower(gridPos, state.selectedTower);
+
+        // const { selectedTower } = state;
+        // if (selectedTower) {
+        //   this.placeTower(gridPos, selectedTower);
+        // }
       }
     });
   }
@@ -133,16 +138,8 @@ export class GameManager {
     const spawnTimer = new ex.Timer({
       action: () => {
         if (spawned < enemyCount) {
-          const enemy = new Dude(enemyHp, this.engine.currentScene.pathPoints);
-          this.engine.currentScene.add(enemy);
-          enemy.graphics.isVisible = true;
-          enemy.on('exitviewport', truc => {
-            this.enemyReachedEnd(truc);
-          });
-
-          enemy.on('kill', () => {
-            this.enemyKilled(enemy.value);
-          });
+          const ConstructorEnemy = this.engine.currentScene.enemy;
+          this.spawnEnemy(ConstructorEnemy, this.engine.currentScene.pathPoints, enemyHp);
 
           spawned++;
         } else {
@@ -216,6 +213,19 @@ export class GameManager {
     return true;
   }
 
+  public spawnEnemy(EnemyClass: EnemyConstructor, pathPoints: Vector[], hp: number) {
+    const enemy = new EnemyClass(hp, pathPoints);
+    this.engine.currentScene.add(enemy);
+    enemy.graphics.isVisible = true;
+    enemy.on('exitviewport', truc => {
+      this.enemyReachedEnd(truc);
+    });
+
+    enemy.on('kill', () => {
+      this.enemyKilled(enemy.value);
+    });
+  }
+
   public isOnPath(pos: ex.Vector): boolean {
     const gameScene = this.engine.currentScene as Level;
     for (let i = 0; i < gameScene.pathPoints.length - 1; i++) {
@@ -250,7 +260,7 @@ export class GameManager {
   async enemyReachedEnd(event: ex.ExitViewPortEvent): Promise<void> {
     event.target.kill();
     const state = useLevelStore.getState();
-    RESOURCES.musics.lose.play(useGameOptionsStore.getState().musicVolume);
+    SCENE_RESOURCES.musics.lose.play(useGameOptionsStore.getState().musicVolume);
     useLevelStore.setState({ lives: state.lives - 1 });
     const newState = useLevelStore.getState();
     if (newState.lives <= 0) {

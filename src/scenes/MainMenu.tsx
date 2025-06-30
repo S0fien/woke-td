@@ -1,15 +1,14 @@
 import GAME_CONFIG from '#/constants/config.ts';
-import { ESSENTIALS } from '#/constants/resources.ts';
+import { MAIN_RESOURCES } from '#/constants/resources.ts';
 import useGameOptionsStore from '#/hooks/useGameOptionsStore.ts';
 import type { GameEngine } from '#/services/GameEngine.tsx';
 import Spinner from '#/ui/components/elements/spinner.tsx';
-// import Menu from '#/ui/features/menu.tsx';
+import Menu from '#/ui/features/menu.tsx';
 import { Scene, Transition } from 'excalibur';
-import { lazy, Suspense } from 'react';
+import { Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
 
 let ex: typeof import('excalibur');
-const Menu = lazy(() => import('#/ui/features/menu.tsx'));
 export class MainMenu extends Scene {
   private uiRoot: ReturnType<typeof createRoot> | null = null;
 
@@ -46,14 +45,13 @@ export class MainMenu extends Scene {
 
   override async onInitialize(engine: GameEngine) {
     ex = await import('excalibur');
-    console.log('dpjdpdi', engine.loader.resources);
-    ESSENTIALS.musics.caketown.loop = true;
-    ESSENTIALS.musics.caketown.play(useGameOptionsStore.getState().musicVolume);
+    MAIN_RESOURCES.musics.caketown.loop = true;
+    MAIN_RESOURCES.musics.caketown.play(useGameOptionsStore.getState().musicVolume);
 
-    const menu = ESSENTIALS.backgrounds.menu.toSprite();
+    const menu = MAIN_RESOURCES.backgrounds.menu.toSprite();
     menu.width = engine.screen.canvasWidth;
     menu.height = engine.screen.canvasHeight;
-    // const menu = ESSENTIALS.backgrounds.menu.toSprite()
+    // const menu = MAIN_RESOURCES.backgrounds.menu.toSprite()
     const bgImage = new ex.Actor();
     bgImage.graphics.add(menu);
     bgImage.pos = new ex.Vector(engine.screen.width / 2, engine.screen.height / 2);
@@ -65,7 +63,7 @@ export class MainMenu extends Scene {
   override onTransition(direction: 'in' | 'out'): Transition | undefined {
     void direction;
 
-    ESSENTIALS.musics.caketown.stop();
+    MAIN_RESOURCES.musics.caketown.stop();
     // Clean up React root when scene is deactivated
     if (this.uiRoot) {
       this.uiRoot.unmount();

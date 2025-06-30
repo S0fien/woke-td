@@ -1,24 +1,29 @@
 import GAME_CONFIG from '#/constants/config.ts';
-import { RESOURCES } from '#/constants/resources.ts';
+import { SCENE_RESOURCES } from '#/constants/resources.ts';
 import useLevelStore from '#/hooks/useLevelStore.ts';
 import type { GameEngine } from '#/services/GameEngine.tsx';
-import { GameManager } from '#/services/GameManager.tsx';
+import { EnemyConstructor, GameManager } from '#/services/GameManager.tsx';
 import { Polyline, TiledResource } from '@excaliburjs/plugin-tiled';
 import { Actor, Color, DefaultLoader, Scene, SceneActivationContext, Vector } from 'excalibur';
 
 export class Level extends Scene {
   private grid: Actor[][] = [];
-  private hoverCell: Actor | null = null;
+  public hoverCell: Actor | null = null;
   public pathPoints: Vector[] = [];
   private map: TiledResource;
+  public enemy: EnemyConstructor;
 
-  constructor(public tiledMap: TiledResource) {
+  constructor(
+    public tiledMap: TiledResource,
+    enemy: EnemyConstructor
+  ) {
     super();
     this.map = tiledMap;
+    this.enemy = enemy;
   }
 
   onPreLoad(loader: DefaultLoader): void {
-    Object.values(RESOURCES).forEach(r => {
+    Object.values(SCENE_RESOURCES).forEach(r => {
       Object.values(r).forEach(resource => {
         loader.addResource(resource);
       });
@@ -72,12 +77,7 @@ export class Level extends Scene {
     }
   }
 
-  // Load path points from Tiled object layer named "Path"
   private loadPathFromTiled() {
-    // Find the object layer named "Path"
-    // const pathLayer = RESOURCES.maps.tiled.data.layers.find(
-    //   (layer: any) => layer.type === 'objectgroup' && layer.name === 'road'
-    // );
     const pathLayer = this.map.getObjectLayers('path');
     if (!pathLayer) return;
 
@@ -140,12 +140,13 @@ export class Level extends Scene {
       color: Color.Pink,
       opacity: 0.8,
     };
+    const isSolid = this.map.getTilesByPoint(gridPos).find(tile => tile.exTile.solid);
 
     if (row >= 0 && row < this.grid.length && col >= 0 && col < this.grid[0].length) {
       const engine = this.engine as GameEngine;
       const gameManager = GameManager.getInstance(engine);
 
-      if (gameManager.isCellOccupied(gridPos) || gameManager.isOnPath(gridPos)) {
+      if (gameManager.isCellOccupied(gridPos) || gameManager.isOnPath(gridPos) || isSolid) {
         this.hoverCell = new Actor({
           ...hoverCellConfig,
           color: Color.Red,

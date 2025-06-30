@@ -8,7 +8,6 @@ import { cn } from './libs/utils.ts';
 const Root = () => {
   const selectedTower = useLevelStore(state => state.selectedTower);
 
-  console.log('here');
   return (
     <React.StrictMode>
       <canvas id="game" className="pointer-events-all m-auto"></canvas>

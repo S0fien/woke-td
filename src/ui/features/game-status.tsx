@@ -1,5 +1,5 @@
 import GAME_CONFIG from '#/constants/config.ts';
-import { RESOURCES } from '#/constants/resources.ts';
+import { SCENE_RESOURCES } from '#/constants/resources.ts';
 import { useEngine } from '#/hooks/useEngine.ts';
 import useLevelStore from '#/hooks/useLevelStore.ts';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -42,7 +42,7 @@ const GameStatus = () => {
             onClick={e => e.stopPropagation()}
             className="relative flex w-full max-w-2xl cursor-default flex-col items-center gap-4"
           >
-            <img src={RESOURCES.icons.lose.path} className="w-52" />
+            <img src={SCENE_RESOURCES.icons.lose.path} className="w-52" />
             <HyperText>Game Over...</HyperText>
             <div className="flex w-50 flex-col gap-3">
               <Button variant="brutal" className="bg-amber-500" onClick={retryLevel}>
@@ -70,7 +70,7 @@ const GameStatus = () => {
             onClick={e => e.stopPropagation()}
             className="relative flex w-full max-w-2xl cursor-default flex-col items-center gap-4"
           >
-            <img src={RESOURCES.icons.winning.path} className="w-52" />
+            <img src={SCENE_RESOURCES.icons.winning.path} className="w-52" />
             <HyperText className="text-center" children={`You've completed all ${GAME_CONFIG.maxWaves} waves!`} />
             <div className="flex w-50 flex-col gap-3">
               <Button variant="brutal" className="bg-emerald-600" onClick={restartGame}>

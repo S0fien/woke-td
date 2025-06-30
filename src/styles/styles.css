@@ -1,5 +1,5 @@
 @import 'tailwindcss';
-@import 'tw-animate-css';
+@import 'tailwind-animate';
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -76,26 +76,6 @@
   box-sizing: border-box;
 }
 
-logo.vite:hover {
-  filter: drop-shadow(0 0 2em #747bff);
-}
-
-.logo.typescript:hover {
-  filter: drop-shadow(0 0 2em #2d79c7);
-}
-
-.p-toolbar {
-  background-color: transparent;
-  background-size: cover;
-  background-position: center;
-  background-repeat: round;
-  padding: 0 0.5rem;
-  align-items: start;
-  display: flex;
-  justify-content: space-between;
-  border: none;
-}
-
 html {
   height: 100%;
   width: 100%;
@@ -143,10 +123,10 @@ body {
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(42.239% 0.23021 274.653);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(71.668% 0.2786 330.176);
-  --secondary-foreground: oklch(0.205 0 0);
+  --primary: oklch(71.668% 0.2786 330.176);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(42.239% 0.23021 274.653);
+  --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
   --accent: oklch(0.97 0 0);

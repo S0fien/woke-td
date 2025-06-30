@@ -10,7 +10,6 @@ const GAME_CONFIG = {
   waveDelay: 1000,
   updateInterval: 100,
   projectileSpeed: 300,
-  enemySpeed: 100,
   containerId: 'ui-container',
   rootContainerId: 'game-root',
 };

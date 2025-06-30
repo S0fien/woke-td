@@ -1,6 +1,6 @@
 import { LEVELS } from '#/constants/levels.ts';
 import GAME_OPTIONS from '#/constants/options.ts';
-import { ESSENTIALS } from '#/constants/resources.ts';
+import { MAIN_RESOURCES } from '#/constants/resources.ts';
 import useGameOptionsStore from '#/hooks/useGameOptionsStore.ts';
 import useLevelStore from '#/hooks/useLevelStore.ts';
 import { DefaultLoader, Engine, GoToOptions } from 'excalibur';
@@ -53,7 +53,6 @@ export class GameEngine extends Engine {
   ): Promise<void> {
     const currentLevel = LEVELS[index ?? 0];
     await super.goToScene(destinationScene, options);
-    console.log('setting');
     useLevelStore.setState({ level: currentLevel });
   }
 
@@ -63,7 +62,7 @@ export class GameEngine extends Engine {
       return;
     }
 
-    Object.values(ESSENTIALS).forEach(r => {
+    Object.values(MAIN_RESOURCES).forEach(r => {
       Object.values(r).forEach(resource => {
         this.loader.addResource(resource);
       });

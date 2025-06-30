@@ -1,10 +1,14 @@
-import { ESSENTIALS } from './resources.ts';
+import { Dog } from '#/entities/Dog.ts';
+import { Dude } from '#/entities/Dude.ts';
+import { Shroom } from '#/entities/Shroom.ts';
+import { MAIN_RESOURCES } from './resources.ts';
 
 export const LEVELS = [
   {
     name: 'Tutorial',
     scene: 'demoScene',
-    image: ESSENTIALS.backgrounds.bgForest.path,
+    image: MAIN_RESOURCES.backgrounds.bgForest.path,
+    enemy: Dude,
     description: 'Test your skills with this intro level',
     available: true,
     initialMoney: 100,
@@ -17,7 +21,8 @@ export const LEVELS = [
   {
     name: 'The beginning',
     scene: 'gameScene',
-    image: ESSENTIALS.backgrounds.grass.path,
+    image: MAIN_RESOURCES.backgrounds.grass.path,
+    enemy: Dog,
     description: 'A step up in difficulty!',
     available: true,
     initialMoney: 80,
@@ -30,7 +35,8 @@ export const LEVELS = [
   {
     name: 'Final',
     scene: 'finalScene',
-    image: ESSENTIALS.backgrounds.forest.path,
+    image: MAIN_RESOURCES.backgrounds.forest.path,
+    enemy: Shroom,
     description: 'Only for the brave...',
     available: true,
     initialMoney: 60,

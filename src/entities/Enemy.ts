@@ -1,6 +1,5 @@
 import type { Engine } from 'excalibur';
 import { Actor, Color, Rectangle, Vector } from 'excalibur';
-import GAME_CONFIG from '../constants/config.ts';
 
 export class Enemy extends Actor {
   health: number;
@@ -10,7 +9,7 @@ export class Enemy extends Actor {
   speed: number;
   pathPoints: Vector[];
 
-  constructor(hp: number, pathPoints: Vector[]) {
+  constructor({ hp, pathPoints, value, speed }: { hp: number; pathPoints: Vector[]; speed: number; value: number }) {
     super({
       x: 0,
       y: 200,
@@ -22,9 +21,9 @@ export class Enemy extends Actor {
     this.health = hp;
     this.pathPoints = pathPoints;
     this.maxHealth = hp;
-    this.value = Math.floor(hp / 10);
+    this.value = value;
     this.currentPathIndex = 1;
-    this.speed = GAME_CONFIG.enemySpeed;
+    this.speed = speed;
   }
 
   onPostUpdate(_: Engine, elapsed: number) {

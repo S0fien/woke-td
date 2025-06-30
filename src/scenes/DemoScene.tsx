@@ -1,5 +1,6 @@
 import GAME_CONFIG from '#/constants/config.ts';
-import { ESSENTIALS, RESOURCES } from '#/constants/resources.ts';
+import { MAIN_RESOURCES, SCENE_RESOURCES } from '#/constants/resources.ts';
+import { Dog } from '#/entities/Dog.ts';
 import useGameOptionsStore from '#/hooks/useGameOptionsStore.ts';
 import type { GameEngine } from '#/services/GameEngine.tsx';
 import { GameManager } from '#/services/GameManager.tsx';
@@ -16,7 +17,7 @@ export class DemoScene extends Level {
   private uiRoot: ReturnType<typeof createRoot> | null = null;
 
   constructor() {
-    super(RESOURCES.maps.tiled);
+    super(SCENE_RESOURCES.maps.tiled, Dog);
   }
 
   public static getInstance() {
@@ -42,10 +43,10 @@ export class DemoScene extends Level {
 
     const test = new ex.Actor();
 
-    ESSENTIALS.musics.happy.loop = true;
-    ESSENTIALS.musics.happy.play(useGameOptionsStore.getState().musicVolume);
+    MAIN_RESOURCES.musics.happy.loop = true;
+    MAIN_RESOURCES.musics.happy.play(useGameOptionsStore.getState().musicVolume);
 
-    RESOURCES.maps.tiled.addToScene(this);
+    SCENE_RESOURCES.maps.tiled.addToScene(this);
 
     // test.graphics.add(map);
     test.graphics.anchor = new ex.Vector(0, 0);
@@ -76,7 +77,7 @@ export class DemoScene extends Level {
 
   override onTransition(direction: 'in' | 'out'): Transition | undefined {
     void direction;
-    ESSENTIALS.musics.happy.stop();
+    MAIN_RESOURCES.musics.happy.stop();
     // Clean up React root when scene is deactivated
     if (this.uiRoot) {
       this.uiRoot.unmount();

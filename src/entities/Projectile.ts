@@ -1,7 +1,7 @@
 import useGameOptionsStore from '#/hooks/useGameOptionsStore.ts';
 import { Actor, Animation, Color, Vector } from 'excalibur';
 import GAME_CONFIG from '../constants/config.ts';
-import { RESOURCES } from '../constants/resources.ts';
+import { SCENE_RESOURCES } from '../constants/resources.ts';
 import { Enemy } from '../types/game.ts';
 
 export class Projectile extends Actor {
@@ -29,7 +29,7 @@ export class Projectile extends Actor {
   }
 
   async onInitialize(): Promise<void> {
-    const projectiles = Object.values(RESOURCES.projectiles).map(projectile => projectile.toSprite());
+    const projectiles = Object.values(SCENE_RESOURCES.projectiles).map(projectile => projectile.toSprite());
 
     const fire = new Animation({
       frames: [
@@ -57,7 +57,7 @@ export class Projectile extends Actor {
       this.target.health -= this.damage;
       if (this.target.health <= 0) {
         this.target.kill();
-        RESOURCES.musics.win.play(useGameOptionsStore.getState().musicVolume);
+        SCENE_RESOURCES.musics.win.play(useGameOptionsStore.getState().musicVolume);
       }
       this.kill();
     }

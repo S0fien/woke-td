@@ -1,8 +1,6 @@
-import { lazy } from 'react';
 import { Button } from '../components/buttons/button.tsx';
+import LevelSelector from '../components/containers/level-selector.tsx';
 import { SparklesText } from '../components/texts/sparkles.tsx';
-
-const LevelSelector = lazy(() => import('../components/containers/level-selector.tsx'));
 
 const Menu = () => {
   return (

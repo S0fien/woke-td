@@ -1,7 +1,7 @@
 import { useEngine } from '#/hooks/useEngine.ts';
 import { Actor, Color, PointerEvent, vec, Vector } from 'excalibur';
 import { useEffect, useState } from 'react';
-import { ESSENTIALS } from '../../constants/resources.ts';
+import { MAIN_RESOURCES } from '../../constants/resources.ts';
 
 export default function ContextualMenu() {
   const { engine } = useEngine();
@@ -31,7 +31,7 @@ export default function ContextualMenu() {
       scale: vec(2, 2),
       color: Color.Red,
     });
-    actor.graphics.use(ESSENTIALS.weapons.sword.toSprite());
+    actor.graphics.use(MAIN_RESOURCES.icons.settings.toSprite());
     setVisible(false);
   }
 

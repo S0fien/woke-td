@@ -1,9 +1,7 @@
-import useGameOptionsStore from '#/hooks/useGameOptionsStore.ts';
 import { TowerType } from '#/types/game.ts';
 import { Color } from 'excalibur';
-import { RESOURCES } from './resources.ts';
+import { SCENE_RESOURCES } from './resources.ts';
 
-console.log(useGameOptionsStore.getState());
 export const TOWER_TYPES: TowerType[] = [
   {
     type: 'trump-tower',
@@ -13,7 +11,7 @@ export const TOWER_TYPES: TowerType[] = [
     range: 100,
     color: Color.Blue,
     fireRate: 1000,
-    image: RESOURCES.towers.trumpTower,
+    image: SCENE_RESOURCES.towers.trumpTower,
   },
   {
     type: 'church',
@@ -23,7 +21,7 @@ export const TOWER_TYPES: TowerType[] = [
     range: 200,
     color: Color.Red,
     fireRate: 2000,
-    image: RESOURCES.towers.church,
+    image: SCENE_RESOURCES.towers.church,
   },
 ];
 

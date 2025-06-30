@@ -1,7 +1,9 @@
-import { ESSENTIALS } from '#/constants/resources.ts';
+import { MAIN_RESOURCES } from '#/constants/resources.ts';
 import useGameOptionsStore from '#/hooks/useGameOptionsStore.ts';
 import useLevelStore from '#/hooks/useLevelStore.ts';
 import { toast } from '#/hooks/useToast.ts';
+import { saveGameToFile } from '#/libs/save.ts';
+import { SaveData } from '#/types/game.ts';
 import { useState } from 'react';
 import { BiBell } from 'react-icons/bi';
 import { CiSettings } from 'react-icons/ci';
@@ -72,7 +74,19 @@ const settings = [
     label: 'Save my game',
     description: 'Send notifications to device.',
     action: (
-      <Button variant={'brutal'}>
+      <Button
+        variant={'brutal'}
+        onClick={() => {
+          const state = useLevelStore.getState();
+          const { musicRunning } = useGameOptionsStore.getState();
+          const saveData: SaveData = {
+            ...state,
+            musicRunning,
+            levelCompleted: [],
+          };
+          saveGameToFile(saveData);
+        }}
+      >
         <GiOverdrive />
       </Button>
     ),
@@ -83,13 +97,13 @@ const SettingsMenu = () => {
     <>
       <ModalMenu
         Trigger={
-          <CiSettings
-            className="text-shadow-[0_12x_12x_rgb(0_0_0_/_0.25)]transition-all size-14 hover:animate-[pulse_2s_ease-in-out_infinite] hover:fill-amber-300"
-            size={40}
-          />
+          <Button className="text-white" variant="brutal" size={'icon'}>
+            {' '}
+            <CiSettings size={40} color="white" />
+          </Button>
         }
         title="Settings"
-        description={<img src={ESSENTIALS.icons.settings.path} className="w-32" />}
+        description={<img src={MAIN_RESOURCES.icons.settings.path} className="w-32" />}
         modalSize="sm"
         Footer={Button}
         footerProps={{

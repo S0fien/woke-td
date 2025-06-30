@@ -1,14 +1,5 @@
-import { Cloudinary } from '@cloudinary/url-gen';
 import { TiledResource } from '@excaliburjs/plugin-tiled';
 import { Gif, ImageSource, Sound } from 'excalibur';
-import { API_KEY, API_SECRET } from './secrets.ts';
-const client = new Cloudinary({
-  cloud: {
-    cloudName: 'djaxek6tl',
-    apiKey: API_KEY,
-    apiSecret: API_SECRET,
-  },
-});
 
 export interface ResourcesType {
   towers: {
@@ -49,50 +40,55 @@ export interface ResourcesType {
     lose: ImageSource;
   };
 }
-export const ESSENTIALS = {
+export const MAIN_RESOURCES = {
   backgrounds: {
     grass: new ImageSource('backgrounds/bg-grass.png'),
     bgForest: new ImageSource('backgrounds/bg-forest.png'),
 
     test: new ImageSource('backgrounds/menu-bg.jpg'),
     forest: new ImageSource('backgrounds/forest.svg'),
-    menu: new ImageSource('backgrounds/menu.jpg'),
+    menu: new ImageSource('backgrounds/bg.png'),
     circle: new ImageSource('backgrounds/circle-button.png'),
   },
   musics: {
     caketown: new Sound('sounds/caketown.mp3'),
     happy: new Sound('sounds/happy.mp3'),
   },
-  weapons: {
-    sword: new ImageSource(client.image('sword').toURL()),
-  },
   icons: {
-    settings: new ImageSource('gear.jpg'),
+    settings: new ImageSource('icons/gear.jpg'),
     level: new ImageSource('icons/icon-trump.png'),
   },
 };
 
-export const RESOURCES = {
+export const SCENE_RESOURCES = {
   towers: {
     trumpTower: new ImageSource('towers/trump-tower.png'),
     church: new ImageSource('towers/church.png'),
   },
   maps: {
-    tiled: new TiledResource('second.json'),
-    second: new TiledResource('third.json'),
-    last: new TiledResource('last.json'),
+    tiled: new TiledResource('levels/second.json'),
+    second: new TiledResource('levels/third.json'),
+    last: new TiledResource('levels/lol.json'),
   },
   backgrounds: {
-    bar: new ImageSource('bar.png'),
-    towerContainer: new ImageSource(client.image('tower-container').toURL()),
+    bar: new ImageSource('ui/fullbar.png'),
+    redIn: new ImageSource('ui/red-in.png'),
+    redOut: new ImageSource('ui/red-out.png'),
+    // towerContainer: new ImageSource('ui/tower-container'),
+    disabled: new ImageSource('ui/disabled.png'),
+    coast: new ImageSource('ui/coast.png'),
   },
   characters: {
-    Dude: new Gif('dude.gif'),
+    Dude: new Gif('characters/dude.gif'),
+    dogWalk: new Gif('characters/dog/sprite-walk.gif'),
+    dogDie: new Gif('characters/dog/sprite-die.gif'),
+
+    shroom: new Gif('characters/shroom/shroom-walk.gif'),
   },
   projectiles: {
-    projectile1: new ImageSource(client.image('projectile1-1').toURL()),
-    projectile2: new ImageSource(client.image('projectile1-2').toURL()),
-    projectile3: new ImageSource(client.image('projectile1-3').toURL()),
+    projectile1: new ImageSource('projectiles/projectile1-1.png'),
+    projectile2: new ImageSource('projectiles/projectile1-2.png'),
+    projectile3: new ImageSource('projectiles/projectile1-3.png'),
   },
   musics: {
     lose: new Sound('sounds/lose.mp3'),
