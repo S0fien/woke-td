@@ -16,7 +16,10 @@ export const LEVELS = [
     baseEnemyCount: 5,
     baseEnemyHp: 20,
     enemyHpScaling: 5,
+    maxWaves: 3,
+    waveDelay: 1000,
     enemyCountScaling: 1,
+    music: MAIN_RESOURCES.musics.caketown.path,
   },
   {
     name: 'The beginning',
@@ -30,6 +33,8 @@ export const LEVELS = [
     baseEnemyCount: 8,
     baseEnemyHp: 35,
     enemyHpScaling: 10,
+    maxWaves: 3,
+    waveDelay: 1000,
     enemyCountScaling: 2,
   },
   {
@@ -44,6 +49,8 @@ export const LEVELS = [
     baseEnemyCount: 12,
     baseEnemyHp: 50,
     enemyHpScaling: 15,
+    maxWaves: 3,
+    waveDelay: 1000,
     enemyCountScaling: 3,
   },
 ] as const;

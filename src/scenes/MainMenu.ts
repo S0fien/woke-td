@@ -2,10 +2,8 @@ import GAME_CONFIG from '#/constants/config.ts';
 import { MAIN_RESOURCES } from '#/constants/resources.ts';
 import useGameOptionsStore from '#/hooks/useGameOptionsStore.ts';
 import type { GameEngine } from '#/services/GameEngine.tsx';
-import Spinner from '#/ui/components/elements/spinner.tsx';
 import Menu from '#/ui/features/menu.tsx';
 import { Scene, Transition } from 'excalibur';
-import { Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
 
 let ex: typeof import('excalibur');
@@ -15,6 +13,8 @@ export class MainMenu extends Scene {
   constructor() {
     super();
   }
+
+  //comment
 
   createUi(): void {
     if (document.querySelector('#menu-interface')) return;
@@ -32,11 +32,7 @@ export class MainMenu extends Scene {
 
     // Create React root and render UI
     this.uiRoot = createRoot(uiContainer);
-    this.uiRoot.render(
-      <Suspense fallback={<Spinner />}>
-        <Menu />
-      </Suspense>
-    );
+    this.uiRoot.render(Menu());
   }
 
   override onActivate(): void {

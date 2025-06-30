@@ -7,7 +7,7 @@ import useGameOptionsStore from '#/hooks/useGameOptionsStore.ts';
 import useLevelStore from '#/hooks/useLevelStore.ts';
 import { Level } from '#/scenes/Level.ts';
 import { Enemy, TowerType, TowerTypes } from '#/types/game.ts';
-import { Color, Vector } from 'excalibur';
+import { Vector } from 'excalibur';
 // import { ExitViewPortEvent, Timer, ex.Vector } from 'excalibur';
 import { Dog } from '#/entities/Dog.ts';
 import { Dude } from '#/entities/Dude.ts';
@@ -61,18 +61,16 @@ export class GameManager {
 
     // Handle click for tower placement
     this.engine.canvas.addEventListener('click', (event: MouseEvent) => {
+      const isCellError = this.engine.currentScene.isCellError();
       this.engine.currentScene.resetGridHighlight();
-      const state = useLevelStore.getState();
-      if (state.selectedTower && this.engine.currentScene.hoverCell?.color !== Color.Red) {
+      const { selectedTower } = useLevelStore.getState();
+      if (selectedTower && !isCellError) {
         const pos = new ex.Vector(event.offsetX, event.offsetY);
         const gameScene = this.engine.currentScene;
         const gridPos = gameScene.getGridPosition(pos);
-        this.placeTower(gridPos, state.selectedTower);
-
-        // const { selectedTower } = state;
-        // if (selectedTower) {
-        //   this.placeTower(gridPos, selectedTower);
-        // }
+        this.placeTower(gridPos, selectedTower);
+      } else {
+        useLevelStore.setState({ selectedTower: null });
       }
     });
   }
@@ -121,17 +119,18 @@ export class GameManager {
   }
 
   async startNextWave(): Promise<void> {
-    const state = useLevelStore.getState();
-    if (state.gameOver || state.victory) return;
+    const { gameOver, victory } = useLevelStore.getState();
+    let { wave: currentWave } = useLevelStore.getState();
+    if (gameOver || victory) return;
 
-    const newWave = state.wave + 1;
-    useLevelStore.setState({ wave: newWave });
+    const wave = currentWave++;
+    useLevelStore.setState({ wave: wave + 1 });
 
     const current = this.getCurrentLevel();
     if (!current) return;
 
-    const enemyCount = current.baseEnemyCount + newWave * current.enemyCountScaling;
-    const enemyHp = current.baseEnemyHp + newWave * current.enemyHpScaling;
+    const enemyCount = current.baseEnemyCount + wave * current.enemyCountScaling;
+    const enemyHp = current.baseEnemyHp + wave * current.enemyHpScaling;
 
     let spawned = 0;
 
@@ -162,8 +161,10 @@ export class GameManager {
           checkTimer.cancel();
 
           const state = useLevelStore.getState();
-          if (state.wave < GAME_CONFIG.maxWaves) {
-            setTimeout(() => this.startNextWave(), GAME_CONFIG.waveDelay);
+          const current = this.getCurrentLevel();
+          if (!current) return;
+          if (state.wave < current.maxWaves) {
+            setTimeout(() => this.startNextWave(), current.waveDelay);
           } else {
             useLevelStore.setState({ victory: true });
             this.cleanup();

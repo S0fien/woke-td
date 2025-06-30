@@ -1,7 +1,7 @@
-import { DemoScene } from '#/scenes/DemoScene.tsx';
-import { FinalScene } from '#/scenes/FinalScene.tsx';
-import { GameScene } from '#/scenes/GameScene.tsx';
-import { MainMenu } from '#/scenes/MainMenu.tsx';
+import { DemoScene } from '#/scenes/DemoScene.ts';
+import { FinalScene } from '#/scenes/FinalScene.ts';
+import { GameScene } from '#/scenes/GameScene.ts';
+import { MainMenu } from '#/scenes/MainMenu.ts';
 import { Color, DisplayMode, EngineOptions, FadeInOut } from 'excalibur';
 import GAME_CONFIG from './config.ts';
 

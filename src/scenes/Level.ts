@@ -5,6 +5,7 @@ import type { GameEngine } from '#/services/GameEngine.tsx';
 import { EnemyConstructor, GameManager } from '#/services/GameManager.tsx';
 import { Polyline, TiledResource } from '@excaliburjs/plugin-tiled';
 import { Actor, Color, DefaultLoader, Scene, SceneActivationContext, Vector } from 'excalibur';
+import { createRoot } from 'react-dom/client';
 
 export class Level extends Scene {
   private grid: Actor[][] = [];
@@ -12,6 +13,7 @@ export class Level extends Scene {
   public pathPoints: Vector[] = [];
   private map: TiledResource;
   public enemy: EnemyConstructor;
+  static uiRoot: ReturnType<typeof createRoot> | null = null;
 
   constructor(
     public tiledMap: TiledResource,
@@ -20,6 +22,31 @@ export class Level extends Scene {
     super();
     this.map = tiledMap;
     this.enemy = enemy;
+  }
+
+  protected createSceneUI(containerId: string, uiId: string, BarComponent: React.ReactNode) {
+    const uiContainer = document.createElement('div');
+    uiContainer.id = uiId;
+    uiContainer.classList = 'absolute bottom-0 w-full flex justify-center items-end';
+    uiContainer.style.pointerEvents = 'all';
+
+    const container = document.getElementById(containerId);
+    if (container) {
+      container.appendChild(uiContainer);
+    }
+
+    Level.uiRoot = createRoot(uiContainer);
+    Level.uiRoot.render(BarComponent);
+  }
+
+  protected cleanupSceneUI(containerId: string, uiId: string) {
+    if (Level.uiRoot) {
+      Level.uiRoot.unmount();
+      const container = document.getElementById(containerId);
+      const sceneContainer = document.getElementById(uiId);
+      if (sceneContainer) container?.removeChild(sceneContainer);
+      Level.uiRoot = null;
+    }
   }
 
   onPreLoad(loader: DefaultLoader): void {
@@ -51,6 +78,7 @@ export class Level extends Scene {
       money: currentLevel.initialMoney,
       lives: currentLevel.initialLives,
       wave: 0,
+
       // ...other state
     });
     this.loadPathFromTiled();
@@ -118,12 +146,8 @@ export class Level extends Scene {
     );
   }
 
-  public isAlreadyUsed(pos: Vector) {
-    const finding = this.actors.find(actor => {
-      return actor.pos.equals(pos);
-    });
-
-    return finding;
+  public isCellError(): boolean {
+    return this.hoverCell?.color.equal(Color.Red) || false;
   }
 
   public highlightCell(pos: Vector) {

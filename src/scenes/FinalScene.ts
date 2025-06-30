@@ -1,0 +1,49 @@
+import GAME_CONFIG from '#/constants/config.ts';
+import useGameOptionsStore from '#/hooks/useGameOptionsStore.ts';
+
+import { MAIN_RESOURCES, SCENE_RESOURCES } from '#/constants/resources.ts';
+import { Shroom } from '#/entities/Shroom.ts';
+import type { GameEngine } from '#/services/GameEngine.tsx';
+import { GameManager } from '#/services/GameManager.tsx';
+import Bar from '#/ui/components/containers/bar.tsx';
+import { Transition } from 'excalibur';
+import { GameScene } from './GameScene.ts';
+import { Level } from './Level.ts';
+
+export class FinalScene extends Level {
+  static instance: GameScene | null = null;
+
+  constructor() {
+    super(SCENE_RESOURCES.maps.last, Shroom);
+  }
+
+  public static getInstance() {
+    if (!GameScene.instance) {
+      GameScene.instance = new GameScene();
+    }
+    return GameScene.instance;
+  }
+
+  override async onActivate(context: ex.SceneActivationContext): Promise<void> {
+    super.onActivate(context);
+    MAIN_RESOURCES.musics.happy.loop = true;
+    MAIN_RESOURCES.musics.happy.play(useGameOptionsStore.getState().musicVolume);
+
+    SCENE_RESOURCES.maps.last.addToScene(this);
+
+    this.createGrid();
+    this.createPath();
+    const gameManager = GameManager.getInstance(context.engine as GameEngine);
+    gameManager.startGame();
+
+    this.createSceneUI(GAME_CONFIG.containerId, 'scene-interface', Bar());
+  }
+
+  override onTransition(direction: 'in' | 'out'): Transition | undefined {
+    void direction;
+    MAIN_RESOURCES.musics.happy.stop();
+    this.cleanupSceneUI(GAME_CONFIG.containerId, 'scene-interface');
+    this.clear();
+    return undefined;
+  }
+}
