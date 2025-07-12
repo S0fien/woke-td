@@ -3,7 +3,7 @@ import useGameOptionsStore from '#/hooks/useGameOptionsStore.ts';
 import useLevelStore from '#/hooks/useLevelStore.ts';
 import { toast } from '#/hooks/useToast.ts';
 import { saveGameToFile } from '#/libs/save.ts';
-import { SaveData } from '#/types/game.ts';
+import { gameOptionsStore } from '#/stores/options.ts';
 import { useState } from 'react';
 import { BiBell } from 'react-icons/bi';
 import { CiSettings } from 'react-icons/ci';
@@ -77,14 +77,13 @@ const settings = [
       <Button
         variant={'brutal'}
         onClick={() => {
-          const state = useLevelStore.getState();
-          const { musicRunning } = useGameOptionsStore.getState();
-          const saveData: SaveData = {
-            ...state,
-            musicRunning,
-            levelCompleted: [],
-          };
-          saveGameToFile(saveData);
+          saveGameToFile({
+            username: gameOptionsStore.username || 'Player',
+          });
+          toast({
+            title: 'Game Saved',
+            description: 'Your game has been saved successfully.',
+          });
         }}
       >
         <GiOverdrive />

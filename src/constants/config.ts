@@ -1,9 +1,7 @@
-import { Color } from 'excalibur';
-
 const GAME_CONFIG = {
   width: 1368,
   height: 780,
-  backgroundColor: Color.Black,
+  background: '#000000',
   gridSize: 80,
   pathBuffer: 80,
   updateInterval: 100,

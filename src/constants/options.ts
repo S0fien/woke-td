@@ -12,8 +12,7 @@ const GAME_OPTIONS: EngineOptions = {
 
   displayMode: DisplayMode.FillContainer, // the display mode
   width: GAME_CONFIG.width,
-  height: GAME_CONFIG.height,
-  backgroundColor: GAME_CONFIG.backgroundColor,
+  backgroundColor: Color.fromHex(GAME_CONFIG.background), // the background color
   scenes: {
     mainMenu: {
       scene: MainMenu,

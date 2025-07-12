@@ -1,4 +1,3 @@
-import GAME_CONFIG from '#/constants/config.ts';
 import { GameEngine } from '#/services/GameEngine.ts';
 import { useEffect, useState } from 'react';
 
@@ -7,12 +6,15 @@ export const useEngine = () => {
 
   useEffect(() => {
     const initializeEngine = async () => {
-      let container = document.getElementById(GAME_CONFIG.containerId);
+      console.log('ici');
+      let container = document.getElementById('game-root');
+      console.log('container', container);
       if (!container || !GameEngine) {
         return;
       }
 
       const engineInstance = GameEngine.getInstance();
+      console.log('engine', engineInstance);
       if (engineInstance) {
         setEngine(engineInstance);
         await engineInstance.initializeUI();

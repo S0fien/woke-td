@@ -1,27 +1,13 @@
-import { lazy, useEffect, useState } from 'react';
-import { useEngine } from './hooks/useEngine.ts';
-
-const Toaster = lazy(() => import('./ui/components/elements/toaster.tsx'));
-const GameStatus = lazy(() => import('./ui/features/game-status.tsx'));
-const GlobalOverlay = lazy(() => import('./ui/features/global-overlay.tsx'));
+import Toaster from './ui/components/elements/toaster.tsx';
+import GameStatus from './ui/features/game-status.tsx';
+import GlobalOverlay from './ui/features/global-overlay.tsx';
 
 export default function App() {
-  const { engine } = useEngine();
-  const [isInit, setIsInit] = useState(false);
-
-  useEffect(() => {
-    if (engine) {
-      engine?.on('initialize', () => setIsInit(true));
-    }
-  }, [engine]);
-
-  if (isInit) {
-    return (
-      <>
-        <Toaster />
-        <GlobalOverlay />
-        <GameStatus />
-      </>
-    );
-  }
+  return (
+    <div id="ui-container" className="pointer-events-none absolute top-0 left-0 flex size-full">
+      <Toaster />
+      <GlobalOverlay key="global-overlay" />
+      <GameStatus key="game-status" />
+    </div>
+  );
 }

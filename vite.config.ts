@@ -43,7 +43,7 @@ export default defineConfig(async () => ({
     },
   },
   server: {
-    port: 3000,
+    port: 3333,
     strictPort: true,
     host: host || '0.0.0.0',
     hmr: host

@@ -1,18 +1,28 @@
+import useGameOptionsStore from '#/hooks/useGameOptionsStore.ts';
 import { SaveData } from '#/types/game.ts';
 
-export function saveGameToFile(data: SaveData) {
+export function getCompleteSaveData(): Partial<SaveData> {
+  const optionsState = useGameOptionsStore.getState();
+
+  // Adapt this to your SaveData structure
+  return {
+    ...optionsState,
+  };
+}
+
+export function saveGameToFile(data: Partial<SaveData>) {
   const json = JSON.stringify(data, null, 2);
   const blob = new Blob([json], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = 'savegame.json';
-  a.click();
+  a.download = data.username || 'woke-td-save.json';
+  a.download = data.username || 'woke-td-save.json';
   URL.revokeObjectURL(url);
 }
 
 // eslint-disable-next-line no-unused-vars
-export function loadGameFromFile(onLoad: (data: SaveData) => void) {
+export function loadGameFromFile(onLoad: (data: SaveData) => SaveData) {
   const input = document.createElement('input');
   input.type = 'file';
   input.accept = '.json,application/json';

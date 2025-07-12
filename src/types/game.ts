@@ -51,9 +51,8 @@ export interface GameOptions {
   musicRunning: boolean;
   musicVolume: number;
   resources: any;
+  username: string;
+  levelCompleted: string[];
 }
 
-export type SaveData = LevelState &
-  Pick<GameOptions, 'musicRunning'> & {
-    levelCompleted: string[];
-  };
+export type SaveData = LevelState & GameOptions;

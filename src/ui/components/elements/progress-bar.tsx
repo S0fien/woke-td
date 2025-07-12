@@ -15,7 +15,7 @@ const ProgressBar = ({
   minValue = 0,
   maxValue = 1,
   rounded = 'md',
-  color = 'violet',
+  color = 'pink',
   currentValue = 0,
   showPercentage = true,
   disabled,

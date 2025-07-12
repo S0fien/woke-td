@@ -6,4 +6,6 @@ export const gameOptionsStore: GameOptions = {
   musicVolume: 0.2,
   isInitialized: false,
   resources: null,
+  username: '',
+  levelCompleted: [],
 };
