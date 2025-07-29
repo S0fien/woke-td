@@ -96,11 +96,12 @@ export class Level extends Scene {
           y: row * GAME_CONFIG.gridSize + GAME_CONFIG.gridSize / 2,
           width: GAME_CONFIG.gridSize - 2,
           height: GAME_CONFIG.gridSize - 2,
-          opacity: 0.2,
-          color: Color.LightGray,
+          opacity: 0.25,
+          color: Color.Black,
         });
         this.grid[row][col] = cell;
         this.add(cell);
+        console.log(`Grid cell created at (${col}, ${row})`, 'cell is', cell);
       }
     }
   }

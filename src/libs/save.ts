@@ -16,8 +16,8 @@ export function saveGameToFile(data: Partial<SaveData>) {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = data.username || 'woke-td-save.json';
-  a.download = data.username || 'woke-td-save.json';
+  a.download = 'woke-td-save-' + data.username + '.json';
+  a.click();
   URL.revokeObjectURL(url);
 }
 

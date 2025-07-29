@@ -40,11 +40,12 @@ export interface ResourcesType {
     lose: ImageSource;
   };
 }
+
 export const MAIN_RESOURCES = {
   backgrounds: {
     grass: new ImageSource('backgrounds/bg-grass.png'),
     bgForest: new ImageSource('backgrounds/bg-forest.png'),
-
+    one: new ImageSource('backgrounds/one.jpg'),
     test: new ImageSource('backgrounds/menu-bg.jpg'),
     forest: new ImageSource('backgrounds/forest.svg'),
     menu: new ImageSource('backgrounds/bg.png'),

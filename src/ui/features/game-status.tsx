@@ -27,6 +27,7 @@ const GameStatus = () => {
   return (
     <AnimatePresence>
       <div
+        style={{ pointerEvents: 'all' }}
         className={cn(
           'fixed inset-0 z-50 flex size-full cursor-pointer items-center justify-center bg-slate-900/20 p-8 backdrop-blur',
           !state.gameOver && !state.victory && 'hidden'

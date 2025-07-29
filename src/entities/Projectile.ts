@@ -55,6 +55,7 @@ export class Projectile extends Actor {
     const distance = Vector.distance(this.pos, this.target.pos);
     if (distance < 10) {
       this.target.health -= this.damage;
+      this.target.emit('');
       if (this.target.health <= 0) {
         this.target.kill();
         SCENE_RESOURCES.musics.win.play(useGameOptionsStore.getState().musicVolume);

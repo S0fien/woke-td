@@ -3,7 +3,7 @@ const GAME_CONFIG = {
   height: 780,
   background: '#000000',
   gridSize: 80,
-  pathBuffer: 80,
+  pathBuffer: 40,
   updateInterval: 100,
   projectileSpeed: 300,
   containerId: 'ui-container',

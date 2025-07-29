@@ -58,7 +58,7 @@ export class CustomLoader extends ex.DefaultLoader {
   }
 
   override onUpdate(engine: GameEngine, elapsedMilliseconds: number): void {
-    void engine, elapsedMilliseconds;
+    (void engine, elapsedMilliseconds);
     // Perform something every tick, for example collect time elapsed or check
     // what file namess have been loaded for drawing!
     if (this.uiRoot) {

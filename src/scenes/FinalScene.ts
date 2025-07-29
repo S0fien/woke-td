@@ -2,26 +2,25 @@ import GAME_CONFIG from '#/constants/config.ts';
 import useGameOptionsStore from '#/hooks/useGameOptionsStore.ts';
 
 import { MAIN_RESOURCES, SCENE_RESOURCES } from '#/constants/resources.ts';
-import { Shroom } from '#/entities/Shroom.ts';
+import { Dog } from '#/entities/Dog.ts';
 import type { GameEngine } from '#/services/GameEngine.ts';
 import { GameManager } from '#/services/GameManager.ts';
 import Bar from '#/ui/components/containers/bar.tsx';
 import { Transition } from 'excalibur';
-import { GameScene } from './GameScene.ts';
 import { Level } from './Level.ts';
 
 export class FinalScene extends Level {
-  static instance: GameScene | null = null;
+  static instance: FinalScene | null = null;
 
   constructor() {
-    super(SCENE_RESOURCES.maps.last, Shroom);
+    super(SCENE_RESOURCES.maps.last, Dog);
   }
 
   public static getInstance() {
-    if (!GameScene.instance) {
-      GameScene.instance = new GameScene();
+    if (!FinalScene.instance) {
+      FinalScene.instance = new FinalScene();
     }
-    return GameScene.instance;
+    return FinalScene.instance;
   }
 
   override async onActivate(context: ex.SceneActivationContext): Promise<void> {

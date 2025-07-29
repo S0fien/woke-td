@@ -8,9 +8,7 @@ if (container) {
   root.render(
     <React.StrictMode>
       <canvas id="game" className="pointer-events-all m-auto"></canvas>
-      <div className={'pointer-events-none, absolute top-0 left-0 flex size-full'} id="ui-container">
-        <App />
-      </div>
+      <App />
     </React.StrictMode>
   );
 }

@@ -3,7 +3,6 @@ import useGameOptionsStore from '#/hooks/useGameOptionsStore.ts';
 import useLevelStore from '#/hooks/useLevelStore.ts';
 import { toast } from '#/hooks/useToast.ts';
 import { saveGameToFile } from '#/libs/save.ts';
-import { gameOptionsStore } from '#/stores/options.ts';
 import { useState } from 'react';
 import { BiBell } from 'react-icons/bi';
 import { CiSettings } from 'react-icons/ci';
@@ -78,7 +77,7 @@ const settings = [
         variant={'brutal'}
         onClick={() => {
           saveGameToFile({
-            username: gameOptionsStore.username || 'Player',
+            username: useGameOptionsStore.getState().username,
           });
           toast({
             title: 'Game Saved',

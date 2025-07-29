@@ -1,17 +1,15 @@
 import GAME_CONFIG from '#/constants/config.ts';
 import { SCENE_RESOURCES } from '#/constants/resources.ts';
-// import { TOWER_TYPES } from '#/constants/towers.ts';
+import { Dog } from '#/entities/Dog.ts';
+import { Dude } from '#/entities/Dude.ts';
 import { Projectile } from '#/entities/Projectile.ts';
+import { Shroom } from '#/entities/Shroom.ts';
 import { Tower } from '#/entities/Tower.ts';
 import useGameOptionsStore from '#/hooks/useGameOptionsStore.ts';
 import useLevelStore from '#/hooks/useLevelStore.ts';
 import { Level } from '#/scenes/Level.ts';
 import { Enemy, TowerType, TowerTypes } from '#/types/game.ts';
 import { Vector } from 'excalibur';
-// import { ExitViewPortEvent, Timer, ex.Vector } from 'excalibur';
-import { Dog } from '#/entities/Dog.ts';
-import { Dude } from '#/entities/Dude.ts';
-import { Shroom } from '#/entities/Shroom.ts';
 import { GameEngine } from './GameEngine.ts';
 
 let ex: typeof import('excalibur');

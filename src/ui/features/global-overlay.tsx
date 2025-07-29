@@ -11,7 +11,8 @@ const GlobalOverlay = () => {
 
   return (
     <div
-      className={`pointers-event-all absolute right-0 bottom-0 z-90 mt-auto ml-auto flex cursor-pointer gap-3 pr-10 pb-5 text-white text-shadow-[0_6x_6x_rgb(0_0_0_/_0.75)]`}
+      style={{ pointerEvents: 'all' }}
+      className={`absolute right-0 bottom-0 z-90 mt-auto ml-auto flex cursor-pointer gap-3 pr-10 pb-5 text-white text-shadow-[0_6x_6x_rgb(0_0_0_/_0.75)]`}
     >
       <SettingsMenu />
       <Button variant="brutal" size="icon" className="text-white">

@@ -23,7 +23,7 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     /* Storybook and Vite compatibility */
-    "types": ["vite/client", "@storybook/react-vite"],
+    "types": ["vite/client"],
     "allowSyntheticDefaultImports": true
   },
   "include": [

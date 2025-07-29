@@ -1,5 +1,5 @@
 import { MAIN_RESOURCES } from '#/constants/resources.ts';
-import { saveGameToFile } from '#/libs/save.ts';
+import useGameOptionsStore from '#/hooks/useGameOptionsStore.ts';
 import { z } from 'zod';
 import { Button } from '../buttons/button.tsx';
 import ProgressBar from '../elements/progress-bar.tsx';
@@ -10,18 +10,16 @@ const usernameSchema = z.string().min(3).max(16).nonempty().trim();
 export const Loading = ({ progress }: { progress: number }) => {
   const handleDefendClick = async () => {
     const name = prompt('Enter your username:');
-    saveGameToFile({
-      username: name ?? 'Player',
-    });
     const result = usernameSchema.nonempty().safeParse(name);
     console.log('result', result);
-    // if (!result.success) {
-    //   saveGameToFile({
-    //     username: result.data,
-    //   });
-    // } else {
-    //   console.error('Invalid username. Please try again.');
-    // }
+    if (result.success) {
+      useGameOptionsStore.setState({
+        ...useGameOptionsStore.getState(),
+        username: result.data,
+      });
+    } else {
+      console.error('Invalid username. Please try again.');
+    }
   };
   return (
     <>

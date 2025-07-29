@@ -44,25 +44,25 @@ const ProgressBar = ({
         className={cn(
           'flex h-full flex-row items-center justify-end overflow-hidden',
           {
-            'bg-violet-200 hover:bg-violet-300': color === 'violet' && !disabled,
+            'bg-violet-500 hover:bg-violet-300': color === 'violet' && !disabled,
           },
           {
-            'bg-pink-200 hover:bg-pink-300': color === 'pink' && !disabled,
+            'bg-pink-500 hover:bg-pink-300': color === 'pink' && !disabled,
           },
           {
-            'bg-red-200 hover:bg-red-300': color === 'red' && !disabled,
+            'bg-red-500 hover:bg-red-300': color === 'red' && !disabled,
           },
           {
-            'bg-orange-200 hover:bg-orange-300': color === 'orange' && !disabled,
+            'bg-orange-500 hover:bg-orange-300': color === 'orange' && !disabled,
           },
           {
-            'bg-yellow-200 hover:bg-yellow-300': color === 'yellow' && !disabled,
+            'bg-yellow-500 hover:bg-yellow-300': color === 'yellow' && !disabled,
           },
           {
-            'bg-lime-200 hover:bg-lime-300': color === 'lime' && !disabled,
+            'bg-lime-500 hover:bg-lime-300': color === 'lime' && !disabled,
           },
           {
-            'bg-cyan-200 hover:bg-cyan-300': color === 'cyan' && !disabled,
+            'bg-cyan-500 hover:bg-cyan-300': color === 'cyan' && !disabled,
           },
           { 'rounded-none': rounded === 'none' },
           { 'rounded-md': rounded === 'md' },

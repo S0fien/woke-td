@@ -3,7 +3,31 @@ import { Dude } from '#/entities/Dude.ts';
 import { Shroom } from '#/entities/Shroom.ts';
 import { MAIN_RESOURCES } from './resources.ts';
 
-export const LEVELS = [
+export interface Ennemies {
+  Dude: typeof Dude;
+  Dog: typeof Dog;
+  Shroom: typeof Shroom;
+}
+
+export interface Level {
+  name: string;
+  scene: string;
+  image: string;
+  description: string;
+  maxWaves: number;
+  waveDelay: number;
+  music: string;
+  available: boolean;
+  initialMoney: number;
+  initialLives: number;
+  baseEnemyCount: number;
+  baseEnemyHp: number;
+  enemyHpScaling: number;
+  enemyCountScaling: number;
+  enemy: Ennemies[keyof Ennemies];
+}
+
+export const LEVELS: Level[] = [
   {
     name: 'Tutorial',
     scene: 'demoScene',
@@ -36,6 +60,7 @@ export const LEVELS = [
     maxWaves: 3,
     waveDelay: 1000,
     enemyCountScaling: 2,
+    music: MAIN_RESOURCES.musics.caketown.path,
   },
   {
     name: 'Final',
@@ -52,5 +77,6 @@ export const LEVELS = [
     maxWaves: 3,
     waveDelay: 1000,
     enemyCountScaling: 3,
+    music: MAIN_RESOURCES.musics.caketown.path,
   },
 ] as const;
