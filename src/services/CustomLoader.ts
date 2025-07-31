@@ -39,8 +39,9 @@ export class CustomLoader extends ex.DefaultLoader {
 
   override onDraw(ctx: CanvasRenderingContext2D) {
     void ctx;
+    return false;
     // super.onDraw(ctx);
-    console.log('do not draw');
+    // console.log('do not draw');
   }
 
   override async onUserAction(): Promise<void> {

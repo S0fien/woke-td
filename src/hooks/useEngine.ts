@@ -6,15 +6,12 @@ export const useEngine = () => {
 
   useEffect(() => {
     const initializeEngine = async () => {
-      console.log('ici');
       let container = document.getElementById('game-root');
-      console.log('container', container);
       if (!container || !GameEngine) {
         return;
       }
 
       const engineInstance = GameEngine.getInstance();
-      console.log('engine', engineInstance);
       if (engineInstance) {
         setEngine(engineInstance);
         await engineInstance.initializeUI();

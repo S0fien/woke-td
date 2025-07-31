@@ -7,7 +7,6 @@ import { Shroom } from '#/entities/Shroom.ts';
 import { Tower } from '#/entities/Tower.ts';
 import useGameOptionsStore from '#/hooks/useGameOptionsStore.ts';
 import useLevelStore from '#/hooks/useLevelStore.ts';
-import { Level } from '#/scenes/Level.ts';
 import { Enemy, TowerType, TowerTypes } from '#/types/game.ts';
 import { Vector } from 'excalibur';
 import { GameEngine } from './GameEngine.ts';
@@ -135,8 +134,7 @@ export class GameManager {
     const spawnTimer = new ex.Timer({
       action: () => {
         if (spawned < enemyCount) {
-          const ConstructorEnemy = this.engine.currentScene.enemy;
-          this.spawnEnemy(ConstructorEnemy, this.engine.currentScene.pathPoints, enemyHp);
+          this.spawnEnemy(this.engine.currentScene.enemyClass, this.engine.currentScene.pathPoints, enemyHp);
 
           spawned++;
         } else {
@@ -226,10 +224,9 @@ export class GameManager {
   }
 
   public isOnPath(pos: ex.Vector): boolean {
-    const gameScene = this.engine.currentScene as Level;
-    for (let i = 0; i < gameScene.pathPoints.length - 1; i++) {
-      const start = gameScene.pathPoints[i];
-      const end = gameScene.pathPoints[i + 1];
+    for (let i = 0; i < this.engine.currentScene.pathPoints.length - 1; i++) {
+      const start = this.engine.currentScene.pathPoints[i];
+      const end = this.engine.currentScene.pathPoints[i + 1];
 
       if (start.x === end.x) {
         // vertical segment

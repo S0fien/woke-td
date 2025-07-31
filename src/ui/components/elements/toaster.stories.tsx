@@ -71,8 +71,8 @@ export const Other: Story = {
   args: {
     toastParams: {
       duration: 10000,
-      title: 'Uh oh! Something went wrong.',
-      description: 'There was a problem with your request.',
+      title: 'Action.',
+      description: 'onClick event.',
       action: (
         <ToastAction altText="Try again">
           <span className="p-3">Try again</span>
@@ -91,19 +91,12 @@ export const Other: Story = {
 
 export const ActionAndIcon: Story = {
   args: {
+    ...Other.args,
     toastParams: {
       icon: <FaMarker className="mb-auto" size={38} />,
-      duration: 50000,
-      title: 'Uh oh! Something went wrong.',
-      description: 'There was a problem with your request.',
-      action: (
-        <ToastAction altText="Try again">
-          <span className="p-3">Try again</span>
-        </ToastAction>
-      ),
+      title: 'Action with icon.',
+      description: 'Onclick event with an icon.',
     },
-    buttonLabel: 'Show Toast',
-    variant: 'brutal',
   },
   render: ({ toastParams, buttonLabel, ...rest }) => (
     <Button onClick={() => toast(toastParams)} {...rest}>

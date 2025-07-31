@@ -1,27 +1,43 @@
 import GAME_CONFIG from '#/constants/config.ts';
 import { SCENE_RESOURCES } from '#/constants/resources.ts';
+import useGameOptionsStore from '#/hooks/useGameOptionsStore.ts';
 import useLevelStore from '#/hooks/useLevelStore.ts';
 import type { GameEngine } from '#/services/GameEngine.ts';
 import { EnemyConstructor, GameManager } from '#/services/GameManager.ts';
+import Bar from '#/ui/components/containers/bar.tsx';
 import { Polyline, TiledResource } from '@excaliburjs/plugin-tiled';
-import { Actor, Color, DefaultLoader, Scene, SceneActivationContext, Vector } from 'excalibur';
+import { Actor, Color, DefaultLoader, Scene, SceneActivationContext, Transition, Vector } from 'excalibur';
 import { createRoot } from 'react-dom/client';
 
 export class Level extends Scene {
   private grid: Actor[][] = [];
   public hoverCell: Actor | null = null;
   public pathPoints: Vector[] = [];
-  private map: TiledResource;
-  public enemy: EnemyConstructor;
+  public static map: TiledResource;
+  public static enemy: EnemyConstructor;
   static uiRoot: ReturnType<typeof createRoot> | null = null;
+  static instance: Level | null = null;
 
-  constructor(
-    public tiledMap: TiledResource,
-    enemy: EnemyConstructor
-  ) {
+  protected music: any = null;
+  protected mapResource: any = null;
+  public enemyClass: EnemyConstructor;
+  protected uiId: string = 'scene-interface';
+
+  constructor(mapResource: any, enemyClass: any, music: any = null, uiId: string = 'scene-interface') {
     super();
-    this.map = tiledMap;
-    this.enemy = enemy;
+    Level.map = mapResource;
+    Level.enemy = enemyClass;
+    this.mapResource = mapResource;
+    this.enemyClass = enemyClass;
+    this.music = music;
+    this.uiId = uiId;
+  }
+
+  public static getInstance() {
+    if (!this.instance) {
+      this.instance = new Level(this.map, this.enemy);
+    }
+    return this.instance;
   }
 
   protected createSceneUI(containerId: string, uiId: string, BarComponent: React.ReactNode) {
@@ -69,19 +85,32 @@ export class Level extends Scene {
     });
   }
 
-  onActivate(engine: SceneActivationContext) {
-    void engine;
-    const currentLevel = useLevelStore.getState().level;
-    if (!currentLevel) return;
-
-    useLevelStore.setState({
-      money: currentLevel.initialMoney,
-      lives: currentLevel.initialLives,
-      wave: 0,
-
-      // ...other state
-    });
+  override async onActivate(context: SceneActivationContext): Promise<void> {
+    // Music
+    if (this.music) {
+      this.music.loop = true;
+      this.music.play(useGameOptionsStore.getState().musicVolume);
+    }
+    // Add map
+    if (this.mapResource) {
+      this.mapResource.addToScene(this);
+    }
+    // Grid, path, game manager
+    this.createGrid();
+    this.createPath();
+    const gameManager = GameManager.getInstance(context.engine as GameEngine);
+    gameManager.startGame();
+    // UI
+    this.createSceneUI(GAME_CONFIG.containerId, this.uiId, Bar());
     this.loadPathFromTiled();
+  }
+
+  override onTransition(direction: 'in' | 'out'): Transition | undefined {
+    void direction;
+    if (this.music) this.music.stop();
+    this.cleanupSceneUI(GAME_CONFIG.containerId, this.uiId);
+    this.clear();
+    return undefined;
   }
 
   public createGrid() {
@@ -101,13 +130,12 @@ export class Level extends Scene {
         });
         this.grid[row][col] = cell;
         this.add(cell);
-        console.log(`Grid cell created at (${col}, ${row})`, 'cell is', cell);
       }
     }
   }
 
   private loadPathFromTiled() {
-    const pathLayer = this.map.getObjectLayers('path');
+    const pathLayer = Level.map.getObjectLayers('path');
     if (!pathLayer) return;
 
     // Find the first polyline object
@@ -165,7 +193,7 @@ export class Level extends Scene {
       color: Color.Pink,
       opacity: 0.8,
     };
-    const isSolid = this.map.getTilesByPoint(gridPos).find(tile => tile.exTile.solid);
+    const isSolid = Level.map.getTilesByPoint(gridPos).find(tile => tile.exTile.solid);
 
     if (row >= 0 && row < this.grid.length && col >= 0 && col < this.grid[0].length) {
       const engine = this.engine as GameEngine;
