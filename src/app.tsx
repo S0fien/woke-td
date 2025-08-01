@@ -3,6 +3,7 @@ import GameStatus from './ui/features/game-status.tsx';
 import GlobalOverlay from './ui/features/global-overlay.tsx';
 
 export default function App() {
+  console.log('App component rendered');
   return (
     <div id="ui-container" className="pointer-events-none absolute top-0 left-0 flex size-full">
       <Toaster />

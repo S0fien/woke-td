@@ -117,9 +117,9 @@ const SettingsMenu = () => {
               className="flex w-full items-center space-x-4 rounded-sm border-2 border-black p-4 dark:border-white"
             >
               <BiBell />
-              <div className="flex-1 space-y-1">
-                <p className="text-sm leading-none font-medium">{setting.label}</p>
-                <p className="text-muted-foreground text-sm">{setting.description}</p>
+              <div className="text-muted-foreground flex-1 space-y-1">
+                <p className="font-mono text-lg leading-none">{setting.label}</p>
+                <p className="text-sm">{setting.description}</p>
               </div>
               {setting.action}
             </div>

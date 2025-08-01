@@ -5,7 +5,7 @@ import { Enemy } from './Enemy.ts';
 const DogMeta = {
   value: 5,
   hp: 60,
-  speed: 70,
+  speed: 150,
 };
 
 export class Dog extends Enemy {

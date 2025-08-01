@@ -105,6 +105,7 @@ export function ModalMenu({
   cardClassName,
   headerClassName,
   footerProps,
+  ...props
 }: ModalMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -138,7 +139,7 @@ export function ModalMenu({
             >
               <Card
                 className={cn(
-                  'flex w-full max-w-[600px] flex-col gap-8 rounded-xl px-8 py-6 shadow-2xl',
+                  'm-auto flex w-full max-w-[600px] flex-col gap-8 rounded-xl px-8 py-6 shadow-2xl',
                   cardClassName
                 )}
               >
@@ -148,7 +149,7 @@ export function ModalMenu({
                     {title && <CardTitle>{title}</CardTitle>}
                   </CardHeader>
                 )}
-                <CardContent>{children}</CardContent>
+                <CardContent className={cn(props.modalSize === 'sm' && 'border-none')}>{children}</CardContent>
                 {Footer && (
                   <CardFooter>
                     <Footer onClick={handleClose} {...footerProps} />

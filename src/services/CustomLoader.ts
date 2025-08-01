@@ -1,6 +1,8 @@
 /* eslint-disabe no-unused-vas */
+
 import { Loading } from '#/ui/components/containers/loading.tsx';
 import * as ex from 'excalibur';
+import React from 'react';
 import { Root, createRoot } from 'react-dom/client';
 import { GameEngine } from './GameEngine.ts';
 
@@ -20,10 +22,24 @@ export class CustomLoader extends ex.DefaultLoader {
       'fixed inset-0 flex items-center justify-center pointer-events-none z-50 size-full m-auto max-w-[1368px] max-h-[768px]';
     uiContainer.style.backgroundSize = 'cover';
     uiContainer.style.backgroundPosition = 'center';
-    document.body.appendChild(uiContainer);
+
+    // Add the container to the document
+    const container = document.getElementById('ui-container');
+    // const container = document.getElementById(GAME_CONFIG.containerId);
+    if (container) {
+      container.appendChild(uiContainer);
+    }
+
+    // Create React root and render UI
+    // this.uiRoot = createRoot(uiContainer);
+
+    // document.body.appendChild(uiContainer);
 
     this.uiRoot = createRoot(uiContainer);
-    this.uiRoot.render(Loading({ progress: this.progress }));
+    const truc = React.createElement(Loading, { progress: this.progress });
+    this.uiRoot.render(truc);
+
+    // this.uiRoot.render(Loading({ progress: this.progress }));
   }
 
   private destroyUi() {
@@ -63,7 +79,9 @@ export class CustomLoader extends ex.DefaultLoader {
     // Perform something every tick, for example collect time elapsed or check
     // what file namess have been loaded for drawing!
     if (this.uiRoot) {
-      this.uiRoot.render(Loading({ progress: engine.loader.progress }));
+      const truc = React.createElement(Loading, { progress: engine.loader.progress });
+      this.uiRoot.render(truc);
+      // this.uiRoot.render(Loading({ progress: engine.loader.progress }));
     }
   }
 

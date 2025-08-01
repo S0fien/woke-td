@@ -4,10 +4,7 @@ import * as React from 'react';
 const Card = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn(
-      'bg-card text-card-foreground rounded-sm border-4 border-black p-6 transition-all dark:border-white dark:bg-zinc-900',
-      className
-    )}
+    className={cn('text-card-foreround rounded-sm border-4 border-black bg-white p-6 transition-all', className)}
     {...props}
   />
 ));
@@ -15,7 +12,11 @@ Card.displayName = 'Card';
 
 const CardHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn('flex flex-col space-y-1.5 p-6', className)} {...props} />
+    <div
+      ref={ref}
+      className={cn('text-accent-foreground flex flex-col space-y-1.5 p-6 text-4xl', className)}
+      {...props}
+    />
   )
 );
 CardHeader.displayName = 'CardHeader';
