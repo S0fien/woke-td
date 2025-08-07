@@ -3,10 +3,9 @@ import { MAIN_RESOURCES } from '#/constants/resources.ts';
 import useGameOptionsStore from '#/hooks/useGameOptionsStore.ts';
 import type { GameEngine } from '#/services/GameEngine.ts';
 import Menu from '#/ui/features/menu.tsx';
-import { Scene, Transition } from 'excalibur';
+import { Actor, Scene, Transition, Vector } from 'excalibur';
 import { createRoot } from 'react-dom/client';
 
-let ex: typeof import('excalibur');
 export class MainMenu extends Scene {
   private uiRoot: ReturnType<typeof createRoot> | null = null;
 
@@ -40,7 +39,6 @@ export class MainMenu extends Scene {
   }
 
   override async onInitialize(engine: GameEngine) {
-    ex = await import('excalibur');
     MAIN_RESOURCES.musics.caketown.loop = true;
     MAIN_RESOURCES.musics.caketown.play(useGameOptionsStore.getState().musicVolume);
 
@@ -48,9 +46,9 @@ export class MainMenu extends Scene {
     menu.width = engine.screen.canvasWidth;
     menu.height = engine.screen.canvasHeight;
     // const menu = MAIN_RESOURCES.backgrounds.menu.toSprite()
-    const bgImage = new ex.Actor();
+    const bgImage = new Actor();
     bgImage.graphics.add(menu);
-    bgImage.pos = new ex.Vector(engine.screen.width / 2, engine.screen.height / 2);
+    bgImage.pos = new Vector(engine.screen.width / 2, engine.screen.height / 2);
 
     this.add(bgImage);
     this.createUi();

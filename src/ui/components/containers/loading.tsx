@@ -2,40 +2,42 @@ import { MAIN_RESOURCES } from '#/constants/resources.ts';
 import useGameOptionsStore from '#/hooks/useGameOptionsStore.ts';
 import { ModalMenu } from '#/ui/features/modal-menu.tsx';
 import { useRef, useState } from 'react';
-import { z } from 'zod';
 import { Button } from '../buttons/button.tsx';
 import { Input } from '../elements/input.tsx';
 import { Label } from '../elements/label.tsx';
 import ProgressBar from '../elements/progress-bar.tsx';
 import { HyperText } from '../texts/hyper-text.tsx';
 
-const usernameSchema = z.string().min(2).max(16).nonempty('Username should not be empty.').trim();
+const MIN_USERNAME_LENGTH = 3;
+const MAX_USERNAME_LENGTH = 16;
 
 export const Loading = ({ progress }: { progress: number }) => {
+  const username = useGameOptionsStore(state => state.username);
+
   const btnRef = useRef<HTMLButtonElement>(null);
   const startRef = useRef<HTMLButtonElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const [inputValue, setInputValue] = useState<string>('');
   const [error, setError] = useState<string>('');
 
-  const handleDefendClick = async () => {
-    const name = inputValue;
-    const result = usernameSchema.nonempty().safeParse(name);
-    if (result.error) {
-      setError(result.error.message);
+  const validateUsername = (name: string) => {
+    if (!name.trim()) return 'Username should not be empty.';
+    if (name.length < MIN_USERNAME_LENGTH) return `Username must be at least ${MIN_USERNAME_LENGTH} characters.`;
+    if (name.length > MAX_USERNAME_LENGTH) return `Username must be at most ${MAX_USERNAME_LENGTH} characters.`;
+    return '';
+  };
+
+  const handleDefendClick = () => {
+    const validationError = validateUsername(inputValue);
+    if (validationError) {
+      setError(validationError);
       return false;
     }
-    if (result.success) {
-      // valid username
-      useGameOptionsStore.setState({
-        ...useGameOptionsStore.getState(),
-        username: result.data,
-      });
-      startRef.current?.click();
-    } else {
-      // invalid username
-      console.error('Invalid username. Please try again.');
-    }
+    useGameOptionsStore.setState({
+      ...useGameOptionsStore.getState(),
+      username: inputValue.trim(),
+    });
+    startRef.current?.click();
   };
 
   return (
@@ -50,17 +52,15 @@ export const Loading = ({ progress }: { progress: number }) => {
             <Button
               className="absolute bottom-0 left-1/4 h-[64px] w-[172px] px-6 py-4"
               variant={'brutal'}
-              onClick={() => btnRef.current?.click()}
+              onClick={() => {
+                console.log('username', username);
+                if (username) startRef.current?.click();
+                else btnRef.current?.click();
+              }}
             >
               Defend
             </Button>
-            <Button
-              ref={startRef}
-              id="startGame"
-              className="hidden"
-              variant={'brutal'}
-              // onClick={() => btnRef.current?.click()}
-            >
+            <Button ref={startRef} id="startGame" className="hidden" variant={'brutal'}>
               Defend
             </Button>
           </div>
@@ -84,7 +84,7 @@ export const Loading = ({ progress }: { progress: number }) => {
             <Label htmlFor="input-story">Username</Label>
             <Input
               onChange={e => setInputValue(e.target.value)}
-              isValid={inputValue.length > 2}
+              isValid={inputValue.length >= MIN_USERNAME_LENGTH}
               value={inputValue}
               id="input-story"
               ref={inputRef}

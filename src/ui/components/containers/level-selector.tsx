@@ -18,7 +18,7 @@ export default function LevelSelector() {
       }}
     >
       <div className="mx-auto grid h-full shrink-0 grid-cols-3 place-items-center gap-6 rounded-md p-6 shadow-md">
-        {LEVELS.map((level, i) => (
+        {Object.values(LEVELS).map((level, i) => (
           <FlipCard
             key={i}
             index={i}

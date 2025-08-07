@@ -1,9 +1,8 @@
-import { LEVELS } from '#/constants/levels.ts';
 import GAME_OPTIONS from '#/constants/options.ts';
 import { MAIN_RESOURCES } from '#/constants/resources.ts';
 import useGameOptionsStore from '#/hooks/useGameOptionsStore.ts';
 import useLevelStore from '#/hooks/useLevelStore.ts';
-import { DefaultLoader, Engine, GoToOptions } from 'excalibur';
+import { DefaultLoader, Engine, GoToOptions, Scene } from 'excalibur';
 import { createRoot } from 'react-dom/client';
 import { Level } from '../scenes/Level.ts';
 import { CustomLoader } from './CustomLoader.ts';
@@ -47,13 +46,10 @@ export class GameEngine extends Engine {
   }
 
   override async goToScene<TData = undefined>(
-    destinationScene: any,
-    options?: GoToOptions<TData> | undefined,
-    index?: number | undefined
+    destinationScene: Scene<TData> | string,
+    options?: GoToOptions<TData> | undefined
   ): Promise<void> {
-    const currentLevel = LEVELS[index ?? 0];
     await super.goToScene(destinationScene, options);
-    useLevelStore.setState({ level: currentLevel });
   }
 
   public async run() {

@@ -7,5 +7,6 @@ export const levelStore: LevelState = {
   gameOver: false,
   victory: false,
   selectedTower: null,
-  level: undefined,
+  levelKey: '',
+  towers: null,
 };

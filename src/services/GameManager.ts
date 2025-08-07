@@ -1,5 +1,6 @@
 import GAME_CONFIG from '#/constants/config.ts';
 import { SCENE_RESOURCES } from '#/constants/resources.ts';
+import { TOWER_TYPES } from '#/constants/towers.ts';
 import { Dog } from '#/entities/Dog.ts';
 import { Dude } from '#/entities/Dude.ts';
 import { Projectile } from '#/entities/Projectile.ts';
@@ -7,17 +8,14 @@ import { Shroom } from '#/entities/Shroom.ts';
 import { Tower } from '#/entities/Tower.ts';
 import useGameOptionsStore from '#/hooks/useGameOptionsStore.ts';
 import useLevelStore from '#/hooks/useLevelStore.ts';
-import { Enemy, TowerType, TowerTypes } from '#/types/game.ts';
-import { Vector } from 'excalibur';
+import { Enemy, TowerTypes } from '#/types/game.ts';
+import { ExitViewPortEvent, Timer, Vector } from 'excalibur';
 import { GameEngine } from './GameEngine.ts';
 
-let ex: typeof import('excalibur');
-let towerTypes: typeof import('#/constants/towers.ts');
-let TOWER_TYPES: TowerType[];
 export type EnemyConstructor = typeof Dude | typeof Dog | typeof Shroom;
 export class GameManager {
   public engine: GameEngine;
-  private updateTimer: ex.Timer | null = null;
+  private updateTimer: Timer | null = null;
   private static instance: GameManager | null = null;
 
   private constructor(engine: GameEngine) {
@@ -35,14 +33,10 @@ export class GameManager {
   }
 
   public getCurrentLevel() {
-    return useLevelStore.getState().level;
+    return this.engine.currentScene.getLevelConfig(useLevelStore.getState().levelKey);
   }
 
   async startGame(): Promise<void> {
-    ex = await import('excalibur');
-    towerTypes = await import('#/constants/towers.ts');
-    TOWER_TYPES = towerTypes.TOWER_TYPES;
-
     useGameOptionsStore.setState({ ...useGameOptionsStore.getState(), gameStarted: true });
     this.startNextWave();
     this.startUpdateLoop();
@@ -62,7 +56,7 @@ export class GameManager {
       this.engine.currentScene.resetGridHighlight();
       const { selectedTower } = useLevelStore.getState();
       if (selectedTower && !isCellError) {
-        const pos = new ex.Vector(event.offsetX, event.offsetY);
+        const pos = new Vector(event.offsetX, event.offsetY);
         const gameScene = this.engine.currentScene;
         const gridPos = gameScene.getGridPosition(pos);
         this.placeTower(gridPos, selectedTower);
@@ -73,7 +67,7 @@ export class GameManager {
   }
 
   private startUpdateLoop(): void {
-    this.updateTimer = new ex.Timer({
+    this.updateTimer = new Timer({
       fcn: () => this.update(),
       interval: GAME_CONFIG.updateInterval,
       repeats: true,
@@ -100,7 +94,7 @@ export class GameManager {
     let closestDistance = Infinity;
 
     enemies.forEach(enemy => {
-      const distance = ex.Vector.distance(tower.pos, enemy.pos);
+      const distance = Vector.distance(tower.pos, enemy.pos);
       if (distance < tower.towerType.range && distance < closestDistance) {
         closestEnemy = enemy;
         closestDistance = distance;
@@ -124,6 +118,7 @@ export class GameManager {
     useLevelStore.setState({ wave: wave + 1 });
 
     const current = this.getCurrentLevel();
+    console.log('current', current);
     if (!current) return;
 
     const enemyCount = current.baseEnemyCount + wave * current.enemyCountScaling;
@@ -131,10 +126,16 @@ export class GameManager {
 
     let spawned = 0;
 
-    const spawnTimer = new ex.Timer({
+    const spawnTimer = new Timer({
       action: () => {
         if (spawned < enemyCount) {
-          this.spawnEnemy(this.engine.currentScene.enemyClass, this.engine.currentScene.pathPoints, enemyHp);
+          const enemy = this.getCurrentLevel()?.enemy;
+          console.log('ennemy', enemy, this.getCurrentLevel());
+          if (!enemy) {
+            console.error('No enemy class defined for current level');
+            return;
+          }
+          this.spawnEnemy(enemy, this.engine.currentScene.pathPoints, enemyHp);
 
           spawned++;
         } else {
@@ -151,7 +152,7 @@ export class GameManager {
   }
 
   private checkForNextWave(): void {
-    const checkTimer = new ex.Timer({
+    const checkTimer = new Timer({
       fcn: async () => {
         if (this.getEnemies().length === 0) {
           checkTimer.cancel();
@@ -175,7 +176,7 @@ export class GameManager {
     checkTimer.start();
   }
 
-  isCellOccupied(pos: ex.Vector): boolean {
+  isCellOccupied(pos: Vector): boolean {
     const towerAtCell = this.engine.currentScene.actors.find(a => {
       const isTower = TOWER_TYPES.find(t => t.type === a.name);
       return a.pos.equals(pos) && isTower;
@@ -186,7 +187,7 @@ export class GameManager {
     return false;
   }
 
-  placeTower(pos: ex.Vector, towerType: TowerTypes): boolean {
+  placeTower(pos: Vector, towerType: TowerTypes): boolean {
     const state = useLevelStore.getState();
 
     if (state.money < TOWER_TYPES.find(t => t.type === towerType)!.cost) {
@@ -212,6 +213,7 @@ export class GameManager {
 
   public spawnEnemy(EnemyClass: EnemyConstructor, pathPoints: Vector[], hp: number) {
     const enemy = new EnemyClass(hp, pathPoints);
+    console.log('ennemy', enemy, EnemyClass);
     this.engine.currentScene.add(enemy);
     enemy.graphics.isVisible = true;
     enemy.on('exitviewport', truc => {
@@ -223,7 +225,7 @@ export class GameManager {
     });
   }
 
-  public isOnPath(pos: ex.Vector): boolean {
+  public isOnPath(pos: Vector): boolean {
     for (let i = 0; i < this.engine.currentScene.pathPoints.length - 1; i++) {
       const start = this.engine.currentScene.pathPoints[i];
       const end = this.engine.currentScene.pathPoints[i + 1];
@@ -253,7 +255,7 @@ export class GameManager {
     return false;
   }
 
-  async enemyReachedEnd(event: ex.ExitViewPortEvent): Promise<void> {
+  async enemyReachedEnd(event: ExitViewPortEvent): Promise<void> {
     event.target.kill();
     const state = useLevelStore.getState();
     SCENE_RESOURCES.musics.lose.play(useGameOptionsStore.getState().musicVolume);

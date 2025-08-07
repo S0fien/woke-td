@@ -10,7 +10,7 @@ function Component() {
     </div>
   );
 }
-interface FlipCardProps extends React.HTMLAttributes<HTMLDivElement> {
+type FlipCardProps = React.HTMLAttributes<HTMLDivElement> & {
   image: string;
   title: string;
   scene: string;
@@ -18,17 +18,17 @@ interface FlipCardProps extends React.HTMLAttributes<HTMLDivElement> {
   available: boolean;
   rotate?: 'x' | 'y';
   index: number;
-}
+};
 
 export default function FlipCard({
   image,
   title,
   description,
-  scene,
-  index,
   rotate = 'y',
   className,
   available,
+  scene,
+  index,
   ...props
 }: FlipCardProps) {
   const rotationClass = {
@@ -39,7 +39,7 @@ export default function FlipCard({
   const { engine } = useEngine();
 
   return (
-    <div className="relative size-full">
+    <div key={'flip-card-' + index} className="relative size-full">
       <div className={cn('group h-60 w-full [perspective:1000px]', className)} {...props}>
         <div
           className={cn(
@@ -76,7 +76,7 @@ export default function FlipCard({
                 variant={'secondary'}
                 className="bg-blue-700 font-bold text-white"
                 onClick={() => {
-                  engine?.goToScene(scene, {}, index);
+                  engine?.goToScene(scene, {});
                 }}
               >
                 START THE FIGHT

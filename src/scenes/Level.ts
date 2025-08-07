@@ -1,9 +1,12 @@
 import GAME_CONFIG from '#/constants/config.ts';
+import { LevelConfig, LEVELS } from '#/constants/levels.ts';
 import { SCENE_RESOURCES } from '#/constants/resources.ts';
+import { TOWER_TYPES } from '#/constants/towers.ts';
 import useGameOptionsStore from '#/hooks/useGameOptionsStore.ts';
 import useLevelStore from '#/hooks/useLevelStore.ts';
 import type { GameEngine } from '#/services/GameEngine.ts';
 import { EnemyConstructor, GameManager } from '#/services/GameManager.ts';
+import { TowerType } from '#/types/game.ts';
 import Bar from '#/ui/components/containers/bar.tsx';
 import { Polyline, TiledResource } from '@excaliburjs/plugin-tiled';
 import { Actor, Color, DefaultLoader, Scene, SceneActivationContext, Transition, Vector } from 'excalibur';
@@ -13,29 +16,22 @@ export class Level extends Scene {
   private grid: Actor[][] = [];
   public hoverCell: Actor | null = null;
   public pathPoints: Vector[] = [];
-  public static map: TiledResource;
-  public static enemy: EnemyConstructor;
   static uiRoot: ReturnType<typeof createRoot> | null = null;
   static instance: Level | null = null;
 
+  protected map: TiledResource | null = null;
+  protected enemy: EnemyConstructor | null = null;
+  protected towers: TowerType[] = TOWER_TYPES;
   protected music: any = null;
-  protected mapResource: any = null;
-  public enemyClass: EnemyConstructor;
   protected uiId: string = 'scene-interface';
 
-  constructor(mapResource: any, enemyClass: any, music: any = null, uiId: string = 'scene-interface') {
+  constructor() {
     super();
-    Level.map = mapResource;
-    Level.enemy = enemyClass;
-    this.mapResource = mapResource;
-    this.enemyClass = enemyClass;
-    this.music = music;
-    this.uiId = uiId;
   }
 
   public static getInstance() {
     if (!this.instance) {
-      this.instance = new Level(this.map, this.enemy);
+      this.instance = new Level();
     }
     return this.instance;
   }
@@ -73,13 +69,26 @@ export class Level extends Scene {
     });
   }
 
+  public getLevelConfig(name: string): LevelConfig {
+    const sceneName = name.toUpperCase().replace('SCENE', '_SCENE');
+    const level = LEVELS[sceneName as keyof typeof LEVELS];
+    return level;
+  }
+
   onInitialize(): void {
-    const currentLevel = useLevelStore.getState().level;
-    if (!currentLevel) return;
+    const level = this.getLevelConfig(this.engine.currentSceneName);
+    console.log('level is', level, this.engine.currentSceneName);
+    if (!level) return;
+
+    this.map = level.map;
+    this.enemy = level.enemy;
+    this.towers = level.towers;
+    this.music = level.music;
 
     useLevelStore.setState({
-      money: currentLevel.initialMoney,
-      lives: currentLevel.initialLives,
+      money: level.initialMoney,
+      lives: level.initialLives,
+      levelKey: level.scene,
       wave: 0,
       // ...other state
     });
@@ -92,12 +101,17 @@ export class Level extends Scene {
       this.music.play(useGameOptionsStore.getState().musicVolume);
     }
     // Add map
-    if (this.mapResource) {
-      this.mapResource.addToScene(this);
+    if (this.map) {
+      this.map.addToScene(this);
     }
     // Grid, path, game manager
     this.createGrid();
     this.createPath();
+
+    useLevelStore.setState({
+      ...useLevelStore.getState(),
+      towers: this.towers,
+    });
     const gameManager = GameManager.getInstance(context.engine as GameEngine);
     gameManager.startGame();
     // UI
@@ -134,8 +148,8 @@ export class Level extends Scene {
     }
   }
 
-  private loadPathFromTiled() {
-    const pathLayer = Level.map.getObjectLayers('path');
+  loadPathFromTiled(map: TiledResource = this.map as TiledResource) {
+    const pathLayer = map.getObjectLayers('path');
     if (!pathLayer) return;
 
     // Find the first polyline object
@@ -179,7 +193,7 @@ export class Level extends Scene {
     return this.hoverCell?.color.equal(Color.Red) || false;
   }
 
-  public highlightCell(pos: Vector) {
+  public highlightCell(pos: Vector, map: TiledResource = this.map as TiledResource) {
     const gridPos = this.getGridPosition(pos);
     const col = Math.floor(gridPos.x / GAME_CONFIG.gridSize);
     const row = Math.floor(gridPos.y / GAME_CONFIG.gridSize);
@@ -193,7 +207,7 @@ export class Level extends Scene {
       color: Color.Pink,
       opacity: 0.8,
     };
-    const isSolid = Level.map.getTilesByPoint(gridPos).find(tile => tile.exTile.solid);
+    const isSolid = map.getTilesByPoint(gridPos).find(tile => tile.exTile.solid);
 
     if (row >= 0 && row < this.grid.length && col >= 0 && col < this.grid[0].length) {
       const engine = this.engine as GameEngine;

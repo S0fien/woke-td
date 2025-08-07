@@ -1,5 +1,5 @@
 import { cva, type VariantProps } from 'class-variance-authority';
-import { AnimationProps, motion, MotionProps } from 'framer-motion';
+import { motion, MotionProps } from 'framer-motion';
 import * as React from 'react';
 import { cn } from '../../../libs/utils.ts';
 
@@ -70,7 +70,7 @@ const retroButtonInnerVariants = cva([
   'active:shadow-[inset_0_0_4px_#000,inset_1px_1px_1px_transparent,inset_-1px_-1px_1px_transparent,2px_2px_4px_transparent]',
 ]);
 
-const shineAnimationProps: AnimationProps = {
+const shineAnimationProps: MotionProps = {
   initial: { '--x': '100%', scale: 0.8 },
   animate: { '--x': '-100%', scale: 1 },
   // whileTap: { scale: 0.95 },

@@ -1,4 +1,3 @@
-import { LEVELS } from '#/constants/levels.ts';
 import { Actor, Color, ImageSource } from 'excalibur';
 
 export type TowerTypes = 'trump-tower' | 'church';
@@ -33,8 +32,6 @@ export interface Projectile extends Actor {
   speed: number;
 }
 
-export type LevelConfig = (typeof LEVELS)[number];
-
 export interface LevelState {
   money: number;
   lives: number;
@@ -42,7 +39,8 @@ export interface LevelState {
   gameOver: boolean;
   victory: boolean;
   selectedTower: TowerTypes | null;
-  level: LevelConfig | undefined;
+  levelKey: string;
+  towers: TowerType[] | null;
 }
 
 export interface GameOptions {
